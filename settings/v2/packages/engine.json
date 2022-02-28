@@ -96,17 +96,17 @@
       "base",
       "gfx-webgl",
       "gfx-webgl2",
-      "profiler",
-      "audio",
-      "tween",
-      "marionette",
       "2d",
       "ui",
       "intersection-2d",
+      "profiler",
       "particle-2d",
+      "audio",
+      "tween",
       "tiled-map",
       "spine",
-      "dragon-bones"
+      "dragon-bones",
+      "marionette"
     ],
     "noDeprecatedFeatures": {
       "value": false,
