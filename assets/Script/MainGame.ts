@@ -1,6 +1,7 @@
 
 import { _decorator, Component, Node, find } from 'cc';
 import { MapController } from './Map/MapController';
+import { UIController } from './UI/UIController';
 const { ccclass } = _decorator;
 
 @ccclass('MainGame')
@@ -17,5 +18,6 @@ export class MainGame extends Component {
         MainGame.mainCamera = find("Camera", MainGame.mainCanvas)
 
         MapController.init()
+        UIController.init()
     }
 }
