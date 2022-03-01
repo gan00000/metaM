@@ -9,6 +9,8 @@ export class MainGame extends Component {
     public static mainCamera: Node = null
     public static mainCanvas: Node = null
 
+    public static deltaTime: number = 0
+
     public static find(name: string) {
         return find(name, MainGame.mainCanvas)
     }
@@ -19,5 +21,9 @@ export class MainGame extends Component {
 
         MapController.init()
         UIController.init()
+    }
+
+    public update(deltaTime: number) {
+        MainGame.deltaTime = deltaTime
     }
 }

@@ -2,12 +2,12 @@
   "ver": "1.1.35",
   "importer": "prefab",
   "imported": true,
-  "uuid": "21ad9b3e-8bd6-433a-83b5-3e32c109184a",
+  "uuid": "a5132624-5a4c-4beb-ba6d-bcf71fb5cd7a",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "TestPrefab"
+    "syncNodeName": "Map"
   }
 }
