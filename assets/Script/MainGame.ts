@@ -8,7 +8,7 @@ export class MainGame extends Component {
     public static mainCamera: Node = null
     public static mainCanvas: Node = null
 
-    public static Find(name: string) {
+    public static find(name: string) {
         return find(name, MainGame.mainCanvas)
     }
 
@@ -16,9 +16,6 @@ export class MainGame extends Component {
         MainGame.mainCanvas = find("Canvas")
         MainGame.mainCamera = find("Camera", MainGame.mainCanvas)
 
-        MapController.Init()
-    }
-
-    public update() {
+        MapController.init()
     }
 }

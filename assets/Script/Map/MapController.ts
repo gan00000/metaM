@@ -4,8 +4,8 @@ import { MainGame } from './../MainGame';
 export class MapController {
     public static input: Node = null;
 
-    public static Init() {
-        MapController.input = MainGame.Find("MapInput")
+    public static init() {
+        MapController.input = MainGame.find("MapInput")
 
         var input = MapController.input
 
