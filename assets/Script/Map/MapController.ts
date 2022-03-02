@@ -8,6 +8,9 @@ export class MapController {
     private static oneMapWidth: number = 6498
     private static oneMapHeight: number = 3724
 
+    private static halfOneMapWidth: number = 6498 / 2
+    private static halfOneMapHeight: number = 3724 / 2
+
     //地图组成个数
     private static mapCount = 3
 
@@ -27,11 +30,26 @@ export class MapController {
         var input = this.mapInput
 
         input.on(Input.EventType.TOUCH_MOVE, (event: EventTouch) => {
-            this.move(event.getDeltaX(), event.getDeltaY())
+            let touchCount = event.getTouches().length
+
+            if (touchCount == 1) {
+                this.move(event.getDeltaX(), event.getDeltaY())
+            } else if (touchCount == 2) {
+
+            }
         })
 
         input.on(Input.EventType.MOUSE_WHEEL, (event: EventMouse) => {
             this.scale(this.mouseWheelRate * event.getScrollY())
+        })
+
+        input.on(Input.EventType.TOUCH_END, (event: EventTouch) => {
+            let touchCount = event.getTouches().length
+
+            if (touchCount == 1) {
+                let uiPos = event.getUILocation()
+                console.log("城镇左上角坐标", this.getMapTownPos(uiPos.x, uiPos.y))
+            }
         })
     }
 
@@ -55,6 +73,30 @@ export class MapController {
         return this.getPosYRangeV2
     }
 
+    private static getMapTownPosInV3 = null
+    private static getMapTownPosOutV3 = null
+    private static getMapTownPos(uiPosX: number, uiPosY: number): Vec3 {
+        if (!this.getMapTownPosInV3 || !this.getMapTownPosOutV3) {
+            this.getMapTownPosInV3 = new Vec3(0, 0, 0)
+            this.getMapTownPosOutV3 = new Vec3(0, 0, 0)
+        }
+
+        this.getMapTownPosInV3.x = uiPosX
+        this.getMapTownPosInV3.y = uiPosY
+
+        this.mapGroup.getComponent<UITransform>(UITransform).convertToNodeSpaceAR(this.getMapTownPosInV3, this.getMapTownPosOutV3)
+
+        let lbX = (this.getMapTownPosOutV3.x + this.halfOneMapWidth) % this.oneMapWidth
+        let lbY = this.getMapTownPosOutV3.y + this.halfOneMapHeight % this.oneMapHeight
+
+        //坐标映射到坐上角为起始点
+        lbY = this.oneMapHeight - lbY
+
+        this.getMapTownPosOutV3.x = lbX
+        this.getMapTownPosOutV3.y = lbY
+
+        return this.getMapTownPosOutV3
+    }
 
     private static getPosXRangeV2: Vec2 = null
     private static getPosXRange(): Vec2 {
@@ -63,7 +105,7 @@ export class MapController {
         }
 
         // 计算出最大最小Pos X
-        let border = 50
+        let border = 100
         let range = (this.mapGroup.scale.x * this.oneMapWidth) - border
 
         this.getPosXRangeV2.x = range
