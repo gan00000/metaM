@@ -1,9 +1,10 @@
-import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp } from 'cc';
+import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap } from 'cc';
 import { MainGame } from './../MainGame';
 
 export class MapController {
     private static mapInput: Node = null
     private static mapGroup: Node = null
+    private static mapTiled: TiledMap = null
 
     private static oneMapWidth: number = 6498
     private static oneMapHeight: number = 3724
@@ -34,6 +35,8 @@ export class MapController {
 
         this.basePosYRange = this.oneMapHeight * this.minScale
 
+        this.mapTiled = find("Map1/Tiled", this.mapGroup).getComponent<TiledMap>(TiledMap)
+
         var input = this.mapInput
 
         input.on(Input.EventType.TOUCH_START, (event: EventTouch) => {
@@ -57,7 +60,7 @@ export class MapController {
         input.on(Input.EventType.TOUCH_MOVE, (event: EventTouch) => {
             let touches = event.getAllTouches()
             let touchCount = touches.length
-            
+
             if (touchCount == 1) {
                 this.move(event.getDeltaX(), event.getDeltaY())
             } else if (touchCount == 2) {
@@ -215,5 +218,11 @@ export class MapController {
 
         this.move(dirX * scaleOffset * this.halfOneMapWidth * Math.abs(this.scaleOutV3.x / this.halfOneMapWidth),
             dirY * scaleOffset * this.halfOneMapHeight * Math.abs(this.scaleOutV3.y / this.halfOneMapHeight))
+    }
+
+    private static transferToTilePos(outPos: Vec3) {
+        let tileSize = this.mapTiled.getTileSize()
+        outPos.x = Math.floor(outPos.x / tileSize.x)
+        outPos.y = Math.floor(outPos.y / tileSize.y)
     }
 }
