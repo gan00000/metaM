@@ -69,7 +69,7 @@ export class MapController {
 
                 let zoom = (newDist - oldDist) / (screen.height / this.touchBaseHeight) * this.touchZoomRate
 
-                this.scale(zoom)
+                this.scale(zoom, (touches[0].getUILocationX() + touches[1].getUILocationX()) / 2, (touches[0].getUILocationY() + touches[1].getUILocationY()) / 2)
 
                 this.lastTouchPos1.x = curX1
                 this.lastTouchPos1.y = curY1
@@ -80,7 +80,7 @@ export class MapController {
         })
 
         input.on(Input.EventType.MOUSE_WHEEL, (event: EventMouse) => {
-            this.scale(this.mouseWheelRate * event.getScrollY())
+            this.scale(this.mouseWheelRate * event.getScrollY(), event.getUILocationX(), event.getUILocationY())
         })
 
         input.on(Input.EventType.TOUCH_END, (event: EventTouch) => {
@@ -171,15 +171,46 @@ export class MapController {
         this.mapGroup.setPosition(x, y, 0)
     }
 
-    private static scale(scale: number, deltaX?: number, deltaY?: number) {
-        if (!deltaX) deltaX = 0
-        if (!deltaY) deltaY = 0
+    private static scaleInV3: Vec3 = null
+    private static scaleOutV3: Vec3 = null
+    private static scale(scale: number, uiPosX: number, uiPosY: number) {
+        if (!this.scaleInV3 || !this.scaleOutV3) {
+            this.scaleInV3 = new Vec3(0, 0, 0)
+            this.scaleOutV3 = new Vec3(0, 0, 0)
+        }
 
-        scale += this.mapGroup.scale.x
+        this.scaleInV3.x = uiPosX
+        this.scaleInV3.y = uiPosY
+
+        this.mapGroup.getComponent<UITransform>(UITransform).convertToNodeSpaceAR(this.scaleInV3, this.scaleOutV3)
+
+        let oldScale = this.mapGroup.scale.x
+
+        scale += oldScale
 
         scale = clamp(scale, this.minScale, this.maxScale)
 
         this.mapGroup.setScale(scale, scale, scale)
-        this.move(deltaX, deltaY)
+
+        let scaleOffset = this.mapGroup.scale.x - oldScale
+
+        let dirX = 0
+        let dirY = 0
+        if (this.scaleOutV3.x < 0) {
+            dirX = 1
+        }
+        else if (this.scaleOutV3.x > 0) {
+            dirX = -1
+        }
+
+        if (this.scaleOutV3.y < 0) {
+            dirY = 1
+        }
+        else if (this.scaleOutV3.y > 0) {
+            dirY = -1
+        }
+
+        this.move(dirX * scaleOffset * this.halfOneMapWidth * Math.abs(this.scaleOutV3.x / this.halfOneMapWidth),
+            dirY * scaleOffset * this.halfOneMapHeight * Math.abs(this.scaleOutV3.y / this.halfOneMapHeight))
     }
 }
