@@ -26,6 +26,8 @@ export class MapController {
     private static lastTouchPos1: Vec2 = null
     private static lastTouchPos2: Vec2 = null
 
+    private static isDrag: boolean = false
+
     public static init() {
         this.mapInput = MainGame.find("MapInput")
         this.mapGroup = find("MapGroup", this.mapInput)
@@ -55,7 +57,7 @@ export class MapController {
         input.on(Input.EventType.TOUCH_MOVE, (event: EventTouch) => {
             let touches = event.getAllTouches()
             let touchCount = touches.length
-
+            
             if (touchCount == 1) {
                 this.move(event.getDeltaX(), event.getDeltaY())
             } else if (touchCount == 2) {
@@ -77,6 +79,8 @@ export class MapController {
                 this.lastTouchPos2.x = curX2
                 this.lastTouchPos2.y = curY2
             }
+
+            this.isDrag = true
         })
 
         input.on(Input.EventType.MOUSE_WHEEL, (event: EventMouse) => {
@@ -84,12 +88,11 @@ export class MapController {
         })
 
         input.on(Input.EventType.TOUCH_END, (event: EventTouch) => {
-            let touchCount = event.getAllTouches().length
-
-            if (touchCount == 1) {
+            if (!this.isDrag) {
                 let uiPos = event.getUILocation()
-                console.log("城镇左上角坐标:   ", this.getMapTownPos(uiPos.x, uiPos.y))
+                console.log("城镇左上角坐标:   ", event.getAllTouches().length, this.getMapTownPos(uiPos.x, uiPos.y))
             }
+            this.isDrag = false
         })
     }
 
