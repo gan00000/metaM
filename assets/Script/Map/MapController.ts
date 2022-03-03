@@ -37,6 +37,10 @@ export class MapController {
     private static cityInfo = {}
     //城市名字
     private static cityNameMap = {}
+    //已售土地数据{tokenId: landInfo}
+    private static saledLandData = {}
+    //每个城镇的土地数据{townId:{}}
+    private static townLands = {}
 
     public static init() {
         this.mapInput = MainGame.find("MapInput")
@@ -108,6 +112,16 @@ export class MapController {
             console.log("this.cityInfo = ", this.cityInfo);
         })
 
+        //加载已售土地信息
+        resources.load('Json/MapData/landpos', (err, data: any) => {
+            console.log("err, data = ", err, data)
+            if (err) {
+                return
+            }
+            this.saledLandData = data.json
+            console.log("this.landData = ", this.saledLandData);
+        })
+
         input.on(Input.EventType.TOUCH_START, (event: EventTouch) => {
             let touches = event.getAllTouches()
             let touchCount = touches.length
@@ -172,31 +186,7 @@ export class MapController {
                     console.log("当前点击的不是城镇图标", pos);
                     return
                 }
-                //找到该镇所属的城市
-                let starName = 'Titan';
-                let cityId = '';
-                let landNum = 150 * 4;  // 4个镇构成一个一级城市, 2个镇构成一个二级城市
-                let cityLevel = '1st class city';  //一級城市 First class city /1st class city ; 二級城市. Second class city/2nd class city
-                let cityName = '';
-                let city = this.cityInfo[townInfo[0].belong]
-                console.log("city = ", city, townInfo)
-                if (city) {
-                    cityId = city.id
-                    if (city.level == 1) {
-                        cityLevel = '1st class city';
-                    } else {
-                        cityLevel = '2nd class city';
-                        landNum = 150 * 2
-                    }
-                    //获取城市的名字
-                    cityName = this.cityNameMap[cityId]
-                    if (!cityName) {
-                        cityName = cityId + ' City';  //二级城市没有名字，用cityId代替
-                    }
-                }
-
-                //TODO: 显示城市tips
-                console.log("starName, cityName, cityLevel, landNum = ", starName, cityName, cityLevel, landNum);
+                this.getDataAndShowCityTips(townInfo);
             }
             this.isDrag = false
         })
@@ -327,5 +317,141 @@ export class MapController {
         let tileSize = this.mapTiled.getTileSize()
         outPos.x = Math.floor(outPos.x / tileSize.x)
         outPos.y = Math.floor(outPos.y / tileSize.y)
+    }
+
+    //获取数据，然后显示城市tips
+    private static getDataAndShowCityTips(townInfo: any) {
+        //找到该镇所属的城市
+        let starName = 'Titan';
+        let cityId = '';
+        let landNum = 150 * 4;  // 4个镇构成一个一级城市, 2个镇构成一个二级城市
+        let cityLevel = '1st class city';  //一級城市 First class city /1st class city ; 二級城市. Second class city/2nd class city
+        let cityName = '';
+        let city = this.cityInfo[townInfo[0].belong]
+        console.log("city = ", city, townInfo)
+        if (city) {
+            cityId = city.id
+            if (city.level == 1) {
+                cityLevel = '1st class city';
+            } else {
+                cityLevel = '2nd class city';
+                landNum = 150 * 2
+            }
+            //获取城市的名字
+            cityName = this.cityNameMap[cityId]
+            if (!cityName) {
+                cityName = cityId + ' City';  //二级城市没有名字，用cityId代替
+            }
+        }
+
+        //TODO: 显示城市tips
+        console.log("starName, cityName, cityLevel, landNum = ", starName, cityName, cityLevel, landNum);
+
+        //NOTE: 测试显示读土地tips
+        // this.getDataAndShowLandTips(1033);
+    }
+
+    //根据tokenId获取土地数据，然后显示土地tips
+    private static getDataAndShowLandTips(tokenId: number) {
+        let landdata = this.saledLandData[tokenId]
+        if (!landdata) {
+            console.log("not found the land by tokenId: ", tokenId)
+            return
+        }
+
+        console.log("land data = ", landdata);
+
+        //找到给土地所在的城镇
+        // let townList = this.belongTowns[landdata.cityid]
+        // let townInfo = townList[0];
+        // for(let i = 0; i < townList.length; i++) {
+        //     if(townList[i].id == landdata.townid){
+        //     townInfo = townList[i];
+        //     break
+        //     }
+        // }
+        // let townId = townInfo.id;
+        let townId = landdata.townid
+
+        //加载该城镇土地数据
+        let townLandMap = this.townLands[townId];
+        if (!townLandMap) {
+            //如果不存在加载
+            resources.load('Json/Land/' + townId, (err, data: any) => {
+                console.log("err, data = ", err, data)
+                if (err) {
+                    return
+                }
+                //拿到该镇所有的土地信息
+                let landInfo = {};
+                let lands = data.json;
+                for (let i = 0; i < lands.length; i++) {
+                    let land = lands[i];
+                    let key = 'x_' + land.posx + '_y_' + land.posy;
+                    landInfo[key] = land;
+                }
+                this.townLands[townId] = landInfo
+                console.log("landData = ", landInfo);
+                this.showLandTips(landdata.townid, landdata.landx, landdata.landy);
+            });
+        } else {
+            this.showLandTips(landdata.townid, landdata.landx, landdata.landy);
+        }
+    }
+
+    //根据某个城镇的土地坐标显示土地tips
+    private static showLandTips(townId: number, landx: number, landy: number) {
+        console.log("townId, x, y =", townId, landx, landy);
+        let townLandMap = this.townLands[townId];
+        if(!townLandMap) {
+            console.log("not found the town lands ", townId);
+            return;
+        }
+
+        let key = 'x_' + landx + '_y_' + landy;
+        let land = townLandMap[key];
+        if (!land) {
+            console.log("not found the town lands ", townId, landx, landy);
+            return
+        }
+    
+        
+        let starContent = 'Titan' //"泰坦星"
+        let infoConetent = land.cityid + ' City, ' + land.townid + 'Town'
+        let cityName = this.cityNameMap[land.cityid]
+        if (cityName) {
+            infoConetent = cityName + ' , ' + land.townid + 'Town'
+        }
+    
+        let cityLevel = '2nd class city'
+        let city = this.cityInfo[land.cityid]
+        if (city) {
+            if (city.level == 1) {
+                cityLevel = '1st class city';
+            } else {
+                cityLevel = '2nd class city';
+            }
+        }
+
+        let landLevel = "B"
+        if (land.level == 1) {
+            landLevel = "S"
+        } else if (land.level == 2) {
+            landLevel = "A"
+        }
+
+        let tmplandId = land.id.toString(16)
+        tmplandId = parseInt(tmplandId.substring(tmplandId.length-4), 16)
+        let landId = tmplandId % 150
+        if(landId == 0) {
+            landId = 150
+        }
+        let landPos = 'X:' + land.posx + '/Y:' + land.posy;
+        let landUrl = 'https://static-download2.metacitym.com' + land.imageurl
+
+        let landName = ""
+
+        //TODO: 显示土地tips
+        console.log("hello land:", starContent, name, infoConetent, cityLevel, landId, landLevel, landPos, landUrl)
     }
 }
