@@ -132,7 +132,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 90,
+      "width": 64,
       "height": 70
     },
     "_anchorPoint": {
@@ -228,9 +228,7 @@
   },
   {
     "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
+    "root": null,
     "asset": {
       "__id__": 0
     },
@@ -300,7 +298,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 50.03,
+      "width": 35.02,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -331,16 +329,16 @@
     "_dstBlendFactor": 4,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
+      "r": 0,
       "g": 255,
-      "b": 255,
+      "b": 222,
       "a": 255
     },
     "_string": "name",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 20,
-    "_fontSize": 20,
+    "_actualFontSize": 14,
+    "_fontSize": 14,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 0,
@@ -397,9 +395,7 @@
   },
   {
     "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
+    "root": null,
     "asset": {
       "__id__": 0
     },
@@ -469,7 +465,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 72.05,
+      "width": 63.05,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -508,8 +504,8 @@
     "_string": "valuelabel",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 16,
-    "_fontSize": 16,
+    "_actualFontSize": 14,
+    "_fontSize": 14,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 0,
@@ -566,9 +562,7 @@
   },
   {
     "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
+    "root": null,
     "asset": {
       "__id__": 0
     },
@@ -587,7 +581,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 90,
+      "width": 64,
       "height": 70
     },
     "_anchorPoint": {
@@ -645,9 +639,7 @@
   },
   {
     "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
+    "root": null,
     "asset": {
       "__id__": 0
     },
