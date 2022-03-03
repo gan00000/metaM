@@ -1,4 +1,4 @@
-import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap } from 'cc';
+import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources} from 'cc';
 import { MainGame } from './../MainGame';
 
 export class MapController {
@@ -29,6 +29,15 @@ export class MapController {
 
     private static isDrag: boolean = false
 
+    //每个城镇数据
+    private static worldTowns = {}
+    //城市对应城镇数据
+    private static belongTowns = {}
+    //城市信息
+    private static cityInfo = {}
+    //城市名字
+    private static cityNameMap = {}
+
     public static init() {
         this.mapInput = MainGame.find("MapInput")
         this.mapGroup = find("MapGroup", this.mapInput)
@@ -38,6 +47,66 @@ export class MapController {
         this.mapTiled = find("Map1/Tiled", this.mapGroup).getComponent<TiledMap>(TiledMap)
 
         var input = this.mapInput
+
+        //加载所有城镇及其对应的tile 坐标
+        resources.load('Json/MapData/map', (err, data) => {
+            console.log("err, data = ", err, data)
+            if (err) {
+                return
+            }
+            let townlist = data.json.townlist;
+            console.log("townlist = ", townlist)
+            for(let i=0; i < townlist.length; i++) {
+                let townInfo = townlist[i];
+                let key = 'x_' + townInfo.posx + '_y_' + townInfo.posy;
+                let tmp = []
+                if (this.worldTowns[key]) {
+                    tmp = this.worldTowns[key];
+                }
+                tmp[tmp.length] = townInfo
+                this.worldTowns[key] = tmp
+
+                let belongTmp = []
+                if (this.belongTowns[townInfo.belong]) {
+                    belongTmp = this.belongTowns[townInfo.belong]
+                }
+                belongTmp[belongTmp.length] = townInfo
+                this.belongTowns[townInfo.belong] = belongTmp
+            }
+
+            console.log("this.worldTowns =", this.worldTowns);
+            console.log("this.belongTowns =", this.belongTowns);
+        })
+
+        //加载城市的名字列表
+        resources.load('Json/MapData/cityname', (err, data) => {
+            console.log("err, data = ", err, data)
+            if (err) {
+                return
+            }
+            let cityDatas = data.json.list
+            for(let i = 0; i < cityDatas.length; i++) {
+                let data = cityDatas[i]
+                this.cityNameMap[data.id] = data.name;
+            }
+            console.log("this.cityNameMap = ", this.cityNameMap);
+        })
+
+        //加载城市信息
+        resources.load('Json/MapData/city', (err, data) => {
+            console.log("err, data = ", err, data)
+            if (err) {
+                return
+            }
+            let cityList = data.json.citylist
+            if (cityList) {
+                for (let i = 0; i < cityList.length; i++) {
+                    let city = cityList[i];
+                    this.cityInfo[city.id] = city;
+                }
+            }
+            console.log("this.cityInfo = ", this.cityInfo);
+        })
 
         input.on(Input.EventType.TOUCH_START, (event: EventTouch) => {
             let touches = event.getAllTouches()
@@ -93,7 +162,41 @@ export class MapController {
         input.on(Input.EventType.TOUCH_END, (event: EventTouch) => {
             if (!this.isDrag) {
                 let uiPos = event.getUILocation()
-                console.log("城镇左上角坐标:   ", event.getAllTouches().length, this.getMapTownPos(uiPos.x, uiPos.y))
+                let pos = this.getMapTownPos(uiPos.x, uiPos.y)
+                this.transferToTilePos(pos)
+                console.log("城镇左上角坐标:   ", event.getAllTouches().length, pos)
+                let key = 'x_' + pos.x + '_y_' + pos.y;
+                //获取当前点击的是哪个城镇
+                let townInfo = this.worldTowns[key]
+                if(!townInfo) {
+                    console.log("当前点击的不是城镇图标", pos);
+                    return
+                }
+                //找到该镇所属的城市
+                let starName = 'Titan';
+                let cityId = '';
+                let landNum = 150 * 4;  // 4个镇构成一个一级城市, 2个镇构成一个二级城市
+                let cityLevel = '1st class city';  //一級城市 First class city /1st class city ; 二級城市. Second class city/2nd class city
+                let cityName = '';
+                let city = this.cityInfo[townInfo[0].belong]
+                console.log("city = ", city, townInfo)
+                if (city) {
+                    cityId = city.id
+                    if (city.level == 1) {
+                        cityLevel = '1st class city';
+                    } else {
+                        cityLevel = '2nd class city';
+                        landNum = 150 * 2
+                    }
+                    //获取城市的名字
+                    cityName = this.cityNameMap[cityId]
+                    if (!cityName) {
+                        cityName = cityId + ' City';  //二级城市没有名字，用cityId代替
+                    }
+                }
+
+                //TODO: 显示城市tips
+                console.log("starName, cityName, cityLevel, landNum = ", starName, cityName, cityLevel, landNum);
             }
             this.isDrag = false
         })
