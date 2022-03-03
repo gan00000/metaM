@@ -1,6 +1,7 @@
 
 import { _decorator, Component, Node, find } from 'cc';
 import { MapController } from './Map/MapController';
+import { NtfsController } from './UI/Component/NtfsController';
 import { UIController } from './UI/UIController';
 const { ccclass } = _decorator;
 
@@ -21,6 +22,7 @@ export class MainGame extends Component {
 
         MapController.init()
         UIController.init()
+        NtfsController.init()
     }
 
     public update(deltaTime: number) {
