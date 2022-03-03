@@ -452,6 +452,6 @@ export class MapController {
         let landName = ""
 
         //TODO: 显示土地tips
-        console.log("hello land:", starContent, name, infoConetent, cityLevel, landId, landLevel, landPos, landUrl)
+        console.log("hello land:", starContent, landName, infoConetent, cityLevel, landId, landLevel, landPos, landUrl)
     }
 }
