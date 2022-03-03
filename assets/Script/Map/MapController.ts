@@ -1,4 +1,4 @@
-import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources} from 'cc';
+import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset} from 'cc';
 import { MainGame } from './../MainGame';
 
 export class MapController {
@@ -49,7 +49,7 @@ export class MapController {
         var input = this.mapInput
 
         //加载所有城镇及其对应的tile 坐标
-        resources.load('Json/MapData/map', (err, data) => {
+        resources.load('Json/MapData/map', (err, data: any) => {
             console.log("err, data = ", err, data)
             if (err) {
                 return
@@ -79,7 +79,7 @@ export class MapController {
         })
 
         //加载城市的名字列表
-        resources.load('Json/MapData/cityname', (err, data) => {
+        resources.load('Json/MapData/cityname', (err, data: any) => {
             console.log("err, data = ", err, data)
             if (err) {
                 return
@@ -93,7 +93,7 @@ export class MapController {
         })
 
         //加载城市信息
-        resources.load('Json/MapData/city', (err, data) => {
+        resources.load('Json/MapData/city', (err, data: any) => {
             console.log("err, data = ", err, data)
             if (err) {
                 return
