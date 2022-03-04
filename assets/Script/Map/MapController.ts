@@ -351,18 +351,9 @@ export class MapController {
         console.log("starName, cityName, cityLevel, landNum = ", starName, cityName, cityLevel, landNum);
 
         //NOTE: 测试显示读土地tips
-        // this.getDataAndShowLandTips(1033);
+        this.getDataAndShowLandTips(1033);
 
-        // resources.load("Prefab/nfts_bg",Prefab,(err,data)=>{
-        //     if (err) {
-        //         console.log(err);
-        //     }
-        //     let ntfs_prefab:Node = instantiate(data);
-        //     this.mapInput.addChild(ntfs_prefab);
-        // })
-        //NtfsController.init()
-        let xxa = NtfsController.getNftsNode() 
-        this.mapInput.addChild(xxa)
+        
     }
 
     //根据tokenId获取土地数据，然后显示土地tips
@@ -467,5 +458,22 @@ export class MapController {
 
         //TODO: 显示土地tips
         console.log("hello land:", starContent, landName, infoConetent, cityLevel, landId, landLevel, landPos, landUrl)
+        // 'PLANET', 'CITY LEVEL', 'LAND LEVEL', 'CITY', 'TOWN',
+        //  'LAND NO', 'LAND POSX', 'LAND POSY', 'LAND SIZE', 'LAND NAME'
+        let cityInfoMap = new Map([
+            ["PLANET","starName"],
+            ["CITY LEVEL", cityLevel],
+            ["CITY", cityLevel],
+            ["TOWN", ""],
+            ["LAND NO",landPos],
+            ["LAND POSX","2"],
+            ["LAND POSY","2"],
+            ["LAND SIZE","SIZE"],
+            ["LAND NAME","NAME"]
+        ])
+        let xxa = NtfsController.getNftsNode() 
+        this.mapInput.addChild(xxa)
+
+        NtfsController.updateDatas("tokenId",landUrl,cityInfoMap)
     }
 }
