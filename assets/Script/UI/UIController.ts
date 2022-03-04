@@ -13,7 +13,7 @@ export class UIController {
         UIController.parent = MainGame.find("UIParent")
     }
 
-    public static create(name: string, callback: Function) {
+    public static create(name: string, addToUIParent:boolean, callback: Function) {
         let node: Node = null
         if (this.map.has(name)) {
             node = this.map.get(name)
@@ -28,7 +28,9 @@ export class UIController {
                 }
                 else {
                     node = instantiate(prefab)
-                    this.parent.addChild(node)
+                    if (addToUIParent) {
+                        this.parent.addChild(node) 
+                    } 
                     callback(node)
                 }
             })

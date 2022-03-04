@@ -1,0 +1,13 @@
+{
+  "ver": "1.1.35",
+  "importer": "prefab",
+  "imported": true,
+  "uuid": "1165d9bb-103f-4f0c-94fe-da93d7b8ab2a",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "syncNodeName": "loginTokenInfo"
+  }
+}

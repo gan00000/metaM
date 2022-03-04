@@ -1,6 +1,7 @@
 
 import { _decorator, Component, Node, find } from 'cc';
 import { MapController } from './Map/MapController';
+import { LoginTokenController } from './UI/Component/LoginTokenController';
 import { NtfsController } from './UI/Component/NtfsController';
 import { UIController } from './UI/UIController';
 const { ccclass } = _decorator;
@@ -22,6 +23,7 @@ export class MainGame extends Component {
 
         MapController.init()
         UIController.init()
+        LoginTokenController.init()
         NtfsController.init()
     }
 

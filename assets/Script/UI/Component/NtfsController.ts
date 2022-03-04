@@ -23,7 +23,7 @@ export class NtfsController{
     public static init () {
         // [3]
 
-        UIController.create("nfts_bg",(node)=>{
+        UIController.create("nfts_bg",false, (node)=>{
 
             this.ntfsNode = node;
         // })

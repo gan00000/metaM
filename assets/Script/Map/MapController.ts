@@ -1,4 +1,7 @@
-import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset} from 'cc';
+import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset, Prefab, instantiate} from 'cc';
+import { NtfsController } from '../UI/Component/NtfsController';
+
+import { UIController } from '../UI/UIController';
 import { MainGame } from './../MainGame';
 
 export class MapController {
@@ -349,6 +352,17 @@ export class MapController {
 
         //NOTE: 测试显示读土地tips
         // this.getDataAndShowLandTips(1033);
+
+        // resources.load("Prefab/nfts_bg",Prefab,(err,data)=>{
+        //     if (err) {
+        //         console.log(err);
+        //     }
+        //     let ntfs_prefab:Node = instantiate(data);
+        //     this.mapInput.addChild(ntfs_prefab);
+        // })
+        //NtfsController.init()
+        let xxa = NtfsController.getNftsNode() 
+        this.mapInput.addChild(xxa)
     }
 
     //根据tokenId获取土地数据，然后显示土地tips
