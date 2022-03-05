@@ -463,11 +463,12 @@ export class MapController {
         let cityInfoMap = new Map([
             ["PLANET","starName"],
             ["CITY LEVEL", cityLevel],
+            ["CITY LEVEL", landLevel],
             ["CITY", cityLevel],
             ["TOWN", ""],
             ["LAND NO",landPos],
-            ["LAND POSX","2"],
-            ["LAND POSY","2"],
+            ["LAND POSX", landx + ""],
+            ["LAND POSY", landy + ""],
             ["LAND SIZE","SIZE"],
             ["LAND NAME","NAME"]
         ])
