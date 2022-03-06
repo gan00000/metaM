@@ -99,6 +99,7 @@ export class LoginTokenController {
                 if (err) {
                     console.log(err);
                 }
+                
                 this.tokenIdScrollViewContentNode.removeAllChildren()
                 let itemprefabtemp: Node = instantiate(data);
                 let uitfansform = itemprefabtemp.getComponent(UITransform)
@@ -116,8 +117,9 @@ export class LoginTokenController {
                     //设置点击事件传递的内容
                     itemprefab.getComponent(Button).clickEvents[0].customEventData = tokenId + ""
                     this.tokenIdScrollViewContentNode.addChild(itemprefab);
-
-                    MapController.getDataAndShowLandTips(tokenId)
+                    
+                    //在地图上显示发光点
+                    MapController.getDataAndShowLandTips(tokenId, true)
                 }
             })
 

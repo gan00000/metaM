@@ -45,6 +45,8 @@ export class MapController {
     //每个城镇的土地数据{townId:{}}
     private static townLands = {}
 
+    private static mNtfsController: NtfsController
+
     public static init() {
         this.mapInput = MainGame.find("MapInput")
         this.mapGroup = find("MapGroup", this.mapInput)
@@ -351,20 +353,20 @@ export class MapController {
         console.log("starName, cityName, cityLevel, landNum = ", starName, cityName, cityLevel, landNum);
 
         //NOTE: 测试显示读土地tips
-        this.getDataAndShowLandTips(1033);
+        // this.getDataAndShowLandTips(1033);
 
         
     }
 
     //根据tokenId获取土地数据，然后显示土地tips
-    private static getDataAndShowLandTips(tokenId: number) {
+    public static getDataAndShowLandTips(tokenId: number,addNodeToMap:boolean) {
         let landdata = this.saledLandData[tokenId]
         if (!landdata) {
             console.log("not found the land by tokenId: ", tokenId)
             return
         }
 
-        console.log("land data = ", landdata);
+        // console.log("land data = ", landdata);
 
         //找到给土地所在的城镇
         // let townList = this.belongTowns[landdata.cityid]
@@ -383,7 +385,7 @@ export class MapController {
         if (!townLandMap) {
             //如果不存在加载
             resources.load('Json/Land/' + townId, (err, data: any) => {
-                console.log("err, data = ", err, data)
+                // console.log("err, data = ", err, data)
                 if (err) {
                     return
                 }
@@ -397,15 +399,15 @@ export class MapController {
                 }
                 this.townLands[townId] = landInfo
                 console.log("landData = ", landInfo);
-                this.showLandTips(landdata.townid, landdata.landx, landdata.landy);
+                this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy, addNodeToMap);
             });
         } else {
-            this.showLandTips(landdata.townid, landdata.landx, landdata.landy);
+            this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy,addNodeToMap);
         }
     }
 
     //根据某个城镇的土地坐标显示土地tips
-    private static showLandTips(townId: number, landx: number, landy: number) {
+    private static showLandTips(tokenId: number, townId: number, landx: number, landy: number, addNodeToMap:boolean) {
         console.log("townId, x, y =", townId, landx, landy);
         let townLandMap = this.townLands[townId];
         if(!townLandMap) {
@@ -472,9 +474,42 @@ export class MapController {
             ["LAND SIZE","SIZE"],
             ["LAND NAME","NAME"]
         ])
-        let xxa = NtfsController.getNftsNode() 
-        this.mapInput.addChild(xxa)
+        
+        if (addNodeToMap) {
+            
+            resources.load("Prefab/landShowNode", Prefab, (err, data) => {
+                if (err) {
+                    console.log(err);
+                    return
+                }
+    
+                let lightRefab: Node = instantiate(data);
+                // itemprefab.getComponent(Label).string = tokenId + ""
+                this.mapGroup.addChild(lightRefab);
+                lightRefab.setPosition(landx,landy)
+            })
+        }else{
 
-        NtfsController.updateDatas("tokenId",landUrl,cityInfoMap)
+
+            if (this.mNtfsController) {
+                let xNode:Node = this.mNtfsController.getNftsNode()
+                xNode.removeFromParent()
+                xNode.destroy()
+                
+            }
+            
+            this.mNtfsController = new NtfsController()
+            this.mNtfsController.init((mNode)=>{
+
+                // let xxa = this.mNtfsController.getNftsNode() 
+                this.mapInput.addChild(mNode)
+                
+                this.mNtfsController.updateDatas(tokenId + "",landUrl,cityInfoMap)
+            })
+
+
+        }
     }
+
+   
 }

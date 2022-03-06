@@ -41,7 +41,7 @@ export class MainGame extends Component {
         MapController.init()
         UIController.init()
         LoginTokenController.init()
-        NtfsController.init()
+        // NtfsController.init()
         
        
     }

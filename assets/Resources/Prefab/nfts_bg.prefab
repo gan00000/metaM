@@ -100,7 +100,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 97.22149999999999,
+      "y": 99.273,
       "z": 0
     },
     "_lrot": {
@@ -139,8 +139,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 240,
-      "height": 246.96500000000003
+      "width": 236,
+      "height": 251.06800000000004
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -177,7 +177,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "eb96854f-e7ec-458c-94e7-c6bf607a1711@f9941",
+      "__uuid__": "57520716-48c8-4a19-8acf-41c9f8777fb0@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
@@ -212,9 +212,9 @@
     },
     "_alignFlags": 45,
     "_target": null,
-    "_left": 0,
-    "_right": 0,
-    "_top": 45.296,
+    "_left": 2,
+    "_right": 2,
+    "_top": 41.19299999999999,
     "_bottom": 239.73899999999998,
     "_horizontalCenter": 0,
     "_verticalCenter": 0,
@@ -639,7 +639,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 92.35,
+      "width": 7.79,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -676,7 +676,7 @@
       "b": 222,
       "a": 255
     },
-    "_string": "标题11111label",
+    "_string": "0",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
     "_actualFontSize": 14,

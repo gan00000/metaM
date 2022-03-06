@@ -1,5 +1,6 @@
 
 import { _decorator, Component, Node, find, Sprite, Button } from 'cc';
+import { MapController } from '../../Map/MapController';
 const { ccclass, property } = _decorator;
 
 @ccclass('TokenIdButtonComponent')
@@ -14,7 +15,8 @@ export class TokenIdButtonComponent extends Component {
         const node = event.target as unknown as Node;
         const button = node.getComponent(Button);
         console.log(customEventData); // foobar
-
+        let tokenId = parseInt(customEventData)
+        MapController.getDataAndShowLandTips(tokenId,false)
     }
     
 }
