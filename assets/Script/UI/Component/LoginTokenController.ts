@@ -1,6 +1,7 @@
 
 import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, sys, System, UITransform } from 'cc';
 import { MainGame } from '../../MainGame';
+import { MapController } from '../../Map/MapController';
 import { CUtil } from '../../Utils/CUtil';
 import { UIController } from '../UIController';
 const { ccclass, property } = _decorator;
@@ -108,11 +109,15 @@ export class LoginTokenController {
                 this.tokenIdScrollViewContentNode.getComponent(UITransform).height = allHeight
                 
                 for (let index = 0; index < this.tokenIds.length; index++) {
-                    const element = this.tokenIds[index];
+                    const tokenId = this.tokenIds[index];
                     
                     let itemprefab: Node = instantiate(data);
-                    itemprefab.getComponent(Label).string = element + ""
+                    itemprefab.getComponent(Label).string = tokenId + ""
+                    //设置点击事件传递的内容
+                    itemprefab.getComponent(Button).clickEvents[0].customEventData = tokenId + ""
                     this.tokenIdScrollViewContentNode.addChild(itemprefab);
+
+                    MapController.getDataAndShowLandTips(tokenId)
                 }
             })
 
@@ -176,7 +181,11 @@ export class LoginTokenController {
                     this.requestTokenIds(address, pageKey, 2)
                 }else{
                     console.log("全部请求完成")
-                    this.createTokenIdView()
+                    if (this.tokenIds.length > 0) {
+
+                        this.createTokenIdView()
+                        
+                    }
                 }
             
                 console.log("解析完成")
