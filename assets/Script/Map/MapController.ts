@@ -410,6 +410,8 @@ export class MapController {
         }
     }
 
+    public static sLightPrefabData:Prefab = null
+
     //根据某个城镇的土地坐标显示土地tips
     private static showLandTips(tokenId: number, townId: number, landx: number, landy: number, addNodeToMap:boolean) {
         console.log("townId, x, y =", townId, landx, landy);
@@ -461,7 +463,7 @@ export class MapController {
         let landUrl = 'https://static-download2.metacitym.com' + land.imageurl
 
         let landName = ""
-        let landSize = 40*30
+        let landSize = "40*30"
 
         //TODO: 显示土地tips
         console.log("hello land:", starContent, landName, infoConetent, cityLevel, landId, landLevel, landPos, landUrl)
@@ -484,26 +486,39 @@ export class MapController {
             
             if (this.worldTownsWithTownId[townId]) {
                 let townInfo = this.worldTownsWithTownId[townId]
-                let mx = townInfo.posx * 20
-                let my = townInfo.posy * 20
+                let mx = townInfo.posx //* 38
+                let my = townInfo.posy //* 38
                 let aKey = mx+"_"+my
                 if (this.lightPos[aKey]) {//已经存在发光点
                     return
                 }
                 this.lightPos[aKey] = mx+"_"+my
-                
                 console.log("townId=" + townId + "x=" + mx + " y=" + my);
-                resources.load("Prefab/sLight", Prefab, (err, data) => {
-                    if (err) {
-                        console.log(err);
-                        return
+                
+                let lightUIPos = this.getUIPosByTownPos(mx,my)
+                for (let index = -1; index <= 1; index++) {
+                    
+                    let px = lightUIPos.x + index * this.oneMapWidth
+                    let py = lightUIPos.y
+                    if (this.sLightPrefabData) {
+                        let xlightRefab: Node = instantiate(this.sLightPrefabData);
+                        this.mapGroup.addChild(xlightRefab);
+                        xlightRefab.setPosition(px,py)
+                    }else{
+                        resources.load("Prefab/sLight", Prefab, (err, data) => {
+                            if (err) {
+                                console.log(err);
+                                return
+                            }
+                
+                            let lightRefab: Node = instantiate(data);
+                            // itemprefab.getComponent(Label).string = tokenId + ""
+                            this.mapGroup.addChild(lightRefab);
+                            lightRefab.setPosition(px,py)
+                        })
                     }
-        
-                    let lightRefab: Node = instantiate(data);
-                    // itemprefab.getComponent(Label).string = tokenId + ""
-                    lightRefab.setPosition(mx,my)
-                    this.mapGroup.addChild(lightRefab);
-                })
+                }
+                
             }else{
                 console.log("找不到townInfo townId=" + townId);
             }
@@ -530,5 +545,24 @@ export class MapController {
         }
     }
 
+
+    // private static getUIPosByTownPosOutV3 = null
+    private static getUIPosByTownPos(townX: number, townY: number): Vec3 {
+        // if (!this.getUIPosByTownPosOutV3) {
+        // }
+        let getUIPosByTownPosOutV3 = new Vec3(0, 0, 0)
+
+        let tileSize = this.mapTiled.getTileSize()
+
+        let x = tileSize.x * townX
+        let y = tileSize.y * townY
+
+        y = this.oneMapHeight - y
+
+        getUIPosByTownPosOutV3.x = x - this.halfOneMapWidth
+        getUIPosByTownPosOutV3.y = y - this.halfOneMapHeight
+
+        return getUIPosByTownPosOutV3
+    }
    
 }
