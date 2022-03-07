@@ -434,13 +434,13 @@ export class MapController {
             infoConetent = cityName + ' , ' + land.townid + 'Town'
         }
     
-        let cityLevel = '2nd class city'
+        let cityLevel = '2'
         let city = this.cityInfo[land.cityid]
         if (city) {
             if (city.level == 1) {
-                cityLevel = '1st class city';
+                cityLevel = '1';
             } else {
-                cityLevel = '2nd class city';
+                cityLevel = '2';
             }
         }
 
@@ -461,22 +461,23 @@ export class MapController {
         let landUrl = 'https://static-download2.metacitym.com' + land.imageurl
 
         let landName = ""
+        let landSize = 40*30
 
         //TODO: 显示土地tips
         console.log("hello land:", starContent, landName, infoConetent, cityLevel, landId, landLevel, landPos, landUrl)
         // 'PLANET', 'CITY LEVEL', 'LAND LEVEL', 'CITY', 'TOWN',
         //  'LAND NO', 'LAND POSX', 'LAND POSY', 'LAND SIZE', 'LAND NAME'
         let cityInfoMap = new Map([
-            ["PLANET","starName"],
+            ["PLANET",starContent],
             ["CITY LEVEL", cityLevel],
-            ["CITY LEVEL", landLevel],
-            ["CITY", cityLevel],
-            ["TOWN", ""],
-            ["LAND NO",landPos],
+            ["LAND LEVEL", landLevel],
+            ["CITY", city.id + "City"],
+            ["TOWN", townId + "Town"],
+            ["LAND NO",landId + ""],
             ["LAND POSX", landx + ""],
             ["LAND POSY", landy + ""],
-            ["LAND SIZE","SIZE"],
-            ["LAND NAME","NAME"]
+            ["LAND SIZE", landSize + ""],
+            ["LAND NAME", landName]
         ])
         
         if (addNodeToMap) {
