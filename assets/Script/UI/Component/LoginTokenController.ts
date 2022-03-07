@@ -32,7 +32,7 @@ export class LoginTokenController {
 
         this.buylandBtn = find("buyland", this.loginTokenInfoNode);
         this.ntfStartBtn = find("nft_start", this.loginTokenInfoNode);
-        this.pursrBtn = find("btn_purse_h", this.loginTokenInfoNode);
+        this.pursrBtn = find("purseButton", this.loginTokenInfoNode);
         this.tokenIdScrollView = find("tokenScrollView", this.loginTokenInfoNode);
         //this.titleLabe = titleLabelNode.getComponent(Label);
 
@@ -44,7 +44,7 @@ export class LoginTokenController {
         this.buylandBtn.on(Button.EventType.CLICK, () => {
 
             aaa = aaa + 1;
-
+            sys.openURL("https://metacitym.com/")
         }, this);
 
 
@@ -72,10 +72,13 @@ export class LoginTokenController {
 
         if (MainGame.isLogin()) {
             this.tokenIdScrollView.active = true
-            
+            // this.pursrBtn.getComponent(Button).enabled = false
+            this.pursrBtn.getComponent(Button).interactable = false
             this.requestTokenIds(MainGame.address,null, 1)
         }else{
             this.tokenIdScrollView.active = false
+            // this.pursrBtn.getComponent(Button).enabled = true
+            this.pursrBtn.getComponent(Button).interactable = true
         }
         // test
         // this.requestTokenIds("0x2f2e99bcbe39D8407552E821e7F4F0F9592Dfcab",null, 1)
@@ -90,7 +93,7 @@ export class LoginTokenController {
     }
 
     private static createTokenIdView()
-    {
+    {   
         if (this.tokenIds.length > 0) {
 
             this.tipsLabelNode.active = false
@@ -183,11 +186,7 @@ export class LoginTokenController {
                     this.requestTokenIds(address, pageKey, 2)
                 }else{
                     console.log("全部请求完成")
-                    if (this.tokenIds.length > 0) {
-
-                        this.createTokenIdView()
-                        
-                    }
+                    this.createTokenIdView()
                 }
             
                 console.log("解析完成")

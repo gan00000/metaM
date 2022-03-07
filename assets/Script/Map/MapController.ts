@@ -32,8 +32,9 @@ export class MapController {
 
     private static isDrag: boolean = false
 
-    //每个城镇数据
+    //每个城镇数据 （x_y:townlistinfo）
     private static worldTowns = {}
+    private static worldTownsWithTownId = {}
     //城市对应城镇数据
     private static belongTowns = {}
     //城市信息
@@ -44,6 +45,7 @@ export class MapController {
     private static saledLandData = {}
     //每个城镇的土地数据{townId:{}}
     private static townLands = {}
+    private static lightPos = {}
 
     private static mNtfsController: NtfsController
 
@@ -74,6 +76,8 @@ export class MapController {
                 }
                 tmp[tmp.length] = townInfo
                 this.worldTowns[key] = tmp
+
+                this.worldTownsWithTownId[townInfo.id + ""] = townInfo
 
                 let belongTmp = []
                 if (this.belongTowns[townInfo.belong]) {
@@ -360,7 +364,7 @@ export class MapController {
 
     //根据tokenId获取土地数据，然后显示土地tips
     public static getDataAndShowLandTips(tokenId: number,addNodeToMap:boolean) {
-        let landdata = this.saledLandData[tokenId]
+        let landdata = this.saledLandData[tokenId + ""]
         if (!landdata) {
             console.log("not found the land by tokenId: ", tokenId)
             return
@@ -379,7 +383,7 @@ export class MapController {
         // }
         // let townId = townInfo.id;
         let townId = landdata.townid
-
+        console.log("land data townId,tokenId", townId,tokenId);
         //加载该城镇土地数据
         let townLandMap = this.townLands[townId];
         if (!townLandMap) {
@@ -398,7 +402,7 @@ export class MapController {
                     landInfo[key] = land;
                 }
                 this.townLands[townId] = landInfo
-                console.log("landData = ", landInfo);
+                // console.log("landData = ", landInfo);
                 this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy, addNodeToMap);
             });
         } else {
@@ -477,17 +481,31 @@ export class MapController {
         
         if (addNodeToMap) {
             
-            resources.load("Prefab/landShowNode", Prefab, (err, data) => {
-                if (err) {
-                    console.log(err);
+            if (this.worldTownsWithTownId[townId]) {
+                let townInfo = this.worldTownsWithTownId[townId]
+                let mx = townInfo.posx * 20
+                let my = townInfo.posy * 20
+                let aKey = mx+"_"+my
+                if (this.lightPos[aKey]) {//已经存在发光点
                     return
                 }
-    
-                let lightRefab: Node = instantiate(data);
-                // itemprefab.getComponent(Label).string = tokenId + ""
-                this.mapGroup.addChild(lightRefab);
-                lightRefab.setPosition(landx,landy)
-            })
+                this.lightPos[aKey] = mx+"_"+my
+                
+                console.log("townId=" + townId + "x=" + mx + " y=" + my);
+                resources.load("Prefab/sLight", Prefab, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        return
+                    }
+        
+                    let lightRefab: Node = instantiate(data);
+                    // itemprefab.getComponent(Label).string = tokenId + ""
+                    lightRefab.setPosition(mx,my)
+                    this.mapGroup.addChild(lightRefab);
+                })
+            }else{
+                console.log("找不到townInfo townId=" + townId);
+            }
         }else{
 
 
