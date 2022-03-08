@@ -46,6 +46,7 @@ export class MapController {
     //每个城镇的土地数据{townId:{}}
     private static townLands = {}
     private static lightPos = {}
+    private static lightPosNode = {}
 
     private static mNtfsController: NtfsController
 
@@ -504,6 +505,7 @@ export class MapController {
                         let xlightRefab: Node = instantiate(this.sLightPrefabData);
                         this.mapGroup.addChild(xlightRefab);
                         xlightRefab.setPosition(px,py)
+                        // this.lightPosNode[aKey] = xlightRefab
                     }else{
                         resources.load("Prefab/sLight", Prefab, (err, data) => {
                             if (err) {
@@ -515,6 +517,7 @@ export class MapController {
                             // itemprefab.getComponent(Label).string = tokenId + ""
                             this.mapGroup.addChild(lightRefab);
                             lightRefab.setPosition(px,py)
+                            // this.lightPosNode[aKey] = lightRefab
                         })
                     }
                 }
@@ -540,7 +543,17 @@ export class MapController {
                 
                 this.mNtfsController.updateDatas(tokenId + "",landUrl,cityInfoMap)
             })
+            
+            // let townInfo = this.worldTownsWithTownId[townId]
+            // let mx = townInfo.posx //* 38
+            // let my = townInfo.posy //* 38
+            // let aKey = mx+"_"+my
+            
+            // let lightUIPos = this.getUIPosByTownPos(mx,my)
 
+            // this.mapGroup.setPosition(lightUIPos)
+            
+            // this.move(this.mapGroup.getPosition().x + lightUIPos.x, this.mapGroup.getPosition().y + lightUIPos.y)
 
         }
     }
