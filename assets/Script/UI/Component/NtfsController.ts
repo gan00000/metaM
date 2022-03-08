@@ -15,6 +15,7 @@ export class NtfsController {
     private imgSprite: Sprite = null
 
     private closeNode: Node = null
+    private bgNode: Node = null
 
     public getNftsNode(): Node {
 
@@ -36,6 +37,9 @@ export class NtfsController {
             //this.mapInput.addChild(ntfs_prefab);
 
             let testBtn = find("TestButton", this.ntfsNode);
+            this.bgNode = find("bgNode", this.ntfsNode);
+            this.bgNode.on(Node.EventType.TOUCH_MOVE, () => {
+            })
 
             let titleLabelNode = find("titleLabel", this.ntfsNode);
             this.titleLabe = titleLabelNode.getComponent(Label);

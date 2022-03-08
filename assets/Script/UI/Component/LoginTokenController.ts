@@ -66,7 +66,7 @@ export class LoginTokenController {
         this.pursrBtn.on(Button.EventType.CLICK, () => {
             console.log("pursebtn click")
             // sys.openURL("https://metacitym.com/login/index.html?redirect=https://www.baidu.com/");
-            location.href = "https://metacitym.com/login/index.html?redirect=http://localhost:7456"
+            location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/test/map/"
         }, this)
 
 

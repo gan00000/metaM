@@ -7,6 +7,7 @@ import { MainGame } from './../MainGame';
 export class MapController {
     private static mapInput: Node = null
     private static mapGroup: Node = null
+    private static uIParent: Node = null
     private static mapTiled: TiledMap = null
 
     private static oneMapWidth: number = 6498
@@ -53,6 +54,7 @@ export class MapController {
     public static init() {
         this.mapInput = MainGame.find("MapInput")
         this.mapGroup = find("MapGroup", this.mapInput)
+        this.uIParent = MainGame.find("UIParent")
 
         this.basePosYRange = this.oneMapHeight * this.minScale
 
@@ -284,6 +286,9 @@ export class MapController {
     }
 
     private static move(deltaX: number, deltaY: number) {
+
+        console.log("deltaX,deltaY",deltaX, deltaY)
+
         let x = this.mapGroup.position.x + deltaX
         let y = this.mapGroup.position.y + deltaY
 
@@ -559,7 +564,7 @@ export class MapController {
             this.mNtfsController.init((mNode)=>{
 
                 // let xxa = this.mNtfsController.getNftsNode() 
-                this.mapInput.addChild(mNode)
+                this.uIParent.addChild(mNode)
                 
                 this.mNtfsController.updateDatas(tokenId + "",landUrl,cityInfoMap)
             })
@@ -571,9 +576,16 @@ export class MapController {
             
             // let lightUIPos = this.getUIPosByTownPos(mx,my)
 
-            // this.mapGroup.setPosition(lightUIPos)
+            // // this.mapGroup.setPosition(lightUIPos)
+
+            // let mapGroupPos = this.mapGroup.getPosition()
+            // let mapGroupScale = this.mapGroup.getScale()
             
-            // this.move(this.mapGroup.getPosition().x + lightUIPos.x, this.mapGroup.getPosition().y + lightUIPos.y)
+            // if (lightUIPos.x * mapGroupScale.x + mapGroupPos.x != 0) {
+            //     // this.mapGroup.getComponent<UITransform>(UITransform).co
+            //     this.mapGroup.setPosition(-(lightUIPos.x * mapGroupScale.x + mapGroupPos.x), mapGroupPos.y,0)
+            //     this.move(-(lightUIPos.x + mapGroupPos.x), mapGroupPos.y)
+            // }
 
         }
     }
