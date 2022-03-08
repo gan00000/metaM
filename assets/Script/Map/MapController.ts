@@ -248,24 +248,24 @@ export class MapController {
     }
 
 
-    private static getUIPosByTownPosOutV3 = null
-    private static getUIPosByTownPos(townX: number, townY: number): Vec3 {
-        if (!this.getUIPosByTownPosOutV3) {
-            this.getUIPosByTownPosOutV3 = new Vec3(0, 0, 0)
-        }
+    // private static getUIPosByTownPosOutV3 = null
+    // private static getUIPosByTownPos(townX: number, townY: number): Vec3 {
+    //     if (!this.getUIPosByTownPosOutV3) {
+    //         this.getUIPosByTownPosOutV3 = new Vec3(0, 0, 0)
+    //     }
 
-        let tileSize = this.mapTiled.getTileSize()
+    //     let tileSize = this.mapTiled.getTileSize()
 
-        let x = tileSize.x * townX
-        let y = tileSize.y * townY
+    //     let x = tileSize.x * townX
+    //     let y = tileSize.y * townY
 
-        y = this.oneMapHeight - y
+    //     y = this.oneMapHeight - y
 
-        this.getUIPosByTownPosOutV3.x = x - this.halfOneMapWidth
-        this.getUIPosByTownPosOutV3.y = y - this.halfOneMapHeight
+    //     this.getUIPosByTownPosOutV3.x = x - this.halfOneMapWidth
+    //     this.getUIPosByTownPosOutV3.y = y - this.halfOneMapHeight
 
-        return this.getUIPosByTownPosOutV3
-    }
+    //     return this.getUIPosByTownPosOutV3
+    // }
 
     private static getPosXRangeV2: Vec2 = null
     private static getPosXRange(): Vec2 {
