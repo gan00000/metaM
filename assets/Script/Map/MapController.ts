@@ -1,4 +1,5 @@
 import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset, Prefab, instantiate} from 'cc';
+import { CityInfoTipsComponent } from '../UI/Component/CityInfoTipsComponent';
 import { NtfsController } from '../UI/Component/NtfsController';
 
 import { UIController } from '../UI/UIController';
@@ -48,6 +49,8 @@ export class MapController {
     private static townLands = {}
     private static lightPos = {}
     private static lightPosNode = {}
+
+    public static mCityInfo:Node = null
 
     private static mNtfsController: NtfsController
 
@@ -364,6 +367,7 @@ export class MapController {
         let cityName = '';
         let city = this.cityInfo[townInfo[0].belong]
         console.log("city = ", city, townInfo)
+        
         if (city) {
             cityId = city.id
             if (city.level == 1) {
@@ -377,6 +381,22 @@ export class MapController {
             if (!cityName) {
                 cityName = cityId + ' City';  //二级城市没有名字，用cityId代替
             }
+
+            if (this.mCityInfo) {
+                this.mCityInfo.removeFromParent()
+                this.mCityInfo.destroy()
+                this.mCityInfo=null
+            }
+            resources.load("Prefab/CityInfo", Prefab, (err, data) => {
+                if (err) {
+                    console.log(err);
+                    return
+                }
+                this.mCityInfo = instantiate(data);
+                this.mCityInfo.getComponent(CityInfoTipsComponent).updateData("",starName,cityName,landNum + "",cityLevel)
+                this.uIParent.addChild(this.mCityInfo)
+
+            })
         }
 
         //TODO: 显示城市tips
@@ -457,21 +477,25 @@ export class MapController {
         
         let starContent = 'Titan' //"泰坦星"
         let infoConetent = land.cityid + ' City, ' + land.townid + 'Town'
+        //获取城市的名字
         let cityName = this.cityNameMap[land.cityid]
         if (cityName) {
             infoConetent = cityName + ' , ' + land.townid + 'Town'
         }
+         if (!cityName) {
+             cityName = land.cityid + ' City';  //二级城市没有名字，用cityId代替
+         }
     
         let cityLevel = '2'
-        let mCity = ""
+        // let mCity = ""
         let city = this.cityInfo[land.cityid]
         if (city) {
             if (city.level == 1) {
                 cityLevel = '1';
-                mCity = city.name + ""
+                // mCity = city.name + ""
             } else {
                 cityLevel = '2';
-                mCity = city.cityname + "City"
+                // mCity = city.cityname + "City"
             }
         }
 
@@ -502,7 +526,7 @@ export class MapController {
             ["PLANET",starContent],
             ["CITY LEVEL", cityLevel],
             ["LAND LEVEL", landLevel],
-            ["CITY", mCity],
+            ["CITY", cityName],
             ["TOWN", townId + "Town"],
             ["LAND NO",landId + ""],
             ["LAND POSX", landx + ""],
