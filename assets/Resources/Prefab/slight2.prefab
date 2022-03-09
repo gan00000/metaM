@@ -8,11 +8,12 @@
       "__id__": 1
     },
     "optimizationPolicy": 0,
-    "persistent": false
+    "persistent": false,
+    "asyncLoadAssets": false
   },
   {
     "__type__": "cc.Node",
-    "_name": "sLight",
+    "_name": "slight2",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -73,8 +74,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 80
+      "width": 100,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -85,7 +86,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "50XyV2+JJBa4YbVqvCEF2d"
+    "fileId": "fcDg5Fy89HnKg3P26iTDGk"
   },
   {
     "__type__": "cc.Sprite",
@@ -110,12 +111,12 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "0ed303dd-0a01-43bb-8abe-d5404b5dc245@f9941",
+      "__uuid__": "93eaca3d-c00c-4812-aa1a-6c7fdeabff3c@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
     "_fillType": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillCenter": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -130,7 +131,7 @@
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "7fjhQ23/RH3r0QB0HtMyjz"
+    "fileId": "4c+8LK0dpEQYMxfAdhJnHa"
   },
   {
     "__type__": "cc.Animation",
@@ -146,19 +147,19 @@
     "playOnLoad": true,
     "_clips": [
       {
-        "__uuid__": "f730ef4b-24d2-4fcd-9002-aa4795d09a4f",
+        "__uuid__": "cf626d69-de5d-4f4d-8b14-da2daaaca97f",
         "__expectedType__": "cc.AnimationClip"
       }
     ],
     "_defaultClip": {
-      "__uuid__": "f730ef4b-24d2-4fcd-9002-aa4795d09a4f",
+      "__uuid__": "cf626d69-de5d-4f4d-8b14-da2daaaca97f",
       "__expectedType__": "cc.AnimationClip"
     },
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "e4fG7fAn9HapgwBXwkADtM"
+    "fileId": "2dFicBu9RNVqBxPGZd+wUV"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -168,6 +169,6 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "19PdhocchCp54K51rH+ljv"
+    "fileId": "804dvxNshHdLYByk1hjETT"
   }
 ]

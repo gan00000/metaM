@@ -535,7 +535,7 @@ export class MapController {
                         xlightRefab.setPosition(px,py)
                         // this.lightPosNode[aKey] = xlightRefab
                     }else{
-                        resources.load("Prefab/sLight", Prefab, (err, data) => {
+                        resources.load("Prefab/slight2", Prefab, (err, data) => {
                             if (err) {
                                 console.log(err);
                                 return
