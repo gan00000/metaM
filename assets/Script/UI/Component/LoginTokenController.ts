@@ -37,7 +37,8 @@ export class LoginTokenController {
         //this.titleLabe = titleLabelNode.getComponent(Label);
 
         this.tokenIdScrollViewContentNode = find("view/content", this.tokenIdScrollView);
-        this.tipsLabelNode = find("tipsLabel", this.tokenIdScrollView);
+        // this.tipsLabelNode = find("tipsLabel", this.tokenIdScrollView);
+        this.tipsLabelNode = find("noDataTips", this.tokenIdScrollView);
         this.tipsLabelNode.active = false
 
         this.tipsLabelNode.on(Button.EventType.CLICK, () => {
