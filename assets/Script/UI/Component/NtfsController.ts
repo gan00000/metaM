@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, loader, SpriteFrame, assetManager, Asset, ImageAsset, Texture2D } from 'cc';
+import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, loader, SpriteFrame, assetManager, Asset, ImageAsset, Texture2D, UITransform } from 'cc';
 import { UIController } from '../UIController';
 const { ccclass, property } = _decorator;
 
@@ -106,6 +106,7 @@ export class NtfsController {
 
         });
 
+        let itemH = 0
         // 使用对象解析
         for (let [key, value] of landDatas) {
             console.log(key, value);
@@ -113,8 +114,13 @@ export class NtfsController {
             resources.load("Prefab/proItemNodePrefab", Prefab, (err, data) => {
                 if (err) {
                     console.log(err);
+                    return
                 }
                 let itemInfoNode: Node = instantiate(data);
+                if (itemH == 0) {
+                    itemH = itemInfoNode.getComponent(UITransform).height
+                    this.proScrollView_contentNode.getComponent(UITransform).height = itemH * landDatas.size
+                }
                 let xTitleLabel = find("itemNameLabel", itemInfoNode).getComponent(Label)
                 let xValueLabel = find("itemValueLabel", itemInfoNode).getComponent(Label)
                 xTitleLabel.string = key

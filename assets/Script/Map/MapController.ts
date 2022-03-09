@@ -463,12 +463,15 @@ export class MapController {
         }
     
         let cityLevel = '2'
+        let mCity = ""
         let city = this.cityInfo[land.cityid]
         if (city) {
             if (city.level == 1) {
                 cityLevel = '1';
+                mCity = city.name + ""
             } else {
                 cityLevel = '2';
+                mCity = city.cityname + ""
             }
         }
 
@@ -499,7 +502,7 @@ export class MapController {
             ["PLANET",starContent],
             ["CITY LEVEL", cityLevel],
             ["LAND LEVEL", landLevel],
-            ["CITY", city.id + "City"],
+            ["CITY", mCity],
             ["TOWN", townId + "Town"],
             ["LAND NO",landId + ""],
             ["LAND POSX", landx + ""],
