@@ -471,7 +471,7 @@ export class MapController {
                 mCity = city.name + ""
             } else {
                 cityLevel = '2';
-                mCity = city.cityname + ""
+                mCity = city.cityname + "City"
             }
         }
 
@@ -569,7 +569,7 @@ export class MapController {
                 // let xxa = this.mNtfsController.getNftsNode() 
                 this.uIParent.addChild(mNode)
                 
-                this.mNtfsController.updateDatas(tokenId + "",landUrl,cityInfoMap)
+                this.mNtfsController.updateDatas("TokenID:"+tokenId,landUrl,cityInfoMap)
             })
             
             // let townInfo = this.worldTownsWithTownId[townId]
