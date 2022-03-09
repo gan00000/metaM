@@ -40,6 +40,10 @@ export class LoginTokenController {
         this.tipsLabelNode = find("tipsLabel", this.tokenIdScrollView);
         this.tipsLabelNode.active = false
 
+        this.tipsLabelNode.on(Button.EventType.CLICK, () => {
+            sys.openURL("https://metacitym.com/")//https://metacitym.com/
+        }, this);
+
         var aaa = 0;
         this.buylandBtn.on(Button.EventType.CLICK, () => {
 
@@ -51,7 +55,8 @@ export class LoginTokenController {
         this.ntfStartBtn.on(Button.EventType.CLICK, () => {
 
             if (!MainGame.isLogin()) {
-                alert("请先登录")
+                // alert("请先登录")
+                location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/test/map/"
                 return
             }
 
