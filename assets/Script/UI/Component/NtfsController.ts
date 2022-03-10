@@ -4,7 +4,7 @@ import { UIController } from '../UIController';
 const { ccclass, property } = _decorator;
 
 @ccclass('NtfsController')
-export class NtfsController {
+export class NtfsController extends Component {
 
     public titleLabe: Label = null;
 
@@ -17,80 +17,86 @@ export class NtfsController {
     private closeNode: Node = null
     private bgNode: Node = null
 
-    public getNftsNode(): Node {
+    private tokenId: string = null
+    private imageUrl: string = null
+    private landDatas: Map<string, string>  = null
 
-        return this.ntfsNode
-    }
+    start () {
 
-    public init(calllback:Function) {
-        // [3]
-
-        // UIController.create("nfts_bg", false, (node) => {
-
-        //     this.ntfsNode = node;
-            // })
-        resources.load("Prefab/nfts_bg",Prefab,(err,data)=>{
-            if (err) {
-                console.log(err);
-            }
-            this.ntfsNode = instantiate(data);
-            //this.mapInput.addChild(ntfs_prefab);
-
-            let testBtn = find("TestButton", this.ntfsNode);
-            this.bgNode = find("bgNode", this.ntfsNode);
-            this.bgNode.on(Node.EventType.TOUCH_MOVE, () => {
-            })
-
-            let titleLabelNode = find("titleLabel", this.ntfsNode);
-            this.titleLabe = titleLabelNode.getComponent(Label);
-            this.closeNode = find("closeButton", this.ntfsNode);
-            this.imgSprite = find("nfts_img_Sprite", this.ntfsNode).getComponent(Sprite);
-
-            this.proScrollView = find("proScrollView", this.ntfsNode);
-            this.proScrollView_contentNode = find("view/content", this.proScrollView);
-
-            //测试用
-            testBtn.on(Button.EventType.CLICK, () => {
-
-                resources.load("Prefab/proItemNodePrefab", Prefab, (err, data) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                    let prefab: Node = instantiate(data);
-                    this.proScrollView_contentNode.addChild(prefab);
-                })
-
-            }, this);
-            //=====
-
-            this.closeNode.on(Button.EventType.CLICK, () => {
-
-                if (this.ntfsNode) {
-                     //UIController.recycle(this.ntfsNode);
-                    this.ntfsNode.removeFromParent()
-                    this.ntfsNode.destroy()
-                }
-               
-            }, this)
-
-            calllback(this.ntfsNode)
+        this.ntfsNode = this.node
+        let testBtn = find("TestButton", this.ntfsNode);
+        this.bgNode = find("bgNode", this.ntfsNode);
+        this.bgNode.on(Node.EventType.TOUCH_MOVE, () => {
         })
 
+        let titleLabelNode = find("titleLabel", this.ntfsNode);
+        this.titleLabe = titleLabelNode.getComponent(Label);
+        this.closeNode = find("closeButton", this.ntfsNode);
+        this.imgSprite = find("nfts_img_Sprite", this.ntfsNode).getComponent(Sprite);
+
+        this.proScrollView = find("proScrollView", this.ntfsNode);
+        this.proScrollView_contentNode = find("view/content", this.proScrollView);
+
+        //测试用
+        testBtn.on(Button.EventType.CLICK, () => {
+
+            resources.load("Prefab/proItemNodePrefab", Prefab, (err, data) => {
+                if (err) {
+                    console.log(err);
+                }
+                let prefab: Node = instantiate(data);
+                this.proScrollView_contentNode.addChild(prefab);
+            })
+
+        }, this);
+        //=====
+
+        this.closeNode.on(Button.EventType.CLICK, () => {
+
+            if (this.node) {
+                    //UIController.recycle(this.ntfsNode);
+                this.node.removeFromParent()
+                this.node.destroy()
+            }
+            
+        }, this)
+
+        this.updateDatas(this.tokenId, this.imageUrl, this.landDatas)
     }
 
+    // public init(calllback:Function) {
+    //     // [3]
 
-    /**
-     * addToParent
-     */
-    public addToParent(parent: Node) {
+    //     // UIController.create("nfts_bg", false, (node) => {
 
-    }
+    //     //     this.ntfsNode = node;
+    //         // })
+    //     resources.load("Prefab/nfts_bg",Prefab,(err,data)=>{
+    //         if (err) {
+    //             console.log(err);
+    //         }
+    //         this.ntfsNode = instantiate(data);
+    //         //this.mapInput.addChild(ntfs_prefab);
 
+            
+
+    //         calllback(this.ntfsNode)
+    //     })
+
+    // }
 
     /**
      * updateDatastokenId:S
      */
     public updateDatas(tokenId: string, imageUrl: string, landDatas: Map<string, string>) {
+
+        this.tokenId = tokenId
+        this.imageUrl = imageUrl
+        this.landDatas = landDatas
+
+        if (!this.ntfsNode) {
+            return
+        }
 
         this.titleLabe.string = tokenId
         let comtroller = this;

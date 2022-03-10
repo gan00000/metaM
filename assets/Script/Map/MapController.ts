@@ -53,7 +53,7 @@ export class MapController {
 
     public static mCityInfo:Node = null
 
-    private static mNtfsController: NtfsController
+    private static mNtfsControllerNode: Node = null
 
     public static init() {
         this.mapInput = MainGame.find("MapInput")
@@ -545,25 +545,23 @@ export class MapController {
             
         }else{
 
-
-            if (this.mNtfsController) {
-                let xNode:Node = this.mNtfsController.getNftsNode()
-                if (xNode) {
-                    xNode.removeFromParent()
-                    xNode.destroy()
-                }
-                this.mNtfsController = null
+            if (this.mNtfsControllerNode) {
+                this.mNtfsControllerNode.removeFromParent()
+                this.mNtfsControllerNode.destroy()
+                this.mNtfsControllerNode=null
             }
-            
-            this.mNtfsController = new NtfsController()
-            this.mNtfsController.init((mNode)=>{
+            resources.load("Prefab/nfts_bg", Prefab, (err, data) => {
+                if (err) {
+                    console.log(err);
+                    return
+                }
+                this.mNtfsControllerNode = instantiate(data);
+                this.mNtfsControllerNode.getComponent(NtfsController).updateDatas("TokenID:"+tokenId,landUrl,cityInfoMap)
+                this.uIParent.addChild(this.mNtfsControllerNode)
 
-                // let xxa = this.mNtfsController.getNftsNode() 
-                this.uIParent.addChild(mNode)
-                
-                this.mNtfsController.updateDatas("TokenID:"+tokenId,landUrl,cityInfoMap)
+                // this.mNtfsController.updateDatas("TokenID:"+tokenId,landUrl,cityInfoMap)
             })
-            
+    
             // let townInfo = this.worldTownsWithTownId[townId]
             // let mx = townInfo.posx //* 38
             // let my = townInfo.posy //* 38
