@@ -397,7 +397,7 @@ export class MapController {
                     return
                 }
                 this.mCityInfo = instantiate(data);
-                this.mCityInfo.getComponent(CityInfoTipsComponent).updateData("",starName,cityName,landNum + "",cityLevel)
+                this.mCityInfo.getComponent(CityInfoTipsComponent).updateData("",starName,cityName,landNum + "",cityLevel,city.level)
                 this.uIParent.addChild(this.mCityInfo)
 
             })
