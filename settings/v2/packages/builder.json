@@ -1,0 +1,13 @@
+{
+  "splash-setting": {
+    "url": "/Users/gan/Downloads/aaaaa.gif",
+    "displayWatermark": false,
+    "totalTime": 1000,
+    "clearColor": {
+      "x": 1,
+      "y": 0.984313725490196,
+      "z": 1,
+      "w": 1
+    }
+  }
+}

@@ -582,9 +582,11 @@ export class MapController {
 
             if (this.mNtfsController) {
                 let xNode:Node = this.mNtfsController.getNftsNode()
-                xNode.removeFromParent()
-                xNode.destroy()
-                
+                if (xNode) {
+                    xNode.removeFromParent()
+                    xNode.destroy()
+                }
+                this.mNtfsController = null
             }
             
             this.mNtfsController = new NtfsController()

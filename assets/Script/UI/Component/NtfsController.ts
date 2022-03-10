@@ -65,10 +65,12 @@ export class NtfsController {
 
             this.closeNode.on(Button.EventType.CLICK, () => {
 
-                //UIController.recycle(this.ntfsNode);
-                this.ntfsNode.removeFromParent()
-                this.ntfsNode.destroy()
-
+                if (this.ntfsNode) {
+                     //UIController.recycle(this.ntfsNode);
+                    this.ntfsNode.removeFromParent()
+                    this.ntfsNode.destroy()
+                }
+               
             }, this)
 
             calllback(this.ntfsNode)
@@ -106,7 +108,7 @@ export class NtfsController {
 
         });
 
-        let itemH = 0
+        // let itemH = 0
         // 使用对象解析
         for (let [key, value] of landDatas) {
             console.log(key, value);
@@ -117,10 +119,10 @@ export class NtfsController {
                     return
                 }
                 let itemInfoNode: Node = instantiate(data);
-                if (itemH == 0) {
-                    itemH = itemInfoNode.getComponent(UITransform).height
-                    this.proScrollView_contentNode.getComponent(UITransform).height = itemH * landDatas.size
-                }
+                // if (itemH == 0) {
+                //     itemH = itemInfoNode.getComponent(UITransform).height
+                //     this.proScrollView_contentNode.getComponent(UITransform).height = itemH * (landDatas.size / 3 + 1) + landDatas.size / 3 * 10
+                // }
                 let xTitleLabel = find("itemNameLabel", itemInfoNode).getComponent(Label)
                 let xValueLabel = find("itemValueLabel", itemInfoNode).getComponent(Label)
                 xTitleLabel.string = key
