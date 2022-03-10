@@ -568,7 +568,7 @@ export class MapController {
                             let lightRefab: Node = instantiate(data);
                             // itemprefab.getComponent(Label).string = tokenId + ""
                             this.mapGroup.addChild(lightRefab);
-                            if (cityLevel == "1") {
+                            if (cityLevel == "1") {//不同等级偏移量不一样
                                 lightRefab.setPosition(px+ 40,py)
                             } else {
                                 lightRefab.setPosition(px+ 20,py - 20)
