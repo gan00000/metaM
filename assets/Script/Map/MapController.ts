@@ -37,6 +37,7 @@ export class MapController {
     //每个城镇数据 （x_y:townlistinfo）
     private static worldTowns = {}
     private static worldTownsWithTownId = {}
+    private static allWorldTownId = []
     //城市对应城镇数据
     private static belongTowns = {}
     //城市信息
@@ -84,6 +85,7 @@ export class MapController {
                 this.worldTowns[key] = tmp
 
                 this.worldTownsWithTownId[townInfo.id + ""] = townInfo
+                this.allWorldTownId.push(townInfo.id + "")
 
                 let belongTmp = []
                 if (this.belongTowns[townInfo.belong]) {
@@ -519,7 +521,7 @@ export class MapController {
         let landSize = "40*30"
 
         //TODO: 显示土地tips
-        console.log("hello land:", starContent, landName, infoConetent, cityLevel, landId, landLevel, landPos, landUrl)
+        console.log("hello land:townId,cityid,cityName,cityLevel,landId,landLevel,landPos,landUrl=", townId, land.cityid, cityName, cityLevel, landId, landLevel, landPos, landUrl)
         // 'PLANET', 'CITY LEVEL', 'LAND LEVEL', 'CITY', 'TOWN',
         //  'LAND NO', 'LAND POSX', 'LAND POSY', 'LAND SIZE', 'LAND NAME'
         let cityInfoMap = new Map([
@@ -537,51 +539,8 @@ export class MapController {
         
         if (addNodeToMap) {
             
-            if (this.worldTownsWithTownId[townId]) {
-                let townInfo = this.worldTownsWithTownId[townId]
-                let mx = townInfo.posx //* 38
-                let my = townInfo.posy //* 38
-                let aKey = mx+"_"+my
-                if (this.lightPos[aKey]) {//已经存在发光点
-                    return
-                }
-                this.lightPos[aKey] = mx+"_"+my
-                console.log("townId=" + townId + "x=" + mx + " y=" + my);
-                
-                let lightUIPos = this.getUIPosByTownPos(mx,my)
-                for (let index = -1; index <= 1; index++) {
-                    
-                    let px = lightUIPos.x + index * this.oneMapWidth
-                    let py = lightUIPos.y
-                    if (this.sLightPrefabData) {
-                        let xlightRefab: Node = instantiate(this.sLightPrefabData);
-                        this.mapGroup.addChild(xlightRefab);
-                        xlightRefab.setPosition(px,py)
-                        // this.lightPosNode[aKey] = xlightRefab
-                    }else{
-                        resources.load("Prefab/slight2", Prefab, (err, data) => {
-                            if (err) {
-                                console.log(err);
-                                return
-                            }
-                
-                            let lightRefab: Node = instantiate(data);
-                            // itemprefab.getComponent(Label).string = tokenId + ""
-                            this.mapGroup.addChild(lightRefab);
-                            if (cityLevel == "1") {//不同等级偏移量不一样
-                                lightRefab.setPosition(px+ 40,py)
-                            } else {
-                                lightRefab.setPosition(px+ 20,py - 20)
-                            }
-                            // lightRefab.setPosition(px+ 40,py)
-                            // this.lightPosNode[aKey] = lightRefab
-                        })
-                    }
-                }
-                
-            }else{
-                console.log("找不到townInfo townId=" + townId);
-            }
+            this.createLightNode(townId,city)
+            
         }else{
 
 
@@ -624,7 +583,68 @@ export class MapController {
         }
     }
 
+    private static createLightNode(townId:number, city:any){
 
+        if (this.worldTownsWithTownId[townId]) {
+            let townInfo = this.worldTownsWithTownId[townId]
+            let mx = townInfo.posx //* 38
+            let my = townInfo.posy //* 38
+            let aKey = mx+"_"+my
+            if (this.lightPos[aKey]) {//已经存在发光点
+                return
+            }
+            this.lightPos[aKey] = mx+"_"+my
+            // console.log("townId=" + townId + "x=" + mx + " y=" + my);
+            
+            let lightUIPos = this.getUIPosByTownPos(mx,my)
+            for (let index = -1; index <= 1; index++) {
+                
+                let px = lightUIPos.x + index * this.oneMapWidth
+                let py = lightUIPos.y
+                if (this.sLightPrefabData) {
+                    let xlightRefab: Node = instantiate(this.sLightPrefabData);
+                    this.mapGroup.addChild(xlightRefab);
+                    xlightRefab.setPosition(px,py)
+                    // this.lightPosNode[aKey] = xlightRefab
+                }else{
+                    resources.load("Prefab/slight2", Prefab, (err, data) => {
+                        if (err) {
+                            console.log(err);
+                            return
+                        }
+            
+                        let lightRefab: Node = instantiate(data);
+                        // itemprefab.getComponent(Label).string = tokenId + ""
+                        this.mapGroup.addChild(lightRefab);
+                        if (city.cityLevel == "1") {//不同等级偏移量不一样
+                            lightRefab.setPosition(px+ 40,py)
+                        } else {
+                            lightRefab.setPosition(px+ 20,py - 20)
+                        }
+                        // lightRefab.setPosition(px+ 40,py)
+                        // this.lightPosNode[aKey] = lightRefab
+                    })
+                }
+            }
+            
+        }else{
+            console.log("找不到townInfo townId=" + townId);
+        }
+        
+    }
+
+    /**
+     * name
+     */
+    public static testCreateAllLight() {
+        if (this.worldTownsWithTownId) {
+            
+            // for (let index = 0; index < this.allWorldTownId.length; index++) {
+            //     const townInfo = this.allWorldTownId[index];
+            //     let xTownId = this.worldTownsWithTownId[townInfo].
+            // }
+        }
+    }
     // private static getUIPosByTownPosOutV3 = null
     private static getUIPosByTownPos(townX: number, townY: number): Vec3 {
         // if (!this.getUIPosByTownPosOutV3) {
