@@ -21,11 +21,11 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 127
+      "__id__": 129
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 131
+      "__id__": 133
     },
     "_id": "a34bf2ff-9fd3-40cd-b8a5-170e7312bf84"
   },
@@ -50,16 +50,16 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 123
-      },
-      {
-        "__id__": 124
-      },
-      {
         "__id__": 125
       },
       {
         "__id__": 126
+      },
+      {
+        "__id__": 127
+      },
+      {
+        "__id__": 128
       }
     ],
     "_prefab": null,
@@ -398,10 +398,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 121
+        "__id__": 123
       },
       {
-        "__id__": 122
+        "__id__": 124
       }
     ],
     "_prefab": null,
@@ -625,6 +625,9 @@
       },
       {
         "__id__": 120
+      },
+      {
+        "__id__": 121
       }
     ],
     "removedComponents": []
@@ -1223,7 +1226,7 @@
     "value": {
       "__type__": "cc.Size",
       "width": 108,
-      "height": 311.901
+      "height": 191.839
     }
   },
   {
@@ -1866,6 +1869,22 @@
     "value": false
   },
   {
+    "__type__": "CCPropertyOverrideInfo",
+    "targetInfo": {
+      "__id__": 122
+    },
+    "propertyPath": [
+      "_bottom"
+    ],
+    "value": 0
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "e71eX3E7JAcbK+5dJKfU4f"
+    ]
+  },
+  {
     "__type__": "cc.UITransform",
     "_name": "",
     "_objFlags": 0,
@@ -1996,7 +2015,7 @@
     "fileId": "a34bf2ff-9fd3-40cd-b8a5-170e7312bf84",
     "targetOverrides": [
       {
-        "__id__": 128
+        "__id__": 130
       }
     ],
     "nestedPrefabInstanceRoots": [
@@ -2014,7 +2033,7 @@
       "__id__": 17
     },
     "sourceInfo": {
-      "__id__": 129
+      "__id__": 131
     },
     "propertyPath": [
       "_target"
@@ -2023,7 +2042,7 @@
       "__id__": 17
     },
     "targetInfo": {
-      "__id__": 130
+      "__id__": 132
     }
   },
   {
@@ -2041,19 +2060,19 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 132
-    },
-    "shadows": {
-      "__id__": 133
-    },
-    "_skybox": {
       "__id__": 134
     },
-    "fog": {
+    "shadows": {
       "__id__": 135
     },
-    "octree": {
+    "_skybox": {
       "__id__": 136
+    },
+    "fog": {
+      "__id__": 137
+    },
+    "octree": {
+      "__id__": 138
     }
   },
   {
