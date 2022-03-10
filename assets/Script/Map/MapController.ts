@@ -181,7 +181,9 @@ export class MapController {
                 this.lastTouchPos2.y = curY2
             }
 
-            this.isDrag = true
+            if(Math.abs(event.getDeltaX()) >= 1 || Math.abs(event.getDeltaY()) >= 1){
+                this.isDrag = true
+            }
         })
 
         input.on(Input.EventType.MOUSE_WHEEL, (event: EventMouse) => {
