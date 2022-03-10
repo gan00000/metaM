@@ -591,6 +591,16 @@ export class MapController {
             let townInfo = this.worldTownsWithTownId[townId]
             let mx = townInfo.posx //* 38
             let my = townInfo.posy //* 38
+            let cityLevel = city.level
+            if (city.level == 1) {
+                let firstTownInfo = this.belongTowns[townInfo.belong][0]
+                if (firstTownInfo) {
+                    mx = firstTownInfo.posx
+                    my = firstTownInfo.posy
+                }
+               
+            } 
+            
             let aKey = mx+"_"+my
             if (this.lightPos[aKey]) {//已经存在发光点
                 return
@@ -618,12 +628,12 @@ export class MapController {
                         let lightRefab: Node = instantiate(data);
                         // itemprefab.getComponent(Label).string = tokenId + ""
                         this.mapGroup.addChild(lightRefab);
-                        if (city.cityLevel == "1") {//不同等级偏移量不一样
-                            lightRefab.setPosition(px+ 40,py)
+                        if (cityLevel == 1) {//不同等级偏移量不一样
+                            lightRefab.setPosition(px+ 40,py -40)
                         } else {
                             lightRefab.setPosition(px+ 20,py - 20)
                         }
-                        // lightRefab.setPosition(px+ 40,py)
+                        // lightRefab.setPosition(px,py)
                         // this.lightPosNode[aKey] = lightRefab
                     })
                 }
