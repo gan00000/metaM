@@ -43,6 +43,29 @@ export class CUtil {
         xhr.send();
     }
 
+    public static loadRequest(url:string, callback:Function) {
+        let xhr = new XMLHttpRequest();
+        
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)) {
+                var response = xhr.response;
+                console.log("loadRequest response:" + response);
+                callback(response)
+                return
+            }
+            callback(null)
+        };
+        xhr.open("GET", url, true);
+        xhr.withCredentials = true
+        // xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost:7456/")
+        // xhr.setRequestHeader("Authorization", "true");
+        // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+        // xhr.setRequestHeader("Origin","http://localhost:7456")
+        // xhr.setRequestHeader("origin","http://localhost:7456")
+        
+        xhr.send();
+    }
+
     public static httpPostPequest(url:string, callback:Function) {
          // 使用post方式, 发送请求
 

@@ -1,5 +1,6 @@
 
 import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, loader, SpriteFrame, assetManager, Asset, ImageAsset, Texture2D, UITransform } from 'cc';
+import { CUtil } from '../../Utils/CUtil';
 import { UIController } from '../UIController';
 const { ccclass, property } = _decorator;
 
@@ -90,6 +91,16 @@ export class NtfsController extends Component {
      */
     public updateDatas(tokenId: string, imageUrl: string, landDatas: Map<string, string>) {
 
+        // if (imageUrl.startsWith("https://")) {
+        //     imageUrl = imageUrl.replace("https://","http://")
+        // }
+
+        // if (imageUrl.endsWith(".jpg")) {
+        //     imageUrl = imageUrl.replace(".jpg",".png")
+        // }
+        // imageUrl = imageUrl.replace("https://static-download2.metacitym.com/","https://static-src.metacitym.com/")
+        // imageUrl = imageUrl + "?" + Date.parse(new Date().toString()) 
+        console.log("imageUrl=",imageUrl)
         this.tokenId = tokenId
         this.imageUrl = imageUrl
         this.landDatas = landDatas
@@ -100,17 +111,23 @@ export class NtfsController extends Component {
 
         this.titleLabe.string = tokenId
         let comtroller = this;
-        assetManager.loadRemote<ImageAsset>(imageUrl, function (err, imageAsset) {
+
+        assetManager.loadRemote<ImageAsset>(imageUrl, {xhrWithCredentials:true}, function (err, imageAsset) {
             if (err) {
                 console.log(err)
                 return
             }
-
-            const spriteFrame = new SpriteFrame();
-            const texture = new Texture2D();
-            texture.image = imageAsset;
-            spriteFrame.texture = texture;
-            comtroller.imgSprite.spriteFrame = spriteFrame
+            if (imageAsset) {
+                
+                const spriteFrame = new SpriteFrame();
+                const texture = new Texture2D();
+                texture.image = imageAsset;
+                spriteFrame.texture = texture;
+                if (spriteFrame) {
+                    comtroller.imgSprite.spriteFrame = spriteFrame
+                }
+                
+            }
 
         });
 
