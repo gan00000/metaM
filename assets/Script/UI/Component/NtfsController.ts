@@ -56,7 +56,8 @@ export class NtfsController extends Component {
 
             if (this.node) {
                     //UIController.recycle(this.ntfsNode);
-                this.node.removeFromParent()
+                this.node.getParent().removeFromParent()
+                // this.node.removeFromParent()
                 this.node.destroy()
             }
             
@@ -123,7 +124,7 @@ export class NtfsController extends Component {
                 const texture = new Texture2D();
                 texture.image = imageAsset;
                 spriteFrame.texture = texture;
-                if (spriteFrame) {
+                if (spriteFrame && comtroller && comtroller.imgSprite && comtroller.imgSprite.spriteFrame) {
                     comtroller.imgSprite.spriteFrame = spriteFrame
                 }
                 

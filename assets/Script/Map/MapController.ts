@@ -48,8 +48,11 @@ export class MapController {
     private static saledLandData = {}
     //每个城镇的土地数据{townId:{}}
     private static townLands = {}
-    private static lightPos = {}
+    private static lightTownPosTag = {}
     private static lightPosNode = {}
+    //发光点对应的townId:{}坐标
+    private static lightPosWithTokenId = {}
+    private static lightPosWithLightNode = {}
 
     public static mCityInfo:Node = null
 
@@ -218,7 +221,7 @@ export class MapController {
         }
 
         // 计算出最大最小Pos Y
-        let range = (this.mapGroup.scale.x * this.oneMapHeight - this.basePosYRange) / 2
+        let range = (this.mapGroup.scale.x * this.oneMapHeight * 3 - this.basePosYRange) / 2
 
         if (range <= 0) {
             this.getPosYRangeV2.x = 0
@@ -322,7 +325,7 @@ export class MapController {
 
         this.scaleInV3.x = uiPosX
         this.scaleInV3.y = uiPosY
-
+        
         this.mapGroup.getComponent<UITransform>(UITransform).convertToNodeSpaceAR(this.scaleInV3, this.scaleOutV3)
 
         let oldScale = this.mapGroup.scale.x
@@ -541,49 +544,44 @@ export class MapController {
         
         if (addNodeToMap) {
             
-            this.createLightNode(townId,city)
+            this.createLightNode(tokenId,townId,city)
             
         }else{
 
-            if (this.mNtfsControllerNode) {
-                this.mNtfsControllerNode.removeFromParent()
-                this.mNtfsControllerNode.destroy()
-                this.mNtfsControllerNode=null
-            }
-            resources.load("Prefab/nfts_bg", Prefab, (err, data) => {
-                if (err) {
-                    console.log(err);
-                    return
+            let lightUIPos = this.lightPosWithTokenId[tokenId]
+            console.log("lightUIPos Position x,y=",lightUIPos.x,lightUIPos.y)
+            if (lightUIPos) {
+                
+                let mapGroupPos = this.mapGroup.getPosition()
+                let mapGroupScale = this.mapGroup.getScale()
+
+                let lightNode:Node = this.lightPosWithLightNode[lightUIPos.x+"_"+lightUIPos.y]
+                // console.log("lightNode Position x,y=",lightNode.getPosition().x,lightNode.getPosition().y)
+
+                this.move(-(lightNode.getPosition().x * mapGroupScale.x + mapGroupPos.x),-(lightNode.getPosition().y * mapGroupScale.y + mapGroupPos.y))
+                
+                if (this.mNtfsControllerNode) {
+                    this.mNtfsControllerNode.removeFromParent()
+                    this.mNtfsControllerNode.destroy()
+                    this.mNtfsControllerNode=null
                 }
-                this.mNtfsControllerNode = instantiate(data);
-                this.mNtfsControllerNode.getComponent(NtfsController).updateDatas("TokenID:"+tokenId,landUrl,cityInfoMap)
-                this.uIParent.addChild(this.mNtfsControllerNode)
-
-                // this.mNtfsController.updateDatas("TokenID:"+tokenId,landUrl,cityInfoMap)
-            })
-    
-            // let townInfo = this.worldTownsWithTownId[townId]
-            // let mx = townInfo.posx //* 38
-            // let my = townInfo.posy //* 38
-            // let aKey = mx+"_"+my
-            
-            // let lightUIPos = this.getUIPosByTownPos(mx,my)
-
-            // // this.mapGroup.setPosition(lightUIPos)
-
-            // let mapGroupPos = this.mapGroup.getPosition()
-            // let mapGroupScale = this.mapGroup.getScale()
-            
-            // if (lightUIPos.x * mapGroupScale.x + mapGroupPos.x != 0) {
-            //     // this.mapGroup.getComponent<UITransform>(UITransform).co
-            //     this.mapGroup.setPosition(-(lightUIPos.x * mapGroupScale.x + mapGroupPos.x), mapGroupPos.y,0)
-            //     this.move(-(lightUIPos.x + mapGroupPos.x), mapGroupPos.y)
-            // }
-
+                resources.load("Prefab/landTipsNode", Prefab, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        return
+                    }
+                    this.mNtfsControllerNode = instantiate(data);
+                    this.mNtfsControllerNode.getChildByName("nfts_bg").getComponent(NtfsController).updateDatas("TokenID:"+tokenId,landUrl,cityInfoMap)
+                    this.uIParent.addChild(this.mNtfsControllerNode)
+                    this.mNtfsControllerNode.setPosition(34 * this.mapGroup.scale.x, -16 * this.mapGroup.scale.y)
+                    // this.mNtfsController.updateDatas("TokenID:"+tokenId,landUrl,cityInfoMap)
+                })
+        
+            }
         }
     }
 
-    private static createLightNode(townId:number, city:any){
+    private static createLightNode(tokenId:number, townId:number, city:any){
 
         if (this.worldTownsWithTownId[townId]) {
             let townInfo = this.worldTownsWithTownId[townId]
@@ -599,14 +597,16 @@ export class MapController {
                
             } 
             
+            let lightUIPos = this.getUIPosByTownPos(mx,my)
+            this.lightPosWithTokenId[tokenId] = lightUIPos
+
             let aKey = mx+"_"+my
-            if (this.lightPos[aKey]) {//已经存在发光点
+            if (this.lightTownPosTag[aKey]) {//已经存在发光点
                 return
             }
-            this.lightPos[aKey] = mx+"_"+my
+            this.lightTownPosTag[aKey] = mx+"_"+my
             // console.log("townId=" + townId + "x=" + mx + " y=" + my);
             
-            let lightUIPos = this.getUIPosByTownPos(mx,my)
             for (let index = -1; index <= 1; index++) {
                 
                 let px = lightUIPos.x + index * this.oneMapWidth
@@ -615,6 +615,7 @@ export class MapController {
                     let xlightRefab: Node = instantiate(this.sLightPrefabData);
                     this.mapGroup.addChild(xlightRefab);
                     xlightRefab.setPosition(px,py)
+                    this.lightPosWithLightNode[px + "_" + py] = xlightRefab
                     // this.lightPosNode[aKey] = xlightRefab
                 }else{
                     resources.load("Prefab/slight2", Prefab, (err, data) => {
@@ -631,6 +632,7 @@ export class MapController {
                         } else {
                             lightRefab.setPosition(px+ 20,py - 20)
                         }
+                        this.lightPosWithLightNode[px + "_" + py] = lightRefab
                         // lightRefab.setPosition(px,py)
                         // this.lightPosNode[aKey] = lightRefab
                     })
