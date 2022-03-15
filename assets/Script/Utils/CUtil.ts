@@ -26,7 +26,7 @@ export class CUtil {
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)) {
                 var response = xhr.responseText;
-                console.log("http response:" + response);
+                // console.log("http response:" + response);
                 callback(response)
                 return
             }

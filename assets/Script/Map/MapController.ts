@@ -56,7 +56,7 @@ export class MapController {
 
     public static mCityInfo:Node = null
 
-    private static mNtfsControllerNode: Node = null
+    public static mNtfsControllerNode: Node = null
 
     public static init() {
         this.mapInput = MainGame.find("MapInput")
@@ -164,6 +164,10 @@ export class MapController {
             let touches = event.getAllTouches()
             let touchCount = touches.length
 
+            if (!this.canMove()) {
+                return
+            }
+
             if (touchCount == 1) {
                 this.move(event.getDeltaX(), event.getDeltaY())
             } else if (touchCount == 2) {
@@ -192,6 +196,9 @@ export class MapController {
         })
 
         input.on(Input.EventType.MOUSE_WHEEL, (event: EventMouse) => {
+            if (!this.canScale()) {
+                return
+            }
             this.scale(this.mouseWheelRate * event.getScrollY(), event.getUILocationX(), event.getUILocationY())
         })
 
@@ -676,4 +683,20 @@ export class MapController {
         return getUIPosByTownPosOutV3
     }
    
+    private static canMove() {
+        if (this.mNtfsControllerNode && this.mNtfsControllerNode.getParent()) {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    private static canScale() {
+        if (this.mNtfsControllerNode && this.mNtfsControllerNode.getParent()) {
+            return false
+        } else {
+            return true
+        }
+    }
+
 }

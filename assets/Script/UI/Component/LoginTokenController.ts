@@ -195,7 +195,7 @@ export class LoginTokenController {
                     this.createTokenIdView()
                 }
             
-                console.log("解析完成")
+                console.log("解析完成 key=" + pageKey)
             }
             
         })

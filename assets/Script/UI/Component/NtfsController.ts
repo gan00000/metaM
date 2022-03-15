@@ -1,5 +1,6 @@
 
 import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, loader, SpriteFrame, assetManager, Asset, ImageAsset, Texture2D, UITransform } from 'cc';
+import { MapController } from '../../Map/MapController';
 import { CUtil } from '../../Utils/CUtil';
 import { UIController } from '../UIController';
 const { ccclass, property } = _decorator;
@@ -57,8 +58,10 @@ export class NtfsController extends Component {
             if (this.node) {
                     //UIController.recycle(this.ntfsNode);
                 this.node.getParent().removeFromParent()
+
                 // this.node.removeFromParent()
-                this.node.destroy()
+                this.node.getParent().destroy()
+                MapController.mNtfsControllerNode = null
             }
             
         }, this)
