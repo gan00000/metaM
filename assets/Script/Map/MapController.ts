@@ -146,11 +146,12 @@ export class MapController {
             console.log("this.landData = ", this.saledLandData);
         })
 
-        resources.load('Json/lisaHomeData/lisaData', (err, lisaData: any) => {
-            console.log("err, data = ", err, lisaData)
+        resources.load('Json/lisaHomeData/lisaData', (err, data: any) => {
+            console.log("err, data = ", err, data)
             if (err) {
                 return
             }
+            let lisaData = data.json
             for(let i = 0; i < lisaData.length; i++) {
                 let data = lisaData[i]
                 this.lisaData[data.cityId] = data;
@@ -480,7 +481,7 @@ export class MapController {
         // }
         // let townId = townInfo.id;
         let townId = landdata.townid
-        console.log("land data townId,tokenId", townId,tokenId);
+        // console.log("land data townId,tokenId", townId,tokenId);
         //加载该城镇土地数据
         let townLandMap = this.townLands[townId];
         if (!townLandMap) {
@@ -511,7 +512,7 @@ export class MapController {
 
     //根据某个城镇的土地坐标显示土地tips
     private static showLandTips(tokenId: number, townId: number, landx: number, landy: number, isLight:boolean) {
-        console.log("townId, x, y =", townId, landx, landy);
+        // console.log("townId, x, y =", townId, landx, landy);
         let townLandMap = this.townLands[townId];
         if(!townLandMap) {
             console.log("not found the town lands ", townId);

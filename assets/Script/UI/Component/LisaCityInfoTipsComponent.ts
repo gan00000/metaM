@@ -43,14 +43,30 @@ export class LisaCityInfoTipsComponent extends Component{
 
             for (let [key, value] of this.infoData) {
                 let itemNode = instantiate(data);
-                itemNode.getComponent(RichText).string = this.getRichString(key+": ", value)
+                let xxxText = find("xxRichText",itemNode)
+                xxxText.getComponent(RichText).string = this.getRichString(key+": ", value)
                 this.cityHomeScrollViewContent.addChild(itemNode)
             }
 
         })
 
-        if (this.cityLevel == 2) {
+        if (this.cityLevel == 1) {
             
+            resources.load("Texture/CityLevel_1_bg", SpriteFrame, (err, spriteFrame) => {
+                
+                if (err) {
+                    console.log(err);
+                    return
+                }
+
+                // if (nTexture2D) {
+                //     const spriteFrame = new SpriteFrame();
+                //     spriteFrame.texture = nTexture2D;
+                //     this.homeCityBg.getComponent(Sprite).spriteFrame = spriteFrame
+                // }
+
+                this.homeCityBg.getComponent(Sprite).spriteFrame = spriteFrame
+            })
      
         }else{
             
