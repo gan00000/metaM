@@ -16,7 +16,7 @@ export class CityInfoTipsComponent extends Component{
     public cityGradeText: Node = null;
     public closeButton: Node = null;
     public cityBgNode: Node = null;
-    public cityLevel2BgNode: Node = null;
+    // public cityLevel2BgNode: Node = null;
 
     private mParent: Node = null
 
@@ -39,7 +39,7 @@ export class CityInfoTipsComponent extends Component{
         this.cityGradeText = find("city_info/CityGradeRichText", this.mParent);
         this.closeButton = find("btn_close", this.mParent);
         this.cityBgNode = find("land_bg/cityBg", this.mParent);
-        this.cityLevel2BgNode = find("land_bg/cityLevel2Bg", this.mParent);
+        // this.cityLevel2BgNode = find("land_bg/cityLevel2Bg", this.mParent);
 
         // this.planetText.getComponent(RichText).string = "<color=#00ff00>Planet:</color><color=#0fffff>Tain</color>"
        
@@ -57,20 +57,21 @@ export class CityInfoTipsComponent extends Component{
         
         if (this.cityLevel == 2) {
             
-            // resources.load("Common/CityLevel_2.png", Texture2D, (err, nTexture2D) => {
+             //加载图片的方式，需要这样写
+             resources.load("Texture/CityLevel_2/spriteFrame", SpriteFrame, (err, spriteFrame) => {
                 
-            //     if (nTexture2D) {
-            //         const spriteFrame = new SpriteFrame();
-            //         spriteFrame.texture = nTexture2D;
-            //         this.cityBgNode.getComponent(Sprite).spriteFrame = spriteFrame
-            //     }
-            // })
+                if (err) {
+                    console.log(err);
+                    return
+                }
+                this.cityBgNode.getComponent(Sprite).spriteFrame = spriteFrame
+            })
 
-            this.cityBgNode.active = false
-            this.cityLevel2BgNode.active = true
+            // this.cityBgNode.active = false
+            // this.cityLevel2BgNode.active = true
         }else{
-            this.cityBgNode.active = true
-            this.cityLevel2BgNode.active = false
+            // this.cityBgNode.active = true
+            // this.cityLevel2BgNode.active = false
         }
     }
 

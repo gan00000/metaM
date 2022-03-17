@@ -2,7 +2,7 @@
   "ver": "1.0.22",
   "importer": "image",
   "imported": true,
-  "uuid": "332427d1-5043-40ce-b692-ac1cf46f85f5",
+  "uuid": "db72c96a-d3c0-4354-bb45-fc90e71fc444",
   "files": [
     ".png",
     ".json"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "332427d1-5043-40ce-b692-ac1cf46f85f5@6c48a",
+      "uuid": "db72c96a-d3c0-4354-bb45-fc90e71fc444@6c48a",
       "displayName": "CityLevel_1",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "332427d1-5043-40ce-b692-ac1cf46f85f5",
+        "imageUuidOrDatabaseUri": "db72c96a-d3c0-4354-bb45-fc90e71fc444",
         "minfilter": "linear",
         "magfilter": "linear",
         "mipfilter": "none",
@@ -33,7 +33,7 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "332427d1-5043-40ce-b692-ac1cf46f85f5@f9941",
+      "uuid": "db72c96a-d3c0-4354-bb45-fc90e71fc444@f9941",
       "displayName": "CityLevel_1",
       "id": "f9941",
       "name": "spriteFrame",
@@ -55,7 +55,7 @@
         "borderRight": 0,
         "packable": true,
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "332427d1-5043-40ce-b692-ac1cf46f85f5@6c48a",
+        "imageUuidOrDatabaseUri": "db72c96a-d3c0-4354-bb45-fc90e71fc444@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.9",
@@ -69,6 +69,6 @@
   "userData": {
     "type": "sprite-frame",
     "hasAlpha": true,
-    "redirect": "332427d1-5043-40ce-b692-ac1cf46f85f5@f9941"
+    "redirect": "db72c96a-d3c0-4354-bb45-fc90e71fc444@f9941"
   }
 }

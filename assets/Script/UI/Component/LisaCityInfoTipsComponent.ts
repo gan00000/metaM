@@ -50,9 +50,9 @@ export class LisaCityInfoTipsComponent extends Component{
 
         })
 
-        if (this.cityLevel == 1) {
-            
-            resources.load("Texture/CityLevel_1_bg", SpriteFrame, (err, spriteFrame) => {
+        if (this.cityLevel == 2) {
+            //加载图片的方式，需要这样写
+            resources.load("Texture/CityLevel_2_bg/spriteFrame", SpriteFrame, (err, spriteFrame) => {
                 
                 if (err) {
                     console.log(err);
@@ -68,8 +68,6 @@ export class LisaCityInfoTipsComponent extends Component{
                 this.homeCityBg.getComponent(Sprite).spriteFrame = spriteFrame
             })
      
-        }else{
-            
         }
     }
 
