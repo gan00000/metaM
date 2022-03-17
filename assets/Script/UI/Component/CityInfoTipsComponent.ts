@@ -22,7 +22,7 @@ export class CityInfoTipsComponent extends Component{
 
     private url:string = null
     private planet:string = null
-    private city:string = null
+    private cityName:string = null
     private totalLand:string = null
     private cityGrade:string = null
     private cityLevel:number = 0
@@ -51,7 +51,7 @@ export class CityInfoTipsComponent extends Component{
         console.log("CityInfoTipsComponent start")
 
         this.planetText.getComponent(RichText).string = this.getRichString("Planet: ", this.planet)
-        this.cityText.getComponent(RichText).string = this.getRichString("City: ",this.city)
+        this.cityText.getComponent(RichText).string = this.getRichString("City: ",this.cityName)
         this.totalLandText.getComponent(RichText).string = this.getRichString("TotalLand: ",this.totalLand)
         this.cityGradeText.getComponent(RichText).string = this.getRichString("City Grade: ",this.cityGrade)
         
@@ -74,7 +74,7 @@ export class CityInfoTipsComponent extends Component{
         }
     }
 
-    public updateData(url:string, planet:string,city:string,totalLand:string,cityGrade:string, cityLevel:number) {
+    public updateData(url:string, planet:string,cityName:string,totalLand:string,cityGrade:string, cityLevel:number) {
         console.log("updateData")
         // this.planetText.getComponent(RichText).string = this.getRichString("Planet:",planet)
         // this.cityText.getComponent(RichText).string = this.getRichString("City:",city)
@@ -83,7 +83,7 @@ export class CityInfoTipsComponent extends Component{
     
         this.url = url
         this.planet = planet
-        this.city = city
+        this.cityName = cityName
         this.totalLand = totalLand
         this.cityGrade = cityGrade
         this.cityLevel = cityLevel

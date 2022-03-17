@@ -138,7 +138,7 @@ export class NtfsController extends Component {
         // let itemH = 0
         // 使用对象解析
         for (let [key, value] of landDatas) {
-            console.log(key, value);
+            // console.log(key, value);
 
             resources.load("Prefab/proItemNodePrefab", Prefab, (err, data) => {
                 if (err) {

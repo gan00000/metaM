@@ -1,5 +1,6 @@
 import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset, Prefab, instantiate} from 'cc';
 import { CityInfoTipsComponent } from '../UI/Component/CityInfoTipsComponent';
+import { LisaCityInfoTipsComponent } from '../UI/Component/LisaCityInfoTipsComponent';
 import { NtfsController } from '../UI/Component/NtfsController';
 
 import { UIController } from '../UI/UIController';
@@ -48,6 +49,9 @@ export class MapController {
     private static saledLandData = {}
     //每个城镇的土地数据{townId:{}}
     private static townLands = {}
+    //lisa home data 运营给的 {cityId:info}
+    private static lisaData = {}
+
     private static lightTownPosTag = {}
     private static lightPosNode = {}
     //发光点对应的townId:{}坐标
@@ -140,6 +144,17 @@ export class MapController {
             }
             this.saledLandData = data.json
             console.log("this.landData = ", this.saledLandData);
+        })
+
+        resources.load('Json/lisaHomeData/lisaData', (err, lisaData: any) => {
+            console.log("err, data = ", err, lisaData)
+            if (err) {
+                return
+            }
+            for(let i = 0; i < lisaData.length; i++) {
+                let data = lisaData[i]
+                this.lisaData[data.cityId] = data;
+            }
         })
 
         input.on(Input.EventType.TOUCH_START, (event: EventTouch) => {
@@ -401,20 +416,42 @@ export class MapController {
                 this.mCityInfo.destroy()
                 this.mCityInfo=null
             }
-            resources.load("Prefab/CityInfo", Prefab, (err, data) => {
-                if (err) {
-                    console.log(err);
-                    return
-                }
-                this.mCityInfo = instantiate(data);
-                this.mCityInfo.getComponent(CityInfoTipsComponent).updateData("",starName,cityName,landNum + "",cityLevel,city.level)
-                this.uIParent.addChild(this.mCityInfo)
 
-            })
+            let lisaInfo = this.lisaData[cityId+""]
+            
+            if (lisaInfo) {//点击了lisa的家
+                
+                // this.getDataAndShowLandTips(1033,false)
+                
+                resources.load("Prefab/LisaCityTips", Prefab, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        return
+                    }
+                    this.mCityInfo = instantiate(data);
+                    this.mCityInfo.getComponent(LisaCityInfoTipsComponent).updateData("",starName,cityName,landNum + "",cityLevel,city.level,
+                    lisaInfo.tokenID,lisaInfo.landLevel,lisaInfo.townName,lisaInfo.landNo,lisaInfo.landPosx,lisaInfo.landPosy)
+                    this.uIParent.addChild(this.mCityInfo)
+    
+                })
+
+            } else {
+                
+                resources.load("Prefab/CityInfo", Prefab, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        return
+                    }
+                    this.mCityInfo = instantiate(data);
+                    this.mCityInfo.getComponent(CityInfoTipsComponent).updateData("",starName,cityName,landNum + "",cityLevel,city.level)
+                    this.uIParent.addChild(this.mCityInfo)
+    
+                })
+            }
         }
 
         //TODO: 显示城市tips
-        console.log("starName, cityName, cityLevel, landNum = ", starName, cityName, cityLevel, landNum);
+        // console.log("starName, cityName, cityLevel, landNum = ", starName, cityName, cityLevel, landNum);
 
         //NOTE: 测试显示读土地tips
         // this.getDataAndShowLandTips(1033);
@@ -423,7 +460,7 @@ export class MapController {
     }
 
     //根据tokenId获取土地数据，然后显示土地tips
-    public static getDataAndShowLandTips(tokenId: number,addNodeToMap:boolean) {
+    public static getDataAndShowLandTips(tokenId: number,isLight:boolean) {
         let landdata = this.saledLandData[tokenId + ""]
         if (!landdata) {
             console.log("not found the land by tokenId: ", tokenId)
@@ -463,17 +500,17 @@ export class MapController {
                 }
                 this.townLands[townId] = landInfo
                 // console.log("landData = ", landInfo);
-                this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy, addNodeToMap);
+                this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy, isLight);
             });
         } else {
-            this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy,addNodeToMap);
+            this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy,isLight);
         }
     }
 
     public static sLightPrefabData:Prefab = null
 
     //根据某个城镇的土地坐标显示土地tips
-    private static showLandTips(tokenId: number, townId: number, landx: number, landy: number, addNodeToMap:boolean) {
+    private static showLandTips(tokenId: number, townId: number, landx: number, landy: number, isLight:boolean) {
         console.log("townId, x, y =", townId, landx, landy);
         let townLandMap = this.townLands[townId];
         if(!townLandMap) {
@@ -503,7 +540,14 @@ export class MapController {
         let cityLevel = '2'
         // let mCity = ""
         let city = this.cityInfo[land.cityid]
-        if (city) {
+        
+        if (isLight) {
+            
+            this.createLightNode(tokenId,townId,city)
+            
+        }else{
+
+             if (city) {
             if (city.level == 1) {
                 cityLevel = '1';
                 // mCity = city.name + ""
@@ -548,12 +592,6 @@ export class MapController {
             ["LAND SIZE", landSize + ""],
             ["LAND NAME", landName]
         ])
-        
-        if (addNodeToMap) {
-            
-            this.createLightNode(tokenId,townId,city)
-            
-        }else{
 
             let lightUIPos = this.lightPosWithTokenId[tokenId]
             console.log("lightUIPos Position x,y=",lightUIPos.x,lightUIPos.y)

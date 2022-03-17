@@ -6,6 +6,11 @@ const { ccclass, property } = _decorator;
 @ccclass('CUtil')
 export class CUtil {
 
+    public static getLocalString(key:string) {
+    
+        return key
+    }
+
     public static getQueryVariable(name) {
         const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         const result = window.location.search.substring(1).match(reg);
