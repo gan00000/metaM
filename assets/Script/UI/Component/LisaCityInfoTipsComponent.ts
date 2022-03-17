@@ -52,7 +52,7 @@ export class LisaCityInfoTipsComponent extends Component{
 
         if (this.cityLevel == 2) {
             //加载图片的方式，需要这样写
-            resources.load("Texture/CityLevel_2_bg/spriteFrame", SpriteFrame, (err, spriteFrame) => {
+            resources.load("Texture/CityLevel_2/spriteFrame", SpriteFrame, (err, spriteFrame) => {
                 
                 if (err) {
                     console.log(err);
