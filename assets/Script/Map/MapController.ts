@@ -75,8 +75,9 @@ export class MapController {
 
         //加载所有城镇及其对应的tile 坐标
         resources.load('Json/MapData/map', (err, data: any) => {
-            console.log("err, data = ", err, data)
+            // console.log("err, data = ", err, data)
             if (err) {
+                console.log(err);
                 return
             }
             let townlist = data.json.townlist;
@@ -102,14 +103,15 @@ export class MapController {
                 this.belongTowns[townInfo.belong] = belongTmp
             }
 
-            console.log("this.worldTowns =", this.worldTowns);
-            console.log("this.belongTowns =", this.belongTowns);
+            // console.log("this.worldTowns =", this.worldTowns);
+            // console.log("this.belongTowns =", this.belongTowns);
         })
 
         //加载城市的名字列表
         resources.load('Json/MapData/cityname', (err, data: any) => {
             console.log("err, data = ", err, data)
             if (err) {
+                console.log(err);
                 return
             }
             let cityDatas = data.json.list
@@ -117,13 +119,14 @@ export class MapController {
                 let data = cityDatas[i]
                 this.cityNameMap[data.id] = data.name;
             }
-            console.log("this.cityNameMap = ", this.cityNameMap);
+            // console.log("this.cityNameMap = ", this.cityNameMap);
         })
 
         //加载城市信息
         resources.load('Json/MapData/city', (err, data: any) => {
-            console.log("err, data = ", err, data)
+            // console.log("err, data = ", err, data)
             if (err) {
+                console.log(err);
                 return
             }
             let cityList = data.json.citylist
@@ -133,22 +136,42 @@ export class MapController {
                     this.cityInfo[city.id] = city;
                 }
             }
-            console.log("this.cityInfo = ", this.cityInfo);
+            // console.log("this.cityInfo = ", this.cityInfo);
         })
 
         //加载已售土地信息
         resources.load('Json/MapData/landpos', (err, data: any) => {
-            console.log("err, data = ", err, data)
+            // console.log("err, data = ", err, data)
             if (err) {
+                console.log(err);
                 return
             }
             this.saledLandData = data.json
-            console.log("this.landData = ", this.saledLandData);
+            // console.log("this.landData = ", this.saledLandData);
+            resources.load('Json/MapData/webmap_buchang_5016', (xerr, xdata: any) => {
+                // console.log("err, data = ", xerr, xdata)
+                if (xerr) {
+                    console.log(xerr);
+                    return
+                }
+                let buchangDatas = xdata.json
+                if (buchangDatas) {
+                    for (const key in buchangDatas) {
+                        if (!this.saledLandData[key]) {
+                            this.saledLandData[key] = buchangDatas[key];
+                        }
+                    }
+                }
+
+                // console.log("this.landData = ", this.saledLandData);
+            })
+            
         })
 
         resources.load('Json/lisaHomeData/lisaData', (err, data: any) => {
-            console.log("err, data = ", err, data)
+            // console.log("err, data = ", err, data)
             if (err) {
+                console.log(err);
                 return
             }
             let lisaData = data.json
