@@ -44,9 +44,11 @@ export class CityInfoTipsComponent extends Component{
         // this.planetText.getComponent(RichText).string = "<color=#00ff00>Planet:</color><color=#0fffff>Tain</color>"
        
         this.closeButton.on(Button.EventType.CLICK, () => {
+            
             this.mParent.removeFromParent()
             this.mParent.destroy()
-            MapController.mCityInfo = null
+           
+            MapController.resetCityInfoState();
         })
         console.log("CityInfoTipsComponent start")
 

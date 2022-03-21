@@ -31,6 +31,7 @@ export class LisaCityInfoTipsComponent extends Component{
             this.node.removeFromParent()
             this.node.destroy()
            
+            MapController.resetCityInfoState();
         })
         if (!this.infoData) {
             return
