@@ -16,7 +16,7 @@ export class TokenIdButtonComponent extends Component {
         const button = node.getComponent(Button);
         console.log(customEventData); // foobar
         let tokenId = parseInt(customEventData)
-        MapController.getDataAndShowLandTips(tokenId,false)
+        MapController.getDataAndShowLandTips(tokenId,false,null)
     }
     
 }

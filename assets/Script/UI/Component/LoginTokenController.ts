@@ -20,6 +20,11 @@ export class LoginTokenController {
     private static pursrBtn: Node = null
     private static tokenIds:number[] = []
 
+    private static sleep = async (ms) => {
+        return new Promise((resolve, reject)=>{
+            setTimeout(resolve,ms)
+        })
+    }
     public static getNftsNode(): Node {
 
         return this.loginTokenInfoNode
@@ -118,18 +123,7 @@ export class LoginTokenController {
 
                 this.tokenIdScrollViewContentNode.getComponent(UITransform).height = allHeight
                 
-                for (let index = 0; index < this.tokenIds.length; index++) {
-                    const tokenId = this.tokenIds[index];
-                    
-                    let itemprefab: Node = instantiate(data);
-                    itemprefab.getComponent(Label).string = tokenId + ""
-                    //设置点击事件传递的内容
-                    itemprefab.getComponent(Button).clickEvents[0].customEventData = tokenId + ""
-                    this.tokenIdScrollViewContentNode.addChild(itemprefab);
-                    
-                    //在地图上显示发光点
-                    MapController.getDataAndShowLandTips(tokenId, true)
-                }
+                LoginTokenController.refreshTokenUi(data);
             })
 
             // for (let index = 0; index < this.tokenIds.length; index++) {
@@ -150,6 +144,27 @@ export class LoginTokenController {
             
         }else{
             this.tipsLabelNode.active = true
+        }
+    }
+
+    private static async refreshTokenUi(data: Prefab) {
+        for (let index = 0; index < this.tokenIds.length; index++) {
+            const tokenId = this.tokenIds[index];
+
+            let itemprefab: Node = instantiate(data);
+            itemprefab.getComponent(Label).string = tokenId + "";
+            //设置点击事件传递的内容
+            itemprefab.getComponent(Button).clickEvents[0].customEventData = tokenId + "";
+            this.tokenIdScrollViewContentNode.addChild(itemprefab);
+
+            //在地图上显示发光点
+            MapController.getDataAndShowLandTips(tokenId, true, null);
+            if (index == 0 || index == 1) {
+                await this.sleep(200)
+            }else{
+                await this.sleep(50)
+            }
+           
         }
     }
 

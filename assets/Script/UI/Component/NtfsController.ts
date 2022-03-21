@@ -104,7 +104,7 @@ export class NtfsController extends Component {
         // }
         // imageUrl = imageUrl.replace("https://static-download2.metacitym.com/","https://static-src.metacitym.com/")
         // imageUrl = imageUrl + "?" + Date.parse(new Date().toString()) 
-        console.log("imageUrl=",imageUrl)
+        // console.log("imageUrl=",imageUrl)
         this.tokenId = tokenId
         this.imageUrl = imageUrl
         this.landDatas = landDatas
@@ -115,7 +115,7 @@ export class NtfsController extends Component {
 
         this.titleLabe.string = tokenId
         let comtroller = this;
-
+        console.log("loadRemote imageUrl=",imageUrl)
         assetManager.loadRemote<ImageAsset>(imageUrl, {xhrWithCredentials:true}, function (err, imageAsset) {
             if (err) {
                 console.log(err)

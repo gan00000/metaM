@@ -1,5 +1,6 @@
 import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset, Prefab, instantiate} from 'cc';
 import { CityInfoTipsComponent } from '../UI/Component/CityInfoTipsComponent';
+import { SLightComponent } from '../UI/Component/SLightComponent';
 import { LisaCityInfoTipsComponent } from '../UI/Component/LisaCityInfoTipsComponent';
 import { NtfsController } from '../UI/Component/NtfsController';
 
@@ -52,7 +53,7 @@ export class MapController {
     //lisa home data 运营给的 {cityId:info}
     private static lisaData = {}
 
-    private static lightTownPosTag = {}
+    // private static lightTownPosTag = {}
     private static lightPosNode = {}
     //发光点对应的townId:{}坐标
     private static lightPosWithTokenId = {}
@@ -484,7 +485,7 @@ export class MapController {
     }
 
     //根据tokenId获取土地数据，然后显示土地tips
-    public static getDataAndShowLandTips(tokenId: number,isLight:boolean) {
+    public static getDataAndShowLandTips(tokenId: number,isLight:boolean,callback: Function) {
         let landdata = this.saledLandData[tokenId + ""]
         if (!landdata) {
             console.log("not found the land by tokenId: ", tokenId)
@@ -510,8 +511,8 @@ export class MapController {
         if (!townLandMap) {
             //如果不存在加载
             resources.load('Json/Land/' + townId, (err, data: any) => {
-                // console.log("err, data = ", err, data)
                 if (err) {
+                    console.log("err = ", err)
                     return
                 }
                 //拿到该镇所有的土地信息
@@ -524,17 +525,17 @@ export class MapController {
                 }
                 this.townLands[townId] = landInfo
                 // console.log("landData = ", landInfo);
-                this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy, isLight);
+                this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy, isLight,callback);
             });
         } else {
-            this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy,isLight);
+            this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy,isLight,callback);
         }
     }
 
     public static sLightPrefabData:Prefab = null
 
     //根据某个城镇的土地坐标显示土地tips
-    private static showLandTips(tokenId: number, townId: number, landx: number, landy: number, isLight:boolean) {
+    private static showLandTips(tokenId: number, townId: number, landx: number, landy: number, isLight:boolean,callback: Function) {
         // console.log("townId, x, y =", townId, landx, landy);
         let townLandMap = this.townLands[townId];
         if(!townLandMap) {
@@ -616,8 +617,12 @@ export class MapController {
             ["LAND SIZE", landSize + ""],
             ["LAND NAME", landName]
         ])
-
+        if (callback) {
+            callback(tokenId,landUrl,cityInfoMap)
+            return
+        }
             let lightUIPos = this.lightPosWithTokenId[tokenId]
+
             console.log("lightUIPos Position x,y=",lightUIPos.x,lightUIPos.y)
             if (lightUIPos) {
                 
@@ -669,11 +674,15 @@ export class MapController {
             let lightUIPos = this.getUIPosByTownPos(mx,my)
             this.lightPosWithTokenId[tokenId] = lightUIPos
 
-            let aKey = mx+"_"+my
-            if (this.lightTownPosTag[aKey]) {//已经存在发光点
+            // let aKey = mx+"_"+my
+            let existLightNode:Node = this.lightPosWithLightNode[lightUIPos.x + "_" + lightUIPos.y]
+            if (existLightNode) {//已经存在发光点
+                //记录该发光点对应的tokenId
+                console.log("exist light = " + tokenId)
+                existLightNode.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
                 return
             }
-            this.lightTownPosTag[aKey] = mx+"_"+my
+            // this.lightTownPosTag[aKey] = mx+"_"+my
             // console.log("townId=" + townId + "x=" + mx + " y=" + my);
             
             for (let index = -1; index <= 1; index++) {
@@ -683,18 +692,23 @@ export class MapController {
                 if (this.sLightPrefabData) {
                     let xlightRefab: Node = instantiate(this.sLightPrefabData);
                     this.mapGroup.addChild(xlightRefab);
-                    xlightRefab.setPosition(px,py)
+                    if (cityLevel == 1) {//不同等级偏移量不一样
+                        xlightRefab.setPosition(px+ 40,py -40)
+                    } else {
+                        xlightRefab.setPosition(px+ 20,py - 20)
+                    }
                     this.lightPosWithLightNode[px + "_" + py] = xlightRefab
-                    // this.lightPosNode[aKey] = xlightRefab
+                    xlightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
+                    console.log("add light1 = " + tokenId)
                 }else{
                     resources.load("Prefab/slight2", Prefab, (err, data) => {
                         if (err) {
                             console.log(err);
                             return
                         }
-            
+                        this.sLightPrefabData = data
+
                         let lightRefab: Node = instantiate(data);
-                        // itemprefab.getComponent(Label).string = tokenId + ""
                         this.mapGroup.addChild(lightRefab);
                         if (cityLevel == 1) {//不同等级偏移量不一样
                             lightRefab.setPosition(px+ 40,py -40)
@@ -702,8 +716,8 @@ export class MapController {
                             lightRefab.setPosition(px+ 20,py - 20)
                         }
                         this.lightPosWithLightNode[px + "_" + py] = lightRefab
-                        // lightRefab.setPosition(px,py)
-                        // this.lightPosNode[aKey] = lightRefab
+                        console.log("add light2 = " + tokenId)
+                        lightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
                     })
                 }
             }
