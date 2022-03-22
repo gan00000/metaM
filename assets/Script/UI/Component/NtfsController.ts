@@ -57,7 +57,7 @@ export class NtfsController extends Component {
 
             if (this.node) {
                 this.node.removeFromParent()
-                this.node.getParent().destroy()
+                this.node.destroy()
                 MapController.mNtfsControllerNode = null
             }
             
