@@ -366,7 +366,15 @@ export class MapController {
         this.mapGroup.getComponent<UITransform>(UITransform).convertToNodeSpaceAR(this.getMapTownPosInV3, this.getMapTownPosOutV3)
 
         let lbX = (this.getMapTownPosOutV3.x + this.halfOneMapWidth) % this.oneMapWidth
-        let lbY = this.getMapTownPosOutV3.y + this.halfOneMapHeight % this.oneMapHeight
+        let lbY = (this.getMapTownPosOutV3.y + this.halfOneMapHeight) % this.oneMapHeight
+
+        if (lbX < 0) {
+            lbX += this.oneMapWidth
+        }
+
+        if (lbY < 0) {
+            lbY += this.oneMapHeight
+        }
 
         //坐标映射到坐上角为起始点
         lbY = this.oneMapHeight - lbY
