@@ -62,7 +62,7 @@ export class NtfsController extends Component {
             }
             
         }, this)
-
+       
         this.updateDatas(this.tokenId, this.imageUrl, this.landDatas)
     }
 

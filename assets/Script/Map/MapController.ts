@@ -66,6 +66,10 @@ export class MapController {
 
     private static loadDataFinish = 0
 
+    public static mapCanMove = true
+    public static mapCanScale = true
+
+
     public static init() {
         this.mapInput = MainGame.find("MapInput")
         this.mapGroup = find("MapGroup", this.mapInput)
@@ -915,7 +919,7 @@ export class MapController {
     }
    
     private static canMove() {
-        if (this.mNtfsControllerNode && this.mNtfsControllerNode.getParent()) {
+        if (this.mNtfsControllerNode || this.mCityInfo || !this.mapCanMove) {
             return false
         } else {
             return true
@@ -923,7 +927,7 @@ export class MapController {
     }
 
     private static canScale() {
-        if (this.mNtfsControllerNode && this.mNtfsControllerNode.getParent()) {
+        if (this.mNtfsControllerNode || this.mCityInfo || !this.mapCanScale) {
             return false
         } else {
             return true

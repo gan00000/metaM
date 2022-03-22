@@ -28,6 +28,10 @@ export class LandTipsNode2Component extends Component{
         this.landShowInfoNode = find("nfts_bg",this.node)
         
         this.closeBtn.on(Button.EventType.CLICK, () => {
+
+            MapController.mapCanMove = true
+            MapController.mapCanScale = true
+
             this.node.removeFromParent()
             this.node.destroy()
         }) 
@@ -51,7 +55,8 @@ export class LandTipsNode2Component extends Component{
            
         })
 
-
+        MapController.mapCanMove = false
+        MapController.mapCanScale = false
         if (this.lightTokenIds.length>0) {
             
             let tokenId = this.lightTokenIds[0] //首个显示0
