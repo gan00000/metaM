@@ -62,7 +62,7 @@ export class LoginTokenController {
 
             if (!MainGame.isLogin()) {
                 // alert("请先登录")
-                location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/test/map/"
+                location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/map/"
                 return
             }
 
@@ -77,7 +77,7 @@ export class LoginTokenController {
         this.pursrBtn.on(Button.EventType.CLICK, () => {
             console.log("pursebtn click")
             // sys.openURL("https://metacitym.com/login/index.html?redirect=https://www.baidu.com/");
-            location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/test/map/"
+            location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/map/"
         }, this)
 
 
@@ -175,9 +175,9 @@ export class LoginTokenController {
         }
         var reqUrl = ""
         if (times != 1 && pageKey) {
-            reqUrl = "https://act.gamamobi.com/pre/nft/getTokenIds.web?owner=" + address  + "&pageKey=" + pageKey + "&contractAddress=0x82016d4ad050ef4784e282b82a746d3e01df23bf&_=" + Date.parse(new Date().toString()) 
+            reqUrl = "https://act.gamamobi.com/pre/nft/getTokenIds.web?owner=" + address  + "&pageKey=" + pageKey + "&contractAddress=0x82016d4ad050ef4784e282b82a746d3e01df23bf,0xa39853A45D0420D8dB0F660EA39dA1E89608fCfa&_=" + Date.parse(new Date().toString()) 
         }else{
-            reqUrl = "https://act.gamamobi.com/pre/nft/getTokenIds.web?owner=" + address  + "&contractAddress=0x82016d4ad050ef4784e282b82a746d3e01df23bf&_=" + Date.parse(new Date().toString()) 
+            reqUrl = "https://act.gamamobi.com/pre/nft/getTokenIds.web?owner=" + address  + "&contractAddress=0x82016d4ad050ef4784e282b82a746d3e01df23bf,0xa39853A45D0420D8dB0F660EA39dA1E89608fCfa&_=" + Date.parse(new Date().toString()) 
 
         }
         // let testUrl = "https://act.gamamobi.com/pre/nft/getTokenIds.web?owner=0x2f2e99bcbe39D8407552E821e7F4F0F9592Dfcab&contractAddress=0x82016d4ad050ef4784e282b82a746d3e01df23bf&_=" + Date.parse(new Date().toString())
