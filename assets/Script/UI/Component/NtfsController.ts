@@ -134,6 +134,7 @@ export class NtfsController extends Component {
 
         // let itemH = 0
         // 使用对象解析
+        this.proScrollView_contentNode.removeAllChildren()
         for (let [key, value] of landDatas) {
             // console.log(key, value);
 

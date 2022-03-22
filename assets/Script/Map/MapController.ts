@@ -6,6 +6,7 @@ import { NtfsController } from '../UI/Component/NtfsController';
 
 import { UIController } from '../UI/UIController';
 import { MainGame } from './../MainGame';
+import { CUtil } from '../Utils/CUtil';
 
 export class MapController {
     private static mapInput: Node = null
@@ -628,25 +629,14 @@ export class MapController {
 
     //根据tokenId获取土地数据，然后显示土地tips
     public static getDataAndShowLandTips(tokenId: number,isLight:boolean,callback: Function) {
-        let landdata = this.saledLandData[tokenId + ""]
-        if (!landdata) {
-            console.log("not found the land by tokenId: ", tokenId)
+        
+        let saledLand = this.saledLandData[tokenId + ""]//已售信息
+        if (!saledLand) {
+            console.log("not found the saledLandData by tokenId: ", tokenId)
             return
         }
 
-        // console.log("land data = ", landdata);
-
-        //找到给土地所在的城镇
-        // let townList = this.belongTowns[landdata.cityid]
-        // let townInfo = townList[0];
-        // for(let i = 0; i < townList.length; i++) {
-        //     if(townList[i].id == landdata.townid){
-        //     townInfo = townList[i];
-        //     break
-        //     }
-        // }
-        // let townId = townInfo.id;
-        let townId = landdata.townid
+        let townId = saledLand.townid
         // console.log("land data townId,tokenId", townId,tokenId);
         //加载该城镇土地数据
         let townLandMap = this.townLands[townId];
@@ -663,38 +653,47 @@ export class MapController {
                 for (let i = 0; i < lands.length; i++) {
                     let land = lands[i];
                     let key = 'x_' + land.posx + '_y_' + land.posy;
+                    // let key = CUtil.hex2Number(land.tokenid)
                     landInfo[key] = land;
+                    
                 }
                 this.townLands[townId] = landInfo
                 // console.log("landData = ", landInfo);
-                this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy, isLight,callback);
+                let xkey = 'x_' + saledLand.landx + '_y_' + saledLand.landy;
+                let landdata = this.townLands[townId][xkey]
+                this.showLandTips(tokenId,landdata, isLight,callback);
             });
         } else {
-            this.showLandTips(tokenId,landdata.townid, landdata.landx, landdata.landy,isLight,callback);
+            let xkey = 'x_' + saledLand.landx + '_y_' + saledLand.landy;
+           
+            let landdata = townLandMap[xkey]
+            this.showLandTips(tokenId,landdata,isLight,callback);
         }
     }
 
     // public static sLightPrefabData:Prefab = null
 
-    //根据某个城镇的土地坐标显示土地tips
-    private static showLandTips(tokenId: number, townId: number, landx: number, landy: number, isLight:boolean,callback: Function) {
+    //根据某个城镇的土地坐标显示土地tips   landdata.townid, landdata.posx, landdata.posy
+    private static showLandTips(tokenId: number, land:any, isLight:boolean,callback: Function) {
         // console.log("townId, x, y =", townId, landx, landy);
-        let townLandMap = this.townLands[townId];
-        if(!townLandMap) {
-            console.log("not found the town lands ", townId);
-            return;
-        }
+        // let townLandMap = this.townLands[townId];
+        // if(!townLandMap) {
+        //     console.log("not found the town lands ", townId);
+        //     return;
+        // }
 
-        let key = 'x_' + landx + '_y_' + landy;
-        let land = townLandMap[key];
+        // let key = 'x_' + landx + '_y_' + landy;
+        // let land = townLandMap[key];
         if (!land) {
-            console.log("not found the town lands ", townId, landx, landy);
+            console.log("not found the town land");
             return
         }
-    
-        
+       
+        let townId = land.townid
+        let landx = land.posx
+        let landy = land.posy
         let starContent = 'Titan' //"泰坦星"
-        let infoConetent = land.cityid + ' City, ' + land.townid + 'Town'
+        let infoConetent = land.cityid + ' City, ' + townId + 'Town'
         //获取城市的名字
         let cityName = this.cityNameMap[land.cityid]
         if (cityName) {
