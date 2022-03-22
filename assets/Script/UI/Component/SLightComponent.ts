@@ -4,6 +4,7 @@ import { MainGame } from '../../MainGame';
 import { MapController } from '../../Map/MapController';
 import { CUtil } from '../../Utils/CUtil';
 import { UIController } from '../UIController';
+import { LandTipsNode2Component } from './LandTipsNode2Component';
 import { NtfsController } from './NtfsController';
 import { SPageViewComponent } from './SPageViewComponent';
 const { ccclass, property } = _decorator;
@@ -24,28 +25,30 @@ export class SLightComponent extends Component{
             console.log("slight click")
             if (this.lightTokenIds.length>0) {
                 console.log("lightTokenIds = ",this.lightTokenIds)
-                for (let index = 0; index < this.lightTokenIds.length; index++) {
-                    const tokenId = this.lightTokenIds[index];
-                    MapController.getDataAndShowLandTips(tokenId,false, (tokenId,landUrl, cityInfoMap)=>{
+                // for (let index = 0; index < this.lightTokenIds.length; index++) {
+                //     const tokenId = this.lightTokenIds[index];
+                    
+                // }
 
-                        this.tokenIdMapLandUrl[tokenId] = landUrl
-                        this.tokenIdMapCityInfo[tokenId] = cityInfoMap
+                resources.load("Prefab/LandTipsNode2", Prefab, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    let mLandTipsNode2: Node = instantiate(data);
+                    mLandTipsNode2.getComponent(LandTipsNode2Component).setData(this.lightTokenIds)
+                    
+                    this.parent.addChild(mLandTipsNode2)
+    
+                })
 
-                    })
-                }
-            }
+                // let tokenId = this.lightTokenIds[0] //首个显示0
+                // MapController.getDataAndShowLandTips(tokenId,false, (tokenId,landUrl, cityInfoMap)=>{
 
-            resources.load("Prefab/LandTipsNode2", Prefab, (err, data) => {
-                if (err) {
-                    console.log(err);
-                }
-                let mLandTipsNode2: Node = instantiate(data);
-                let pageView = find("LandPageView",mLandTipsNode2)
-                pageView.getComponent(SPageViewComponent).setData(this.lightTokenIds, this.tokenIdMapLandUrl,this.tokenIdMapCityInfo)
-                
-                this.parent.addChild(mLandTipsNode2)
+                //     this.tokenIdMapLandUrl[tokenId] = landUrl
+                //     this.tokenIdMapCityInfo[tokenId] = cityInfoMap
+                // })
 
-            })
+            }      
         })
        
     }
