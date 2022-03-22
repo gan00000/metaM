@@ -746,29 +746,27 @@ export class MapController {
             console.log("lightUIPos Position x,y=",lightUIPos.x,lightUIPos.y)
             if (lightUIPos) {
                 
-                let mapGroupPos = this.mapGroup.getPosition()
-                let mapGroupScale = this.mapGroup.getScale()
+                // let mapGroupPos = this.mapGroup.getPosition()
+                // let mapGroupScale = this.mapGroup.getScale()
 
-                let lightNode:Node = this.lightPosWithLightNode[lightUIPos.x+"_"+lightUIPos.y]
-                // console.log("lightNode Position x,y=",lightNode.getPosition().x,lightNode.getPosition().y)
-
-                this.move(-(lightNode.getPosition().x * mapGroupScale.x + mapGroupPos.x),-(lightNode.getPosition().y * mapGroupScale.y + mapGroupPos.y))
+                // let lightNode:Node = this.lightPosWithLightNode[lightUIPos.x+"_"+lightUIPos.y]
+                // this.move(-(lightNode.getPosition().x * mapGroupScale.x + mapGroupPos.x),-(lightNode.getPosition().y * mapGroupScale.y + mapGroupPos.y))
                 
                 if (this.mNtfsControllerNode) {
                     this.mNtfsControllerNode.removeFromParent()
                     this.mNtfsControllerNode.destroy()
                     this.mNtfsControllerNode=null
                 }
-                resources.load("Prefab/landTipsNode", Prefab, (err, data) => {
+                resources.load("Prefab/nfts_bg", Prefab, (err, data) => {
                     if (err) {
                         console.log(err);
                         return
                     }
                     this.mNtfsControllerNode = instantiate(data);
-                    this.mNtfsControllerNode.getChildByName("nfts_bg").getComponent(NtfsController).updateDatas("TokenID:"+tokenId,landUrl,cityInfoMap)
+                    this.mNtfsControllerNode.getComponent(NtfsController).updateDatas(tokenId + "",landUrl,cityInfoMap)
                     this.uIParent.addChild(this.mNtfsControllerNode)
-                    this.mNtfsControllerNode.setPosition(34 * this.mapGroup.scale.x, -16 * this.mapGroup.scale.y)
-                    // this.mNtfsController.updateDatas("TokenID:"+tokenId,landUrl,cityInfoMap)
+                    // this.mNtfsControllerNode.setPosition(34 * this.mapGroup.scale.x, -16 * this.mapGroup.scale.y)
+                    
                 })
         
             }

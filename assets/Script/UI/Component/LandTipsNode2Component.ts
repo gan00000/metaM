@@ -76,7 +76,7 @@ export class LandTipsNode2Component extends Component{
     {
         MapController.getDataAndShowLandTips(tokenId,false, (tokenId,landUrl, cityInfoMap)=>{
 
-            this.landShowInfoNode.getComponent(NtfsController).updateDatas(tokenId, landUrl,cityInfoMap)
+            this.landShowInfoNode.getComponent(NtfsController).updateDatas(tokenId+"", landUrl,cityInfoMap)
         })
     }
 

@@ -56,10 +56,7 @@ export class NtfsController extends Component {
         this.closeNode.on(Button.EventType.CLICK, () => {
 
             if (this.node) {
-                    //UIController.recycle(this.ntfsNode);
-                this.node.getParent().removeFromParent()
-
-                // this.node.removeFromParent()
+                this.node.removeFromParent()
                 this.node.getParent().destroy()
                 MapController.mNtfsControllerNode = null
             }
@@ -113,7 +110,7 @@ export class NtfsController extends Component {
             return
         }
 
-        this.titleLabe.string = tokenId
+        this.titleLabe.string = "TokenID:"+tokenId
         let comtroller = this;
         console.log("loadRemote imageUrl=",imageUrl)
         assetManager.loadRemote<ImageAsset>(imageUrl, {xhrWithCredentials:true}, function (err, imageAsset) {
