@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, sys, System, UITransform, RichText, SpriteFrame, Texture2D } from 'cc';
+import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, sys, System, UITransform, RichText, SpriteFrame, Texture2D, Color } from 'cc';
 import { MainGame } from '../../MainGame';
 import { MapController } from '../../Map/MapController';
 import { CUtil } from '../../Utils/CUtil';
@@ -43,6 +43,7 @@ export class LandTipsNode2Component extends Component{
             }
             this.index = this.index-1
             this.showData(this.lightTokenIds[this.index])
+            this.checkBtnStatue()
         })
 
         this.next.on(Button.EventType.CLICK, () => {
@@ -52,7 +53,7 @@ export class LandTipsNode2Component extends Component{
             }
             this.index = this.index+1
             this.showData(this.lightTokenIds[this.index])
-           
+            this.checkBtnStatue()
         })
 
         MapController.mapCanMove = false
@@ -68,6 +69,8 @@ export class LandTipsNode2Component extends Component{
     
             })
         }
+
+        this.checkBtnStatue()
     }
 
     /**
@@ -84,5 +87,24 @@ export class LandTipsNode2Component extends Component{
             this.landShowInfoNode.getComponent(NtfsController).updateDatas(tokenId+"", landUrl,cityInfoMap)
         })
     }
+    
 
+    checkBtnStatue()
+    {
+        if (this.index==0) {
+            this.previous.getComponent(Sprite).color = Color.GRAY
+            this.previous.getComponent(Button).interactable = false
+        }else{
+            this.previous.getComponent(Sprite).color = Color.WHITE
+            this.previous.getComponent(Button).interactable = true
+        }
+
+        if (this.index>=this.lightTokenIds.length-1) {
+            this.next.getComponent(Sprite).color = Color.GRAY
+            this.next.getComponent(Button).interactable = false
+        }else{
+            this.next.getComponent(Sprite).color = Color.WHITE
+            this.next.getComponent(Button).interactable = true
+        }
+    }
 }
