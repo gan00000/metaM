@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, loader, SpriteFrame, assetManager, Asset, ImageAsset, Texture2D, UITransform } from 'cc';
+import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, loader, SpriteFrame, assetManager, Asset, ImageAsset, Texture2D, UITransform, RichText } from 'cc';
 import { MapController } from '../../Map/MapController';
 import { CUtil } from '../../Utils/CUtil';
 import { UIController } from '../UIController';
@@ -148,10 +148,11 @@ export class NtfsController extends Component {
                 //     itemH = itemInfoNode.getComponent(UITransform).height
                 //     this.proScrollView_contentNode.getComponent(UITransform).height = itemH * (landDatas.size / 3 + 1) + landDatas.size / 3 * 10
                 // }
-                let xTitleLabel = find("itemNameLabel", itemInfoNode).getComponent(Label)
-                let xValueLabel = find("itemValueLabel", itemInfoNode).getComponent(Label)
-                xTitleLabel.string = key
-                xValueLabel.string = value
+                let xTitleLabel = find("itemNameLabel", itemInfoNode).getComponent(RichText)
+                let xValueLabel = find("itemValueLabel", itemInfoNode).getComponent(RichText)
+                
+                xTitleLabel.string = this.setTitleText(key)
+                xValueLabel.string = this.setValueText(value)
                 this.proScrollView_contentNode.addChild(itemInfoNode);
 
             })
@@ -159,4 +160,13 @@ export class NtfsController extends Component {
 
     }
 
+    setTitleText(mstr:string)
+    {
+        return "<color=#00FFDE>" + mstr +  "</color>"
+    }
+
+    setValueText(mstr:string)
+    {
+        return "<color=#ffffff>" + mstr +  "</color>"
+    }
 }
