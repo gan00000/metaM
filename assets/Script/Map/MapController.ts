@@ -300,17 +300,26 @@ export class MapController {
                                 console.log(err);
                                 return;
                             }
-                            let lisaCityBg = instantiate(data);
-                            if (cityLevel==1) {//城市等级不一样，格子大小不一样
-                               
-                                this.mapGroup.addChild(lisaCityBg);
-                                lisaCityBg.setPosition(townUIPos.x + 38, townUIPos.y - 38);
-                            } else if(cityLevel==2) {
 
-                                this.mapGroup.addChild(lisaCityBg);
-                                lisaCityBg.setPosition(townUIPos.x + 19, townUIPos.y - 19);
-    
+                            for (let index = -1; index <= 1; index++) {
+                
+                                let px = townUIPos.x + index * this.oneMapWidth
+                                let py = townUIPos.y
+
+                                let lisaCityBg = instantiate(data);
+                                if (cityLevel==1) {//城市等级不一样，格子大小不一样
+                                
+                                    this.mapGroup.addChild(lisaCityBg);
+                                    lisaCityBg.setPosition(px + 38, py - 38);
+                                } else if(cityLevel==2) {
+
+                                    this.mapGroup.addChild(lisaCityBg);
+                                    lisaCityBg.setPosition(px + 19, py - 19);
+        
+                                }
+
                             }
+                            
                             
                         });
                     }
@@ -329,7 +338,8 @@ export class MapController {
         }
 
         // 计算出最大最小Pos Y
-        let range = (this.mapGroup.scale.x * this.oneMapHeight * 3 - this.basePosYRange) / 2
+        // let range = (this.mapGroup.scale.x * this.oneMapHeight * 3 - this.basePosYRange) / 2
+        let range = (this.mapGroup.scale.x * this.oneMapHeight - this.basePosYRange) / 2
 
         if (range <= 0) {
             this.getPosYRangeV2.x = 0
@@ -795,11 +805,7 @@ export class MapController {
             // this.lightTownPosTag[aKey] = mx+"_"+my
             // console.log("townId=" + townId + "x=" + mx + " y=" + my);
             
-            for (let index = -1; index <= 1; index++) {
-                
-                let px = lightUIPos.x + index * this.oneMapWidth
-                let py = lightUIPos.y
-
+           
                 let sLightPrefabName = "Prefab/slight" + cityLevel
                    
                 resources.load(sLightPrefabName, Prefab, (err, data) => {
@@ -807,18 +813,23 @@ export class MapController {
                         console.log(err);
                         return
                     }
-                    // this.sLightPrefabData = data
-
-                    let lightRefab: Node = instantiate(data);
-                    this.mapGroup.addChild(lightRefab);
-                    if (cityLevel == 1) {//不同等级偏移量不一样
-                        lightRefab.setPosition(px+ 38,py -38)
-                    } else {
-                        lightRefab.setPosition(px+ 19,py - 19)
-                    }
-                    this.lightPosWithLightNode[px + "_" + py] = lightRefab
                     console.log("add light2 = " + tokenId)
-                    lightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
+                    for (let index = -1; index <= 1; index++) {
+                
+                        let px = lightUIPos.x + index * this.oneMapWidth
+                        let py = lightUIPos.y
+
+                        let lightRefab: Node = instantiate(data);
+                        this.mapGroup.addChild(lightRefab);
+                        if (cityLevel == 1) {//不同等级偏移量不一样
+                            lightRefab.setPosition(px+ 38,py -38)
+                        } else {
+                            lightRefab.setPosition(px+ 19,py - 19)
+                        }
+                        this.lightPosWithLightNode[px + "_" + py] = lightRefab
+                        
+                        lightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
+                    }  
                 })
 
 /**
@@ -856,7 +867,7 @@ export class MapController {
                         lightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
                     })
                 } */
-            }
+            // }
             
         }else{
             console.log("找不到townInfo townId=" + townId);
