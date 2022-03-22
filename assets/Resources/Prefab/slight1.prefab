@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "slight2",
+    "_name": "slight1",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -80,8 +80,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 38,
-      "height": 38
+      "width": 76,
+      "height": 76
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",

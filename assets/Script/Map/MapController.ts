@@ -652,7 +652,7 @@ export class MapController {
         }
     }
 
-    public static sLightPrefabData:Prefab = null
+    // public static sLightPrefabData:Prefab = null
 
     //根据某个城镇的土地坐标显示土地tips
     private static showLandTips(tokenId: number, townId: number, landx: number, landy: number, isLight:boolean,callback: Function) {
@@ -795,19 +795,45 @@ export class MapController {
                 
                 let px = lightUIPos.x + index * this.oneMapWidth
                 let py = lightUIPos.y
+
+                let sLightPrefabName = "Prefab/slight" + cityLevel
+                   
+                resources.load(sLightPrefabName, Prefab, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        return
+                    }
+                    // this.sLightPrefabData = data
+
+                    let lightRefab: Node = instantiate(data);
+                    this.mapGroup.addChild(lightRefab);
+                    if (cityLevel == 1) {//不同等级偏移量不一样
+                        lightRefab.setPosition(px+ 38,py -38)
+                    } else {
+                        lightRefab.setPosition(px+ 19,py - 19)
+                    }
+                    this.lightPosWithLightNode[px + "_" + py] = lightRefab
+                    console.log("add light2 = " + tokenId)
+                    lightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
+                })
+
+/**
                 if (this.sLightPrefabData) {
                     let xlightRefab: Node = instantiate(this.sLightPrefabData);
                     this.mapGroup.addChild(xlightRefab);
                     if (cityLevel == 1) {//不同等级偏移量不一样
-                        xlightRefab.setPosition(px+ 40,py -40)
+                        xlightRefab.setPosition(px+ 38,py -38)
                     } else {
-                        xlightRefab.setPosition(px+ 20,py - 20)
+                        xlightRefab.setPosition(px+ 19,py - 19)
                     }
                     this.lightPosWithLightNode[px + "_" + py] = xlightRefab
                     xlightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
                     console.log("add light1 = " + tokenId)
                 }else{
-                    resources.load("Prefab/slight2", Prefab, (err, data) => {
+
+                    let sLightPrefabName = "Prefab/slight" + cityLevel
+                   
+                    resources.load(sLightPrefabName, Prefab, (err, data) => {
                         if (err) {
                             console.log(err);
                             return
@@ -817,15 +843,15 @@ export class MapController {
                         let lightRefab: Node = instantiate(data);
                         this.mapGroup.addChild(lightRefab);
                         if (cityLevel == 1) {//不同等级偏移量不一样
-                            lightRefab.setPosition(px+ 40,py -40)
+                            lightRefab.setPosition(px+ 38,py -38)
                         } else {
-                            lightRefab.setPosition(px+ 20,py - 20)
+                            lightRefab.setPosition(px+ 19,py - 19)
                         }
                         this.lightPosWithLightNode[px + "_" + py] = lightRefab
                         console.log("add light2 = " + tokenId)
                         lightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
                     })
-                }
+                } */
             }
             
         }else{
