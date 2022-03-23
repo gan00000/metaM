@@ -1,4 +1,4 @@
-import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset, Prefab, instantiate} from 'cc';
+import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset, Prefab, instantiate, Sprite, SpriteFrame, AnimationComponent} from 'cc';
 import { CityInfoTipsComponent } from '../UI/Component/CityInfoTipsComponent';
 import { SLightComponent } from '../UI/Component/SLightComponent';
 import { LisaCityInfoTipsComponent } from '../UI/Component/LisaCityInfoTipsComponent';
@@ -61,7 +61,7 @@ export class MapController {
     private static lightPosWithLightNode = {}
 
     public static mCityInfo:Node = null
-    public static mClickTownNode:Node = null
+    public static mClickCityBgNode:Node = null
 
     public static mNtfsControllerNode: Node = null
 
@@ -70,6 +70,9 @@ export class MapController {
     public static mapCanMove = true
     public static mapCanScale = true
 
+    private static lisaHomeNodes = {}
+
+    public static clickNodeOfSLightComponent:SLightComponent = null
 
     public static init() {
         this.mapInput = MainGame.find("MapInput")
@@ -90,7 +93,7 @@ export class MapController {
                 return
             }
             let townlist = data.json.townlist;
-            console.log("townlist = ", townlist)
+            // console.log("townlist = ", townlist)
             for(let i=0; i < townlist.length; i++) {
                 let townInfo = townlist[i];
                 let key = 'x_' + townInfo.posx + '_y_' + townInfo.posy;
@@ -114,7 +117,7 @@ export class MapController {
             this.loadDataFinish = this.loadDataFinish + 1
             //lisa的加添加粉红色框
             MapController.setLisaCityBg();
-            // console.log("this.worldTowns =", this.worldTowns);
+            console.log("this.worldTowns =", this.worldTowns);
             console.log("this.belongTowns =", this.belongTowns);
         })
 
@@ -271,7 +274,7 @@ export class MapController {
                     console.log("当前点击的不是城镇图标", pos);
                     return
                 }
-                this.getDataAndShowCityTips(townInfo);
+                this.getDataAndShowCityTipsFromClick(townInfo);
             }
             this.isDrag = false
         })
@@ -295,7 +298,8 @@ export class MapController {
                     if (townUIPos) {
                         
                         let cityLevel = city.level;
-                        let prefabName = "Prefab/mapPinkNormalBgLevel" + cityLevel
+                        // let prefabName = "Prefab/mapPinkNormalBgLevel" + cityLevel
+                        let prefabName = "Prefab/slight_pink_" + cityLevel
                         resources.load(prefabName, Prefab, (err, data) => {
                             if (err) {
                                 console.log(err);
@@ -318,6 +322,8 @@ export class MapController {
                                     lisaCityBg.setPosition(px + 19, py - 19);
         
                                 }
+                                lisaCityBg.getComponent(SLightComponent).setLisaData(lisaCityData)
+                                this.lisaHomeNodes[px + "_" + py] = lisaCityBg
 
                             }
                             
@@ -326,7 +332,7 @@ export class MapController {
                     }
                 }
             }
-           
+           console.log("set lisa home bg finish")
         
         }
 
@@ -491,18 +497,33 @@ export class MapController {
         outPos.y = Math.floor(outPos.y / tileSize.y)
     }
 
+
+    private static getDataAndShowCityTipsFromClick(townInfo: any) {
+        let city = this.cityInfo[townInfo[0].belong] //找到城镇所属城市
+        let townId = townInfo[0].id //去第一个城镇，即左上角坐标城镇
+        console.log("city = ", city, townInfo)
+        this.getDataAndShowCityTips(city.id, ()=>{})
+    }
+
     //获取数据，然后显示城市tips
-    private static getDataAndShowCityTips(townInfo: any) {
-        //找到该镇所属的城市
+    public static getDataAndShowCityTips(xxCityId: number, callback:Function) {
+
+        let city = this.cityInfo[xxCityId]
+        if (!city) {
+            console.log("not find city cityId=",xxCityId)
+            return
+        }
         let starName = 'Titan';
         let cityId = '';
         let landNum = 150 * 4;  // 4个镇构成一个一级城市, 2个镇构成一个二级城市
         let cityLevelName = '1st class city';  //一級城市 First class city /1st class city ; 二級城市. Second class city/2nd class city
         let cityName = '';
-        let city = this.cityInfo[townInfo[0].belong]
-        let townId = townInfo[0].id
-        console.log("city = ", city, townInfo)
+        // let city = this.cityInfo[townInfo[0].belong] //找到城镇所属城市
+        // let townId = townInfo[0].id //去第一个城镇，即左上角坐标城镇
+        // console.log("city = ", city, townInfo)
         
+        let townId = this.belongTowns[xxCityId][0].id
+
         if (city) {
             cityId = city.id
             if (city.level == 1) {
@@ -529,42 +550,7 @@ export class MapController {
                 
                 // this.getDataAndShowLandTips(1033,false)
                 
-                resources.load("Prefab/LisaCityTips", Prefab, (err, data) => {
-                    if (err) {
-                        console.log(err);
-                        return
-                    }
-                    this.mCityInfo = instantiate(data);
-                    this.mCityInfo.getComponent(LisaCityInfoTipsComponent).updateData("",starName,cityName,landNum + "",cityLevelName,city.level,
-                    lisaInfo.tokenID,lisaInfo.landLevel,lisaInfo.townName,lisaInfo.landNo,lisaInfo.landPosx,lisaInfo.landPosy)
-                    this.uIParent.addChild(this.mCityInfo)
-
-                    if (cityLevel==1) {
-                        
-                        resources.load("Prefab/mapPinkClickBgLevel1", Prefab, (err, data) => {
-                            if (err) {
-                                console.log(err);
-                                return
-                            }
-                            this.mClickTownNode = instantiate(data);
-                            this.mapGroup.addChild(this.mClickTownNode)
-                            this.mClickTownNode.setPosition(townUIPos.x + 38,townUIPos.y - 38)
-                        })
-
-                    }else{
-
-                        resources.load("Prefab/mapPinkClickBgLevel2", Prefab, (err, data) => {
-                            if (err) {
-                                console.log(err);
-                                return
-                            }
-                            this.mClickTownNode = instantiate(data);
-                            this.mapGroup.addChild(this.mClickTownNode)
-                            this.mClickTownNode.setPosition(townUIPos.x + 19,townUIPos.y - 19)
-                        })
-                    }
-    
-                })
+                MapController.showLisaCityInfo(starName, cityName, landNum, cityLevelName, city, lisaInfo, cityLevel, townUIPos,callback);
 
             } else {
                 
@@ -584,9 +570,9 @@ export class MapController {
                                 console.log(err);
                                 return
                             }
-                            this.mClickTownNode = instantiate(data);
-                            this.mapGroup.addChild(this.mClickTownNode)
-                            this.mClickTownNode.setPosition(townUIPos.x + 38,townUIPos.y - 38)
+                            this.mClickCityBgNode = instantiate(data);
+                            this.mapGroup.addChild(this.mClickCityBgNode)
+                            this.mClickCityBgNode.setPosition(townUIPos.x + 38,townUIPos.y - 38)
                         })
 
                     }else{
@@ -596,9 +582,9 @@ export class MapController {
                                 console.log(err);
                                 return
                             }
-                            this.mClickTownNode = instantiate(data);
-                            this.mapGroup.addChild(this.mClickTownNode)
-                            this.mClickTownNode.setPosition(townUIPos.x + 19,townUIPos.y - 19)
+                            this.mClickCityBgNode = instantiate(data);
+                            this.mapGroup.addChild(this.mClickCityBgNode)
+                            this.mClickCityBgNode.setPosition(townUIPos.x + 19,townUIPos.y - 19)
                         })
                     }
                 })
@@ -614,16 +600,64 @@ export class MapController {
         
     }
 
+    private static showLisaCityInfo(starName: string, cityName: string, landNum: number, cityLevelName: string, city: any, lisaInfo: any, cityLevel: any, townUIPos: Vec3, callback:Function) {
+    
+        resources.load("Prefab/LisaCityTips", Prefab, (err, data) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            this.mCityInfo = instantiate(data);
+            let mLisaCityInfoTipsComponent = this.mCityInfo.getComponent(LisaCityInfoTipsComponent)
+            mLisaCityInfoTipsComponent.updateData("", starName, cityName, landNum + "", cityLevelName, city.level,
+                lisaInfo.tokenID, lisaInfo.landLevel, lisaInfo.townName, lisaInfo.landNo, lisaInfo.landPosx, lisaInfo.landPosy);
+            mLisaCityInfoTipsComponent.callback = callback
+            this.uIParent.addChild(this.mCityInfo);
+/**
+            if (cityLevel == 1) {
+
+                resources.load("Prefab/mapPinkClickBgLevel1", Prefab, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    this.mClickTownNode = instantiate(data);
+                    this.mapGroup.addChild(this.mClickTownNode);
+                    this.mClickTownNode.setPosition(townUIPos.x + 38, townUIPos.y - 38);
+                });
+
+            } else {
+
+                resources.load("Prefab/mapPinkClickBgLevel2", Prefab, (err, data) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    this.mClickTownNode = instantiate(data);
+                    this.mapGroup.addChild(this.mClickTownNode);
+                    this.mClickTownNode.setPosition(townUIPos.x + 19, townUIPos.y - 19);
+                });
+            }
+ */
+        });
+        
+    }
+
     public static resetCityInfoState() {
+
+        if (this.clickNodeOfSLightComponent) {
+            this.clickNodeOfSLightComponent.reset()
+            this.clickNodeOfSLightComponent = null
+        }
         if (this.mCityInfo) {
             this.mCityInfo.removeFromParent();
             this.mCityInfo.destroy();
             this.mCityInfo = null;
         }
-        if (this.mClickTownNode) {
-            this.mClickTownNode.removeFromParent();
-            this.mClickTownNode.destroy();
-            this.mClickTownNode = null;
+        if (this.mClickCityBgNode) {
+            this.mClickCityBgNode.removeFromParent();
+            this.mClickCityBgNode.destroy();
+            this.mClickCityBgNode = null;
         }
     }
 
@@ -801,26 +835,56 @@ export class MapController {
             let lightUIPos = MapController.getCityFirstTownPos(townId, city);
             this.lightPosWithTokenId[tokenId] = lightUIPos
 
+            let lisaInfo = this.lisaData[city.id+""]
+
             // let aKey = mx+"_"+my
             let existLightNode:Node = this.lightPosWithLightNode[lightUIPos.x + "_" + lightUIPos.y]
             if (existLightNode) {//已经存在发光点
                 //记录该发光点对应的tokenId
                 // console.log("exist light = " + tokenId)
-                existLightNode.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
+
+                for (let index = -1; index <= 1; index++) {
+                
+                    let px = lightUIPos.x + index * this.oneMapWidth
+                    let py = lightUIPos.y
+                    let tempExistNode = this.lightPosWithLightNode[px + "_" + py]
+
+                    if (lisaInfo) {
+
+                        tempExistNode.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId,3)
+                    }else{
+
+                        tempExistNode.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId,cityLevel)
+                    }
+
+                }
                 return
             }
-            // this.lightTownPosTag[aKey] = mx+"_"+my
-            // console.log("townId=" + townId + "x=" + mx + " y=" + my);
+
             
+            if (lisaInfo) {
+                console.log("start lisa flash tokenId=" + tokenId)
+                for (let index = -1; index <= 1; index++) {
+                
+                    let px = lightUIPos.x + index * this.oneMapWidth
+                    let py = lightUIPos.y
+
+                    let lisaNode:Node = this.lisaHomeNodes[px + "_" + py]
+                    lisaNode.getComponent<SLightComponent>(SLightComponent).startFlash()
+                    lisaNode.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId,3)
+                    this.lightPosWithLightNode[px + "_" + py] = lisaNode
+
+                }
+                return
+            }
            
                 let sLightPrefabName = "Prefab/slight" + cityLevel
-                   
                 resources.load(sLightPrefabName, Prefab, (err, data) => {
                     if (err) {
                         console.log(err);
                         return
                     }
-                    console.log("add light2 = " + tokenId)
+                    // console.log("add light2 = " + tokenId)
                     for (let index = -1; index <= 1; index++) {
                 
                         let px = lightUIPos.x + index * this.oneMapWidth
@@ -830,51 +894,28 @@ export class MapController {
                         this.mapGroup.addChild(lightRefab);
                         if (cityLevel == 1) {//不同等级偏移量不一样
                             lightRefab.setPosition(px+ 38,py -38)
+                            lightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId,cityLevel)
                         } else {
                             lightRefab.setPosition(px+ 19,py - 19)
+                            lightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId,cityLevel)
                         }
                         this.lightPosWithLightNode[px + "_" + py] = lightRefab
                         
-                        lightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
+                        //是否是lisa的家
+                        // let lisaInfo = this.lisaData[city.id+""]
+                        // if (lisaInfo) {
+                        //     resources.load("Texture/pink_100x100v_normal/spriteFrame", SpriteFrame, (err, spriteFrame) => {
+                
+                        //         if (err) {
+                        //             console.log(err);
+                        //             return
+                        //         }
+                        //         lightRefab.getComponent(Sprite).spriteFrame = spriteFrame
+                        //     })
+                            
+                        // }
                     }  
                 })
-
-/**
-                if (this.sLightPrefabData) {
-                    let xlightRefab: Node = instantiate(this.sLightPrefabData);
-                    this.mapGroup.addChild(xlightRefab);
-                    if (cityLevel == 1) {//不同等级偏移量不一样
-                        xlightRefab.setPosition(px+ 38,py -38)
-                    } else {
-                        xlightRefab.setPosition(px+ 19,py - 19)
-                    }
-                    this.lightPosWithLightNode[px + "_" + py] = xlightRefab
-                    xlightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
-                    console.log("add light1 = " + tokenId)
-                }else{
-
-                    let sLightPrefabName = "Prefab/slight" + cityLevel
-                   
-                    resources.load(sLightPrefabName, Prefab, (err, data) => {
-                        if (err) {
-                            console.log(err);
-                            return
-                        }
-                        this.sLightPrefabData = data
-
-                        let lightRefab: Node = instantiate(data);
-                        this.mapGroup.addChild(lightRefab);
-                        if (cityLevel == 1) {//不同等级偏移量不一样
-                            lightRefab.setPosition(px+ 38,py -38)
-                        } else {
-                            lightRefab.setPosition(px+ 19,py - 19)
-                        }
-                        this.lightPosWithLightNode[px + "_" + py] = lightRefab
-                        console.log("add light2 = " + tokenId)
-                        lightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId)
-                    })
-                } */
-            // }
             
         }else{
             console.log("找不到townInfo townId=" + townId);

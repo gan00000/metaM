@@ -38,9 +38,9 @@ export class MainGame extends Component {
         
         MainGame.address = CUtil.getQueryVariable("address")
         
+        LoginTokenController.init()
         MapController.init()
         UIController.init()
-        LoginTokenController.init()
         // NtfsController.init()
         
        

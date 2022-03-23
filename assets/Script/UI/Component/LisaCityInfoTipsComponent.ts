@@ -16,6 +16,8 @@ export class LisaCityInfoTipsComponent extends Component{
     private infoData: Map<string, string>  = null
     
     private cityLevel = 0
+
+    public callback:Function = null
     
     start () {
 
@@ -28,6 +30,9 @@ export class LisaCityInfoTipsComponent extends Component{
         // this.planetText.getComponent(RichText).string = "<color=#00ff00>Planet:</color><color=#0fffff>Tain</color>"
        
         this.closeButton.on(Button.EventType.CLICK, () => {
+            if (this.callback) {
+                this.callback()
+            }
             this.node.removeFromParent()
             this.node.destroy()
            

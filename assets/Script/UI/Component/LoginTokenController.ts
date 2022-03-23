@@ -80,7 +80,12 @@ export class LoginTokenController {
             location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/map/"
         }, this)
 
+        this.initRequestData()
+    }
 
+    public static initRequestData()
+    {
+        
         if (MainGame.isLogin()) {
             this.tokenIdScrollView.active = true
             // this.pursrBtn.getComponent(Button).enabled = false
@@ -91,10 +96,7 @@ export class LoginTokenController {
             // this.pursrBtn.getComponent(Button).enabled = true
             this.pursrBtn.getComponent(Button).interactable = true
         }
-        // test
-        // this.requestTokenIds("0x2f2e99bcbe39D8407552E821e7F4F0F9592Dfcab",null, 1)
     }
-
 
     /**
      * addToParent

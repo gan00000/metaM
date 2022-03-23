@@ -18,6 +18,7 @@ export class LandTipsNode2Component extends Component{
     private landShowInfoNode:Node = null
 
     private index = 0
+    public callback:Function = null
 
     start () {
         
@@ -31,9 +32,12 @@ export class LandTipsNode2Component extends Component{
 
             MapController.mapCanMove = true
             MapController.mapCanScale = true
-
+            if (this.callback) {
+                this.callback(1)
+            }
             this.node.removeFromParent()
             this.node.destroy()
+            
         }) 
         
         this.previous.on(Button.EventType.CLICK, () => {
