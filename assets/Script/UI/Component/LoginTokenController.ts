@@ -17,7 +17,8 @@ export class LoginTokenController {
     private static mParent: Node = null
     private static buylandBtn: Node = null
     private static ntfStartBtn: Node = null
-    private static pursrBtn: Node = null
+    private static loginButton: Node = null
+    private static logoutButton: Node = null
     private static tokenIds:number[] = []
 
     private static sleep = async (ms) => {
@@ -37,7 +38,8 @@ export class LoginTokenController {
 
         this.buylandBtn = find("buyland", this.loginTokenInfoNode);
         this.ntfStartBtn = find("nft_start", this.loginTokenInfoNode);
-        this.pursrBtn = find("purseButton", this.loginTokenInfoNode);
+        this.loginButton = find("loginButton", this.loginTokenInfoNode);
+        this.logoutButton = find("logoutButton", this.loginTokenInfoNode);
         this.tokenIdScrollView = find("tokenScrollView", this.loginTokenInfoNode);
         //this.titleLabe = titleLabelNode.getComponent(Label);
 
@@ -74,10 +76,15 @@ export class LoginTokenController {
 
         }, this)
 
-        this.pursrBtn.on(Button.EventType.CLICK, () => {
-            console.log("pursebtn click")
+        this.loginButton.on(Button.EventType.CLICK, () => {
+            console.log("login click")
             // sys.openURL("https://metacitym.com/login/index.html?redirect=https://www.baidu.com/");
             location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/map/"
+        }, this)
+
+        this.logoutButton.on(Button.EventType.CLICK, () => {
+            console.log("logout click")
+            location.href = "https://metacitym.com/login/index.html"
         }, this)
 
         this.initRequestData()
@@ -88,21 +95,15 @@ export class LoginTokenController {
         
         if (MainGame.isLogin()) {
             this.tokenIdScrollView.active = true
-            // this.pursrBtn.getComponent(Button).enabled = false
-            this.pursrBtn.getComponent(Button).interactable = false
+            this.loginButton.active = false
+            this.logoutButton.active = true
+           
             this.requestTokenIds(MainGame.address,null, 1)
         }else{
             this.tokenIdScrollView.active = false
-            // this.pursrBtn.getComponent(Button).enabled = true
-            this.pursrBtn.getComponent(Button).interactable = true
+            this.loginButton.active = true
+            this.logoutButton.active = false
         }
-    }
-
-    /**
-     * addToParent
-     */
-    public addToParent(parent: Node) {
-
     }
 
     private static createTokenIdView()
@@ -111,7 +112,7 @@ export class LoginTokenController {
 
             this.tipsLabelNode.active = false
             
-            resources.load("Prefab/TokenIdLabel", Prefab, (err, data) => {
+            resources.load("Prefab/TokenIdItem", Prefab, (err, data) => {
                 if (err) {
                     console.log(err);
                 }
@@ -154,7 +155,8 @@ export class LoginTokenController {
             const tokenId = this.tokenIds[index];
 
             let itemprefab: Node = instantiate(data);
-            itemprefab.getComponent(Label).string = tokenId + "";
+            
+            itemprefab.getChildByName("tokenIdLabel").getComponent(Label).string = tokenId + "";
             //设置点击事件传递的内容
             itemprefab.getComponent(Button).clickEvents[0].customEventData = tokenId + "";
             this.tokenIdScrollViewContentNode.addChild(itemprefab);
@@ -170,7 +172,9 @@ export class LoginTokenController {
         }
     }
 
-    private static requestTokenIds(address:string,pageKey:string, times:number) {
+    private static async requestTokenIds(address:string,pageKey:string, times:number) {
+        
+        await this.sleep(1000)
         
         if (times != 1 && !pageKey) {
             return
@@ -213,6 +217,8 @@ export class LoginTokenController {
                 }
             
                 console.log("解析完成 key=" + pageKey)
+            }else{
+                this.tipsLabelNode.active = true
             }
             
         })
