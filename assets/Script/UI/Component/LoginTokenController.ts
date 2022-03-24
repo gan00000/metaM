@@ -122,7 +122,7 @@ export class LoginTokenController {
                 let uitfansform = itemprefabtemp.getComponent(UITransform)
                 
                 let itemHeight = uitfansform.height
-                let allHeight = (itemHeight  + 6) * (this.tokenIds.length / 2 + 1) + 8
+                let allHeight = (itemHeight  + 40) * (this.tokenIds.length / 2 + 2)
 
                 this.tokenIdScrollViewContentNode.getComponent(UITransform).height = allHeight
                 
