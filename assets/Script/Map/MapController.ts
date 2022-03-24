@@ -553,20 +553,36 @@ export class MapController {
                 
                 // this.getDataAndShowLandTips(1033,false)
                 
-                MapController.showLisaCityInfo(starName, cityName, landNum, cityLevelName, city, lisaInfo, cityLevel, townUIPos,callback);
+                MapController.showLisaCityInfo(true,starName, cityName, landNum, cityLevelName, city, lisaInfo, cityLevel, townUIPos,callback);
 
             } else {
                 
-                resources.load("Prefab/CityInfo", Prefab, (err, data) => {
+                // resources.load("Prefab/CityInfo", Prefab, (err, data) => {
+                //     if (err) {
+                //         console.log(err);
+                //         return
+                //     }
+                //     this.mCityInfo = instantiate(data);
+                //     this.mCityInfo.getComponent(CityInfoTipsComponent).updateData("",starName,cityName,landNum + "",cityLevelName,city.level)
+                //     this.uIParent.addChild(this.mCityInfo)
+                //     this.setTouchMove(this.mCityInfo)
+
+                //     MapController.setCityBlockBg(cityLevel, townUIPos);
+                // })
+
+                resources.load("Prefab/LisaCityTips", Prefab, (err, data) => {
                     if (err) {
                         console.log(err);
-                        return
+                        return;
                     }
                     this.mCityInfo = instantiate(data);
-                    this.mCityInfo.getComponent(CityInfoTipsComponent).updateData("",starName,cityName,landNum + "",cityLevelName,city.level)
-                    this.uIParent.addChild(this.mCityInfo)
-                    this.setTouchMove(this.mCityInfo)
+                    let mLisaCityInfoTipsComponent = this.mCityInfo.getComponent(LisaCityInfoTipsComponent)
+                    mLisaCityInfoTipsComponent.updateData(false,"", starName, cityName, landNum + "", cityLevelName, city.level,
+                        "", "", "", "", "", "");
+                    mLisaCityInfoTipsComponent.callback = callback
 
+                    this.uIParent.addChild(this.mCityInfo);
+                    this.setTouchMove(this.mCityInfo) 
                     MapController.setCityBlockBg(cityLevel, townUIPos);
                 })
             }
@@ -608,7 +624,7 @@ export class MapController {
         }
     }
 
-    private static showLisaCityInfo(starName: string, cityName: string, landNum: number, cityLevelName: string, city: any, lisaInfo: any, cityLevel: any, townUIPos: Vec3, callback:Function) {
+    private static showLisaCityInfo(isLisa:boolean,starName: string, cityName: string, landNum: number, cityLevelName: string, city: any, lisaInfo: any, cityLevel: any, townUIPos: Vec3, callback:Function) {
     
         resources.load("Prefab/LisaCityTips", Prefab, (err, data) => {
             if (err) {
@@ -617,11 +633,11 @@ export class MapController {
             }
             this.mCityInfo = instantiate(data);
             let mLisaCityInfoTipsComponent = this.mCityInfo.getComponent(LisaCityInfoTipsComponent)
-            mLisaCityInfoTipsComponent.updateData("", starName, cityName, landNum + "", cityLevelName, city.level,
+            mLisaCityInfoTipsComponent.updateData(true,"", starName, cityName, landNum + "", cityLevelName, city.level,
                 lisaInfo.tokenID, lisaInfo.landLevel, lisaInfo.townName, lisaInfo.landNo, lisaInfo.landPosx, lisaInfo.landPosy);
             mLisaCityInfoTipsComponent.callback = callback
             this.uIParent.addChild(this.mCityInfo);
-            this.setTouchMove(this.mCityInfo)
+            this.setTouchMove(this.mCityInfo) 
 /**
             if (cityLevel == 1) {
 

@@ -18,6 +18,7 @@ export class LisaCityInfoTipsComponent extends Component{
     private cityLevel = 0
 
     public callback:Function = null
+    private isLisa:boolean = true
     
     start () {
 
@@ -38,6 +39,42 @@ export class LisaCityInfoTipsComponent extends Component{
            
             MapController.resetCityInfoState();
         })
+
+        if (this.isLisa) {
+
+            let imageName = "Texture/LisaCityLevel_1/spriteFrame"
+            if (this.cityLevel == 2) {
+                //加载图片的方式，需要这样写
+                imageName = "Texture/LisaCityLevel_2/spriteFrame"
+            }
+            resources.load(imageName, SpriteFrame, (err, spriteFrame) => {
+                    
+                if (err) {
+                    console.log(err);
+                    return
+                }
+                this.homeCityBg.getComponent(Sprite).spriteFrame = spriteFrame
+            })
+     
+        } else {
+            
+            let imageName = "Texture/CityLevel_1/spriteFrame"
+            if (this.cityLevel == 2) {
+                //加载图片的方式，需要这样写
+                imageName = "Texture/CityLevel_2/spriteFrame"
+            }
+            resources.load(imageName, SpriteFrame, (err, spriteFrame) => {
+                    
+                if (err) {
+                    console.log(err);
+                    return
+                }
+                this.homeCityBg.getComponent(Sprite).spriteFrame = spriteFrame
+            })
+
+        }
+      
+
         if (!this.infoData) {
             return
         }
@@ -47,41 +84,31 @@ export class LisaCityInfoTipsComponent extends Component{
                 return
             }
             let height = 0
+            let index = 1
             for (let [key, value] of this.infoData) {
                 let itemNode = instantiate(data);
                 if (height==0) {
                     height = itemNode.getComponent(UITransform).height
                     this.cityHomeScrollViewContent.getComponent(UITransform).height = (this.infoData.size + 1) * (height + 10)
                 }
+
                 let xxxText = find("xxRichText",itemNode)
-                xxxText.getComponent(RichText).string = this.getRichString(key+": ", value)
+                let mValue = ""
+                if (index > 4) {
+                    mValue = this.getRichString2(key+": ", value)
+                }else{
+                    mValue = this.getRichString(key+": ", value)
+                }
+                xxxText.getComponent(RichText).string = mValue
                 this.cityHomeScrollViewContent.addChild(itemNode)
+                index = index + 1
             }
 
         })
 
-        if (this.cityLevel == 2) {
-            //加载图片的方式，需要这样写
-            resources.load("Texture/CityLevel_2/spriteFrame", SpriteFrame, (err, spriteFrame) => {
-                
-                if (err) {
-                    console.log(err);
-                    return
-                }
-
-                // if (nTexture2D) {
-                //     const spriteFrame = new SpriteFrame();
-                //     spriteFrame.texture = nTexture2D;
-                //     this.homeCityBg.getComponent(Sprite).spriteFrame = spriteFrame
-                // }
-
-                this.homeCityBg.getComponent(Sprite).spriteFrame = spriteFrame
-            })
-     
-        }
     }
 
-    public updateData(url:string, planet:string,cityName:string,totalLand:string,cityGrade:string, 
+    public updateData(isLisa:boolean,url:string, planet:string,cityName:string,totalLand:string,cityGrade:string, 
         cityLevel:number,tokenId:string,landLevel:string,townName:string, landNo:string, landPosx:string,
         landPosy:string) {
         console.log("updateData")
@@ -93,33 +120,50 @@ export class LisaCityInfoTipsComponent extends Component{
 // LAND NO ：
 // LAND POSX：
 // LAND POSY：
-
+        this.isLisa = isLisa
         this.cityLevel = cityLevel
-        this.infoData = new Map([
+        if (isLisa) {
+            
+            this.infoData = new Map([
+    
+               
+                ["PLANET",planet],
+                ["CITY", cityName],
+                ["TOTALLAND", totalLand],
+                ["CITY GRADE", cityGrade],
+        
+                [CUtil.getLocalString("LAND NAME"), "Lisa‘s Home"],
+                ["TOKEN ID", tokenId],
+                ["LAND LEVEL", landLevel],
+                ["TOWN", townName],
+                ["LAND NO",landNo + ""],
+                ["LAND POSX", landPosx + ""],
+                ["LAND POSY", landPosy + ""]
+               
+            ])
+        }else{
 
-            [CUtil.getLocalString("Land_Name"), "Lisa‘s Home"],
-            ["Planet",planet],
-            ["City", cityName],
-            ["TotalLand", totalLand],
-            ["City Grade", cityGrade],
+            this.infoData = new Map([
+    
+                ["PLANET",planet],
+                ["CITY", cityName],
+                ["TOTALLAND", totalLand],
+                ["CITY GRADE", cityGrade],
+               
+            ])
 
-            ["Token_ID", tokenId],
-            ["LAND_LEVEL", landLevel],
-            ["TOWN", townName],
-            ["LAND NO",landNo + ""],
-            ["LAND POSX", landPosx + ""],
-            ["LAND POSY", landPosy + ""]
-           
-        ])
-        // this.planetText.getComponent(RichText).string = this.getRichString("Planet:",planet)
-        // this.cityText.getComponent(RichText).string = this.getRichString("City:",city)
-        // this.totalLandText.getComponent(RichText).string = this.getRichString("TotalLand:",totalLand)
-        // this.cityGradeText.getComponent(RichText).string = this.getRichString("City Grade:",cityGrade)
+        }
+        
     
     }
 
     getRichString(title:string, value:string){
 
-        return "<color=#00f1e8>" + title + "</color><color=#f0b432>" + value + "</color>"
+        return "<color=#00fff6>" + title + "</color><color=#00fff6>" + value + "</color>"
+    }
+
+    getRichString2(title:string, value:string){
+
+        return "<color=#ff48da>" + title + "</color><color=#ff48da>" + value + "</color>"
     }
 }
