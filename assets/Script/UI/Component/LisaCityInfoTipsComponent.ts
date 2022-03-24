@@ -46,9 +46,13 @@ export class LisaCityInfoTipsComponent extends Component{
                 console.log(err);
                 return
             }
-
+            let height = 0
             for (let [key, value] of this.infoData) {
                 let itemNode = instantiate(data);
+                if (height==0) {
+                    height = itemNode.getComponent(UITransform).height
+                    this.cityHomeScrollViewContent.getComponent(UITransform).height = (this.infoData.size + 1) * (height + 10)
+                }
                 let xxxText = find("xxRichText",itemNode)
                 xxxText.getComponent(RichText).string = this.getRichString(key+": ", value)
                 this.cityHomeScrollViewContent.addChild(itemNode)
