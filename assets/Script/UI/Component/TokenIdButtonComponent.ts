@@ -5,9 +5,17 @@ const { ccclass, property } = _decorator;
 
 @ccclass('TokenIdButtonComponent')
 export class TokenIdButtonComponent extends Component {
+
+    private bgNode = null
+
+    public reset(){
+        this.bgNode.active = false
+    }
     
     start () {
 
+        this.bgNode = find("white_bg",this.node)
+        this.bgNode.active = false
     }
 
     btnClickCallback (event: Event, customEventData: string) {
@@ -16,7 +24,10 @@ export class TokenIdButtonComponent extends Component {
         const button = node.getComponent(Button);
         console.log(customEventData); // foobar
         let tokenId = parseInt(customEventData)
+        MapController.resetCityInfoState()
         MapController.getDataAndShowLandTips(tokenId,false,null)
+        MapController.mTokenIdButtonComponent = this
+        // this.bgNode.active = true
     }
     
 }

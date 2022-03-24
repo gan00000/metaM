@@ -2,9 +2,7 @@
 import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, sys, System, UITransform, RichText, SpriteFrame, Texture2D, Color } from 'cc';
 import { MainGame } from '../../MainGame';
 import { MapController } from '../../Map/MapController';
-import { CUtil } from '../../Utils/CUtil';
-import { UIController } from '../UIController';
-import { NtfsController } from './NtfsController';
+import { LandInfoTipsComponent } from './LandInfoTipsComponent';
 const { ccclass, property } = _decorator;
 
 @ccclass('LandTipsNode2Component')
@@ -88,7 +86,7 @@ export class LandTipsNode2Component extends Component{
     {
         MapController.getDataAndShowLandTips(tokenId,false, (tokenId,landUrl, cityInfoMap)=>{
 
-            this.landShowInfoNode.getComponent(NtfsController).updateDatas(tokenId+"", landUrl,cityInfoMap)
+            this.landShowInfoNode.getComponent(LandInfoTipsComponent).updateDatas(tokenId+"", landUrl,cityInfoMap)
         })
     }
     

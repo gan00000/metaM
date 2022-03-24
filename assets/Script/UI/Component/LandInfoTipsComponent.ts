@@ -5,8 +5,8 @@ import { CUtil } from '../../Utils/CUtil';
 import { UIController } from '../UIController';
 const { ccclass, property } = _decorator;
 
-@ccclass('NtfsController')
-export class NtfsController extends Component {
+@ccclass('LandInfoTipsComponent')
+export class LandInfoTipsComponent extends Component {
 
     public titleLabe: Label = null;
 
@@ -22,6 +22,11 @@ export class NtfsController extends Component {
     private tokenId: string = null
     private imageUrl: string = null
     private landDatas: Map<string, string>  = null
+
+    public reset()
+    {
+        
+    }
 
     start () {
 
@@ -56,9 +61,7 @@ export class NtfsController extends Component {
         this.closeNode.on(Button.EventType.CLICK, () => {
 
             if (this.node) {
-                this.node.removeFromParent()
-                this.node.destroy()
-                MapController.mNtfsControllerNode = null
+                MapController.resetCityInfoState()
             }
             
         }, this)

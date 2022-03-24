@@ -2,11 +2,12 @@ import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, fi
 import { CityInfoTipsComponent } from '../UI/Component/CityInfoTipsComponent';
 import { SLightComponent } from '../UI/Component/SLightComponent';
 import { LisaCityInfoTipsComponent } from '../UI/Component/LisaCityInfoTipsComponent';
-import { NtfsController } from '../UI/Component/NtfsController';
 
 import { UIController } from '../UI/UIController';
 import { MainGame } from './../MainGame';
 import { CUtil } from '../Utils/CUtil';
+import { LandInfoTipsComponent } from '../UI/Component/LandInfoTipsComponent';
+import { TokenIdButtonComponent } from '../UI/Component/TokenIdButtonComponent';
 
 export class MapController {
     private static mapInput: Node = null
@@ -63,7 +64,7 @@ export class MapController {
     public static mCityInfo:Node = null
     public static mClickCityBgNode:Node = null
 
-    public static mNtfsControllerNode: Node = null
+    // public static mNtfsControllerNode: Node = null
 
     private static loadDataFinish = 0
 
@@ -73,6 +74,8 @@ export class MapController {
     private static lisaHomeNodes = {}
 
     public static clickNodeOfSLightComponent:SLightComponent = null
+    public static mLandInfoTipsComponent:LandInfoTipsComponent = null
+    public static mTokenIdButtonComponent:TokenIdButtonComponent = null
 
     public static init() {
         this.mapInput = MainGame.find("MapInput")
@@ -648,6 +651,14 @@ export class MapController {
         if (this.clickNodeOfSLightComponent) {
             this.clickNodeOfSLightComponent.reset()
             this.clickNodeOfSLightComponent = null
+        } 
+        if (this.mLandInfoTipsComponent) {
+            this.mLandInfoTipsComponent.reset()
+            this.mLandInfoTipsComponent = null
+        }
+        if (this.mTokenIdButtonComponent) {
+            this.mTokenIdButtonComponent.reset()
+            this.mTokenIdButtonComponent = null
         }
         if (this.mCityInfo) {
             this.mCityInfo.removeFromParent();
@@ -800,26 +811,16 @@ export class MapController {
 
             console.log("lightUIPos Position x,y=",lightUIPos.x,lightUIPos.y)
             if (lightUIPos) {
-                
-                // let mapGroupPos = this.mapGroup.getPosition()
-                // let mapGroupScale = this.mapGroup.getScale()
-
-                // let lightNode:Node = this.lightPosWithLightNode[lightUIPos.x+"_"+lightUIPos.y]
-                // this.move(-(lightNode.getPosition().x * mapGroupScale.x + mapGroupPos.x),-(lightNode.getPosition().y * mapGroupScale.y + mapGroupPos.y))
-                
-                if (this.mNtfsControllerNode) {
-                    this.mNtfsControllerNode.removeFromParent()
-                    this.mNtfsControllerNode.destroy()
-                    this.mNtfsControllerNode=null
-                }
+                 
                 resources.load("Prefab/nfts_bg", Prefab, (err, data) => {
                     if (err) {
                         console.log(err);
                         return
                     }
-                    this.mNtfsControllerNode = instantiate(data);
-                    this.mNtfsControllerNode.getComponent(NtfsController).updateDatas(tokenId + "",landUrl,cityInfoMap)
-                    this.uIParent.addChild(this.mNtfsControllerNode)
+                    this.mCityInfo = instantiate(data);
+                    this.mLandInfoTipsComponent = this.mCityInfo.getComponent(LandInfoTipsComponent)
+                    this.mLandInfoTipsComponent.updateDatas(tokenId + "",landUrl,cityInfoMap)
+                    this.uIParent.addChild(this.mCityInfo)
                     // this.mNtfsControllerNode.setPosition(34 * this.mapGroup.scale.x, -16 * this.mapGroup.scale.y)
                     
                 })
@@ -978,7 +979,7 @@ export class MapController {
     }
    
     private static canMove() {
-        if (this.mNtfsControllerNode || this.mCityInfo || !this.mapCanMove) {
+        if (this.mCityInfo || !this.mapCanMove) {
             return false
         } else {
             return true
@@ -986,7 +987,7 @@ export class MapController {
     }
 
     private static canScale() {
-        if (this.mNtfsControllerNode || this.mCityInfo || !this.mapCanScale) {
+        if (this.mCityInfo || !this.mapCanScale) {
             return false
         } else {
             return true
