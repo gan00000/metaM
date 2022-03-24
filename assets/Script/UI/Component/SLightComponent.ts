@@ -2,11 +2,7 @@
 import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, sys, System, UITransform, RichText, SpriteFrame, Texture2D, AnimationComponent } from 'cc';
 import { MainGame } from '../../MainGame';
 import { MapController } from '../../Map/MapController';
-import { CUtil } from '../../Utils/CUtil';
-import { UIController } from '../UIController';
 import { LandTipsNode2Component } from './LandTipsNode2Component';
-import { NtfsController } from './NtfsController';
-import { SPageViewComponent } from './SPageViewComponent';
 const { ccclass, property } = _decorator;
 
 @ccclass('SLightComponent')
@@ -45,6 +41,12 @@ export class SLightComponent extends Component {
         this.lightBgClick = 0
         this.setNormalStatue()
     }
+    
+    public doClick(){
+        this.lightBgClick = 1
+        this.setClickStatue()
+        MapController.clickNodeOfSLightComponent = this
+    }
 
     start() {
 
@@ -60,19 +62,19 @@ export class SLightComponent extends Component {
 
             if (this.type == 3 && this.lisaData) {//粉红色才能进行次点击事件
 
-                MapController.getDataAndShowCityTips(this.lisaData.cityId, () => {
+                MapController.getDataAndShowCityTips(this.lisaData.cityId, () => {//显示lisa home
                     MapController.resetCityInfoState()
                 })
 
-                if (this.lightBgClick == 0) {
-                    this.lightBgClick = 1
-                    this.setClickStatue()
-                } else {
-                    this.lightBgClick = 0
-                    this.setNormalStatue()
-                }
-
-                MapController.clickNodeOfSLightComponent = this
+                // if (this.lightBgClick == 0) {
+                //     this.lightBgClick = 1
+                //     this.setClickStatue()
+                // } else {
+                //     this.lightBgClick = 0
+                //     this.setNormalStatue()
+                // }
+                this.doClick()
+                
             }
 
         })
@@ -101,17 +103,9 @@ export class SLightComponent extends Component {
                     }
                     
                     this.parent.addChild(mLandTipsNode2)
-
-                    if (this.lightBgClick == 0) {
-                        this.lightBgClick = 1
-                        this.setClickStatue()
-                    } else {
-                        this.lightBgClick = 0
-                        this.setNormalStatue()
-                    }
-    
-                    MapController.clickNodeOfSLightComponent = this
                     MapController.mCityInfo = mLandTipsNode2
+
+                    this.doClick()
 
                 })
 

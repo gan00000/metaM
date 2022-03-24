@@ -566,30 +566,7 @@ export class MapController {
                     this.mCityInfo.getComponent(CityInfoTipsComponent).updateData("",starName,cityName,landNum + "",cityLevelName,city.level)
                     this.uIParent.addChild(this.mCityInfo)
 
-                    if (cityLevel==1) {
-                        
-                        resources.load("Prefab/mapYellowClickBg", Prefab, (err, data) => {
-                            if (err) {
-                                console.log(err);
-                                return
-                            }
-                            this.mClickCityBgNode = instantiate(data);
-                            this.mapGroup.addChild(this.mClickCityBgNode)
-                            this.mClickCityBgNode.setPosition(townUIPos.x + 38,townUIPos.y - 38)
-                        })
-
-                    }else{
-
-                        resources.load("Prefab/mapWhiteClickBg", Prefab, (err, data) => {
-                            if (err) {
-                                console.log(err);
-                                return
-                            }
-                            this.mClickCityBgNode = instantiate(data);
-                            this.mapGroup.addChild(this.mClickCityBgNode)
-                            this.mClickCityBgNode.setPosition(townUIPos.x + 19,townUIPos.y - 19)
-                        })
-                    }
+                    MapController.setCityBlockBg(cityLevel, townUIPos);
                 })
             }
         }
@@ -601,6 +578,33 @@ export class MapController {
         // this.getDataAndShowLandTips(1033);
 
         
+    }
+
+    private static setCityBlockBg(cityLevel: any, townUIPos: Vec3) {
+        if (cityLevel == 1) {
+
+            resources.load("Prefab/mapYellowClickBg", Prefab, (err, data) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                this.mClickCityBgNode = instantiate(data);
+                this.mapGroup.addChild(this.mClickCityBgNode);
+                this.mClickCityBgNode.setPosition(townUIPos.x + 38, townUIPos.y - 38);
+            });
+
+        } else {
+
+            resources.load("Prefab/mapWhiteClickBg", Prefab, (err, data) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                this.mClickCityBgNode = instantiate(data);
+                this.mapGroup.addChild(this.mClickCityBgNode);
+                this.mClickCityBgNode.setPosition(townUIPos.x + 19, townUIPos.y - 19);
+            });
+        }
     }
 
     private static showLisaCityInfo(starName: string, cityName: string, landNum: number, cityLevelName: string, city: any, lisaInfo: any, cityLevel: any, townUIPos: Vec3, callback:Function) {
@@ -807,9 +811,9 @@ export class MapController {
             callback(tokenId,landUrl,cityInfoMap)
             return
         }
-            let lightUIPos = this.lightPosWithTokenId[tokenId]
+            let lightUIPos = this.lightPosWithTokenId[tokenId] //点击左边tokenId
 
-            console.log("lightUIPos Position x,y=",lightUIPos.x,lightUIPos.y)
+            // console.log("lightUIPos Position x,y=",lightUIPos.x,lightUIPos.y)
             if (lightUIPos) {
                  
                 resources.load("Prefab/nfts_bg", Prefab, (err, data) => {
@@ -824,6 +828,23 @@ export class MapController {
                     // this.mNtfsControllerNode.setPosition(34 * this.mapGroup.scale.x, -16 * this.mapGroup.scale.y)
                     
                 })
+
+                let key = lightUIPos.x + "_" + lightUIPos.y
+                let lightNode:Node = this.lightPosWithLightNode[key]
+                if (lightNode) {
+                    
+                    lightNode.getComponent(SLightComponent).doClick()
+                }
+
+                // let lisaInfo = this.lisaData[city.id+""]
+                // if (lisaInfo) {
+                //     let key = lightUIPos.x + "_" + lightUIPos.y
+                //     let lightNode = this.lightPosWithLightNode[key]
+                //     lightNode.getComponent<SLightComponent>(SLightComponent).doClick()
+                // }else{
+
+                //     MapController.setCityBlockBg(city.level,lightUIPos)
+                // }
         
             }
         }
