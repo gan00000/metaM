@@ -565,6 +565,7 @@ export class MapController {
                     this.mCityInfo = instantiate(data);
                     this.mCityInfo.getComponent(CityInfoTipsComponent).updateData("",starName,cityName,landNum + "",cityLevelName,city.level)
                     this.uIParent.addChild(this.mCityInfo)
+                    this.setTouchMove(this.mCityInfo)
 
                     MapController.setCityBlockBg(cityLevel, townUIPos);
                 })
@@ -620,6 +621,7 @@ export class MapController {
                 lisaInfo.tokenID, lisaInfo.landLevel, lisaInfo.townName, lisaInfo.landNo, lisaInfo.landPosx, lisaInfo.landPosy);
             mLisaCityInfoTipsComponent.callback = callback
             this.uIParent.addChild(this.mCityInfo);
+            this.setTouchMove(this.mCityInfo)
 /**
             if (cityLevel == 1) {
 
@@ -825,6 +827,7 @@ export class MapController {
                     this.mLandInfoTipsComponent = this.mCityInfo.getComponent(LandInfoTipsComponent)
                     this.mLandInfoTipsComponent.updateDatas(tokenId + "",landUrl,cityInfoMap)
                     this.uIParent.addChild(this.mCityInfo)
+                    this.setTouchMove(this.mCityInfo)
                     // this.mNtfsControllerNode.setPosition(34 * this.mapGroup.scale.x, -16 * this.mapGroup.scale.y)
                     
                 })
@@ -1015,4 +1018,42 @@ export class MapController {
         }
     }
 
+    /**
+     * 弹框移动
+     */
+    public static setTouchMove(moveNode:Node) {
+
+        if (moveNode) {
+            
+            moveNode.on(Input.EventType.TOUCH_MOVE, (event: EventTouch) => {
+                let touches = event.getAllTouches()
+                let touchCount = touches.length
+    
+                if (touchCount == 1) {
+                    this.alertViewMove(moveNode,event.getDeltaX(), event.getDeltaY())
+                } 
+            })
+        }
+
+    }
+
+    private static alertViewMove(moveNode:Node, deltaX: number, deltaY: number) {
+
+        console.log("deltaX,deltaY",deltaX, deltaY)
+
+        let x = moveNode.position.x + deltaX
+        let y = moveNode.position.y + deltaY
+
+        // let posYRange = this.getPosYRange()
+        // y = clamp(y, posYRange.y, posYRange.x)
+
+        // let posXRange = this.getPosXRange()
+        // if (x > posXRange.x) {
+        //     x -= posXRange.x
+        // } else if (x < posXRange.y) {
+        //     x -= posXRange.y
+        // }
+
+        moveNode.setPosition(x, y, 0)
+    }
 }

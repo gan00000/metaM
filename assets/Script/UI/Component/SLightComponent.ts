@@ -104,7 +104,7 @@ export class SLightComponent extends Component {
                     
                     this.parent.addChild(mLandTipsNode2)
                     MapController.mCityInfo = mLandTipsNode2
-
+                    MapController.setTouchMove(mLandTipsNode2)
                     this.doClick()
 
                 })
