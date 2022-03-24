@@ -1,8 +1,7 @@
 
-import { _decorator, Component, Node, find } from 'cc';
+import { _decorator, Component, Node, find, director } from 'cc';
 import { MapController } from './Map/MapController';
 import { LoginTokenController } from './UI/Component/LoginTokenController';
-import { NtfsController } from './UI/Component/NtfsController';
 import { UIController } from './UI/UIController';
 import { CUtil } from './Utils/CUtil';
 const { ccclass } = _decorator;
@@ -41,9 +40,7 @@ export class MainGame extends Component {
         LoginTokenController.init()
         MapController.init()
         UIController.init()
-        // NtfsController.init()
-        
-       
+ 
     }
 
     public update(deltaTime: number) {
