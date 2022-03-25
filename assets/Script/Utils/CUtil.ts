@@ -49,13 +49,14 @@ export class CUtil {
         let xhr = new XMLHttpRequest();
         
         xhr.onreadystatechange = function () {
+
+            console.log("onreadystatechange")
             if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)) {
                 var response = xhr.responseText;
                 // console.log("http response:" + response);
                 callback(response)
-                return
+                
             }
-            callback(null)
         };
         xhr.open("GET", url, true);
         xhr.withCredentials = true
