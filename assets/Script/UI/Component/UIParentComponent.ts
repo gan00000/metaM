@@ -1,22 +1,22 @@
 
-import { _decorator, Component, Node, Vec3 } from 'cc';
-import { CUtil } from '../../Utils/CUtil';
+import { _decorator, Component, Node } from 'cc';
+import { BaseComponent } from './BaseComponent';
 const { ccclass, property } = _decorator;
 
 /**
  * Predefined variables
- * Name = BaseComponent
- * DateTime = Fri Mar 25 2022 12:33:58 GMT+0800 (中国标准时间)
+ * Name = UIParentComponent
+ * DateTime = Fri Mar 25 2022 16:01:34 GMT+0800 (中国标准时间)
  * Author = 372129081
- * FileBasename = BaseComponent.ts
- * FileBasenameNoExtension = BaseComponent
- * URL = db://assets/Script/UI/Component/BaseComponent.ts
+ * FileBasename = UIParentComponent.ts
+ * FileBasenameNoExtension = UIParentComponent
+ * URL = db://assets/Script/UI/Component/UIParentComponent.ts
  * ManualUrl = https://docs.cocos.com/creator/3.4/manual/en/
  *
  */
  
-@ccclass('BaseComponent')
-export class BaseComponent extends Component {
+@ccclass('UIParentComponent')
+export class UIParentComponent extends BaseComponent {
     // [1]
     // dummy = '';
 
@@ -24,17 +24,8 @@ export class BaseComponent extends Component {
     // @property
     // serializableDummy = 0;
 
-    scaleVec3:Vec3
-
     start () {
-
-         this.scaleVec3 = CUtil.getScaleRatio()
-        if (this.scaleVec3) {
-            let nodeScale = this.node.getScale()
-            let newScale = new Vec3(this.scaleVec3.x * nodeScale.x,this.scaleVec3.y * nodeScale.y,this.scaleVec3.z * nodeScale.z)
-            this.node.setScale(newScale)
-        }
-        
+        // super.start()
     }
 
     // update (deltaTime: number) {

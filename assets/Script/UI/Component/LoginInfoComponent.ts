@@ -1,4 +1,4 @@
-import { _decorator, Node, find, Label, resources, Prefab, instantiate, Button, sys, UITransform, Component } from 'cc';
+import { _decorator, Node, find, Label, resources, Prefab, instantiate, Button, sys, UITransform, Component, Widget } from 'cc';
 import { MainGame } from '../../MainGame';
 import { MapController } from '../../Map/MapController';
 import { CUtil } from '../../Utils/CUtil';
@@ -27,8 +27,18 @@ export class LoginInfoComponent extends BaseComponent {
     //     })
     // }
     
+    private orginWidget:Widget = null
+
     start(){
+        this.orginWidget = this.node.getComponent(Widget)
         super.start()
+
+        if (this.scaleVec3 && this.orginWidget) {
+            
+            this.orginWidget.top = this.orginWidget.top * this.scaleVec3.y
+            this.orginWidget.right = this.orginWidget.right * this.scaleVec3.x
+        }
+
         this.initNode()
     }
 
