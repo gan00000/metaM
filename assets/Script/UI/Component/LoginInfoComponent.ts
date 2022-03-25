@@ -97,7 +97,7 @@ export class LoginInfoComponent extends BaseComponent {
 
         this.logoutButton.on(Button.EventType.CLICK, () => {
             console.log("logout click")
-            location.href = "https://metacitym.com/login/index.html"
+            location.href = "https://metacitym.com/map/"
         }, this)
 
         this.initRequestData()
