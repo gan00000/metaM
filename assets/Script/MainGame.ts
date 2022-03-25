@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, find, director } from 'cc';
+import { _decorator, Component, Node, find, director, view } from 'cc';
 import { MapController } from './Map/MapController';
 import { LoginTokenController } from './UI/Component/LoginTokenController';
 import { UIController } from './UI/UIController';
@@ -40,7 +40,7 @@ export class MainGame extends Component {
         LoginTokenController.init()
         MapController.init()
         UIController.init()
- 
+        
     }
 
     public update(deltaTime: number) {
