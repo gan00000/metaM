@@ -2,11 +2,12 @@
 import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, sys, System, UITransform, RichText, SpriteFrame, Texture2D, Color } from 'cc';
 import { MainGame } from '../../MainGame';
 import { MapController } from '../../Map/MapController';
+import { BaseComponent } from './BaseComponent';
 import { LandInfoTipsComponent } from './LandInfoTipsComponent';
 const { ccclass, property } = _decorator;
 
 @ccclass('LandTipsNode2Component')
-export class LandTipsNode2Component extends Component{
+export class LandTipsNode2Component extends BaseComponent{
 
     private previous:Node = null
     private next:Node = null
@@ -19,7 +20,7 @@ export class LandTipsNode2Component extends Component{
     public callback:Function = null
 
     start () {
-        
+        super.start()
         this.previous = find("previous",this.node) 
         this.next = find("next",this.node) 
         this.closeBtn = find("btn_close",this.node)

@@ -4,10 +4,11 @@ import { MainGame } from '../../MainGame';
 import { MapController } from '../../Map/MapController';
 import { CUtil } from '../../Utils/CUtil';
 import { UIController } from '../UIController';
+import { BaseComponent } from './BaseComponent';
 const { ccclass, property } = _decorator;
 
 @ccclass('LisaCityInfoTipsComponent')
-export class LisaCityInfoTipsComponent extends Component {
+export class LisaCityInfoTipsComponent extends BaseComponent {
 
     private cityHomeScrollViewContent: Node = null
     private closeButton: Node = null
@@ -23,25 +24,9 @@ export class LisaCityInfoTipsComponent extends Component {
 
 
     start() {
-
+        super.start()
         this.orginUITransform = this.node.getComponent(UITransform)
-        let nVisibleSizeInPixel = view.getVisibleSizeInPixel()
-        let nDesignResolutionSize = view.getDesignResolutionSize()
-        let width = nVisibleSizeInPixel.width
-        let height = nVisibleSizeInPixel.height
-        console.log("nVisibleSizeInPixel =", nVisibleSizeInPixel)
-        console.log("nDesignResolutionSize =", nDesignResolutionSize)
-        if (height > width) {
-            let scale = width / nDesignResolutionSize.width
-            if (scale < 1) {
-
-                let scaleVec3 = new Vec3(scale, scale, scale)
-                this.node.setScale(scaleVec3)
-
-            }
-
-        }
-
+       
         this.homeCityBg = find("homeCityBg", this.node)
 
         this.cityHomeScrollViewContent = find("cityHomeScrollView/view/content", this.node);

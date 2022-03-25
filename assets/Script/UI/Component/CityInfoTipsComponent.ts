@@ -4,10 +4,11 @@ import { MainGame } from '../../MainGame';
 import { MapController } from '../../Map/MapController';
 import { CUtil } from '../../Utils/CUtil';
 import { UIController } from '../UIController';
+import { BaseComponent } from './BaseComponent';
 const { ccclass, property } = _decorator;
 
 @ccclass('CityInfoTipsComponent')
-export class CityInfoTipsComponent extends Component{
+export class CityInfoTipsComponent extends BaseComponent{
 
     public landBg: Node = null;
     public planetText: Node = null;
@@ -28,7 +29,7 @@ export class CityInfoTipsComponent extends Component{
     private cityLevel:number = 0
     
     start () {
-
+        super.start()
         this.mParent = this.node//MainGame.find("UIParent")
         this.landBg = find("land_bg", this.mParent)
 

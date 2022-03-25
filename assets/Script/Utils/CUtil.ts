@@ -1,10 +1,30 @@
 
-import { _decorator, Node, resources, Prefab, instantiate } from 'cc';
+import { _decorator, Node, resources, Prefab, instantiate, view, Vec3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 
 @ccclass('CUtil')
 export class CUtil {
+
+    //为了屏幕适配，设置单独某个窗口缩放比例
+    public static getScaleRatio(){
+        
+        let nVisibleSizeInPixel = view.getVisibleSizeInPixel()
+        let nDesignResolutionSize = view.getDesignResolutionSize()
+        let width = nVisibleSizeInPixel.width
+        let height = nVisibleSizeInPixel.height
+        console.log("nVisibleSizeInPixel =", nVisibleSizeInPixel)
+        console.log("nDesignResolutionSize =", nDesignResolutionSize)
+        if (height > width) {
+            let scale = width / nDesignResolutionSize.width
+            if (scale < 1) {
+                let scaleVec3 = new Vec3(scale, scale, scale)
+                return scaleVec3
+
+            }
+        }
+        return null
+    }
 
     public static getLocalString(key:string) {
     

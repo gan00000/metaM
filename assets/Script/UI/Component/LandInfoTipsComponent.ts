@@ -3,10 +3,11 @@ import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, r
 import { MapController } from '../../Map/MapController';
 import { CUtil } from '../../Utils/CUtil';
 import { UIController } from '../UIController';
+import { BaseComponent } from './BaseComponent';
 const { ccclass, property } = _decorator;
 
 @ccclass('LandInfoTipsComponent')
-export class LandInfoTipsComponent extends Component {
+export class LandInfoTipsComponent extends BaseComponent {
 
     public titleLabe: Label = null;
 
@@ -29,7 +30,10 @@ export class LandInfoTipsComponent extends Component {
     }
 
     start () {
-
+        if (!(this.node.getParent().name == "LandTipsNode2")) {
+            
+            super.start()
+        }
         this.ntfsNode = this.node
         let testBtn = find("TestButton", this.ntfsNode);
         this.bgNode = find("bgNode", this.ntfsNode);
