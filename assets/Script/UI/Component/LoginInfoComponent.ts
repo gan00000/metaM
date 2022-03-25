@@ -1,40 +1,41 @@
-
-import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, sys, System, UITransform } from 'cc';
+import { _decorator, Node, find, Label, resources, Prefab, instantiate, Button, sys, UITransform, Component } from 'cc';
 import { MainGame } from '../../MainGame';
 import { MapController } from '../../Map/MapController';
 import { CUtil } from '../../Utils/CUtil';
-import { UIController } from '../UIController';
+import { BaseComponent } from './BaseComponent';
 const { ccclass, property } = _decorator;
 
-@ccclass('LoginTokenController')
-export class LoginTokenController {
+@ccclass('LoginInfoComponent')
+export class LoginInfoComponent extends BaseComponent {
+    
 
-    public static tokenIdScrollView: Node = null;
-    public static tokenIdScrollViewContentNode: Node = null;
-    private static loginTokenInfoNode: Node = null
-    private static tipsLabelNode: Node = null
+    private  tokenIdScrollView: Node = null;
+    private  tokenIdScrollViewContentNode: Node = null;
+    private  loginTokenInfoNode: Node = null
+    private  tipsLabelNode: Node = null
 
-    private static mParent: Node = null
-    private static buylandBtn: Node = null
-    private static ntfStartBtn: Node = null
-    private static loginButton: Node = null
-    private static logoutButton: Node = null
-    private static tokenIds:number[] = []
+    private  mParent: Node = null
+    private  buylandBtn: Node = null
+    private  ntfStartBtn: Node = null
+    private  loginButton: Node = null
+    private  logoutButton: Node = null
+    private  tokenIds:number[] = []
 
-    private static sleep = async (ms) => {
-        return new Promise((resolve, reject)=>{
-            setTimeout(resolve,ms)
-        })
+    // private sleep = async (ms) => {
+    //     return new Promise((resolve, reject)=>{
+    //         setTimeout(resolve,ms)
+    //     })
+    // }
+    
+    start(){
+        super.start()
+        this.initNode()
     }
-    public static getNftsNode(): Node {
 
-        return this.loginTokenInfoNode
-    }
-
-    public static init() {
+    private initNode() {
 
         this.mParent = MainGame.find("UIParent")
-        this.loginTokenInfoNode = find("loginTokenInfo", this.mParent)
+        this.loginTokenInfoNode =this.node
 
         this.buylandBtn = find("buyland", this.loginTokenInfoNode);
         this.ntfStartBtn = find("nft_start", this.loginTokenInfoNode);
@@ -90,7 +91,7 @@ export class LoginTokenController {
         this.initRequestData()
     }
 
-    public static initRequestData()
+    private  initRequestData()
     {
         
         if (MainGame.isLogin()) {
@@ -106,7 +107,7 @@ export class LoginTokenController {
         }
     }
 
-    private static createTokenIdView()
+    private  createTokenIdView()
     {   
         if (this.tokenIds.length > 0) {
 
@@ -126,7 +127,7 @@ export class LoginTokenController {
 
                 this.tokenIdScrollViewContentNode.getComponent(UITransform).height = allHeight
                 
-                LoginTokenController.refreshTokenUi(data);
+                this.refreshTokenUi(data);
             })
 
             // for (let index = 0; index < this.tokenIds.length; index++) {
@@ -150,7 +151,7 @@ export class LoginTokenController {
         }
     }
 
-    private static async refreshTokenUi(data: Prefab) {
+    private refreshTokenUi(data: Prefab) {
         for (let index = 0; index < this.tokenIds.length; index++) {
             const tokenId = this.tokenIds[index];
 
@@ -163,18 +164,18 @@ export class LoginTokenController {
 
             //在地图上显示发光点
             MapController.getDataAndShowLandTips(tokenId, true, null);
-            if (index == 0 || index == 1) {
-                await this.sleep(200)
-            }else{
-                await this.sleep(50)
-            }
+            // if (index == 0 || index == 1) {
+            //     await this.sleep(200)
+            // }else{
+            //     await this.sleep(50)
+            // }
            
         }
     }
 
-    private static async requestTokenIds(address:string,pageKey:string, times:number) {
+    private requestTokenIds(address:string,pageKey:string, times:number) {
         
-        await this.sleep(1000)
+        // this.sleep(1000)
         
         if (times != 1 && !pageKey) {
             return
@@ -203,7 +204,7 @@ export class LoginTokenController {
                         let hextokenId = element.id.tokenId
                         let tokenId_num = CUtil.hex2Number(hextokenId)
                         if (tokenId_num && hextokenId) {
-                            LoginTokenController.tokenIds.push(tokenId_num)
+                            this.tokenIds.push(tokenId_num)
                             // this.tokenIds.join
                         }
                     }

@@ -1,7 +1,6 @@
 
 import { _decorator, Component, Node, find, director, view } from 'cc';
 import { MapController } from './Map/MapController';
-import { LoginTokenController } from './UI/Component/LoginTokenController';
 import { UIController } from './UI/UIController';
 import { CUtil } from './Utils/CUtil';
 const { ccclass } = _decorator;
@@ -37,7 +36,7 @@ export class MainGame extends Component {
         
         MainGame.address = CUtil.getQueryVariable("address")
         
-        LoginTokenController.init()
+        // LoginTokenController.init()
         MapController.init()
         UIController.init()
         
