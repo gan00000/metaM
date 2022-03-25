@@ -13,6 +13,7 @@ export class LoginInfoComponent extends BaseComponent {
     private  tokenIdScrollViewContentNode: Node = null;
     private  loginTokenInfoNode: Node = null
     private  tipsLabelNode: Node = null
+    private  loadingLabelNode: Node = null
 
     private  mParent: Node = null
     private  buylandBtn: Node = null
@@ -21,11 +22,11 @@ export class LoginInfoComponent extends BaseComponent {
     private  logoutButton: Node = null
     private  tokenIds:number[] = []
 
-    // private sleep = async (ms) => {
-    //     return new Promise((resolve, reject)=>{
-    //         setTimeout(resolve,ms)
-    //     })
-    // }
+    private sleep = async (ms) => {
+        return new Promise((resolve, reject)=>{
+            setTimeout(resolve,ms)
+        })
+    }
     
     private orginWidget:Widget = null
 
@@ -55,7 +56,8 @@ export class LoginInfoComponent extends BaseComponent {
         //this.titleLabe = titleLabelNode.getComponent(Label);
 
         this.tokenIdScrollViewContentNode = find("view/content", this.tokenIdScrollView);
-        // this.tipsLabelNode = find("tipsLabel", this.tokenIdScrollView);
+        this.loadingLabelNode = find("loadingLabel", this.tokenIdScrollView);
+        this.loadingLabelNode.active = false
         this.tipsLabelNode = find("noDataTips", this.tokenIdScrollView);
         this.tipsLabelNode.active = false
 
@@ -108,8 +110,8 @@ export class LoginInfoComponent extends BaseComponent {
             this.tokenIdScrollView.active = true
             this.loginButton.active = false
             this.logoutButton.active = true
+            this.startRequestData()
            
-            this.requestTokenIds(MainGame.address,null, 1)
         }else{
             this.tokenIdScrollView.active = false
             this.loginButton.active = true
@@ -117,8 +119,16 @@ export class LoginInfoComponent extends BaseComponent {
         }
     }
 
+    private  async startRequestData(){
+
+        this.loadingLabelNode.active = true
+        await this.sleep(1000)
+        this.requestTokenIds(MainGame.address,null, 1)
+    }
+
     private  createTokenIdView()
     {   
+        console.log("createTokenIdView")
         if (this.tokenIds.length > 0) {
 
             this.tipsLabelNode.active = false
@@ -139,29 +149,13 @@ export class LoginInfoComponent extends BaseComponent {
                 
                 this.refreshTokenUi(data);
             })
-
-            // for (let index = 0; index < this.tokenIds.length; index++) {
-            //     const element = this.tokenIds[index];
-                
-            //     resources.load("Prefab/TokenIdLabel", Prefab, (err, data) => {
-            //         if (err) {
-            //             console.log(err);
-            //         }
-            //         let itemprefab: Node = instantiate(data);
-            //         let uitfansform = itemprefab.getComponent(UITransform)
-
-            //         itemprefab.getComponent(Label).string = element + ""
-            //         this.tokenIdScrollViewContentNode.addChild(itemprefab);
-            //     })
- 
-            // }
             
         }else{
             this.tipsLabelNode.active = true
         }
     }
 
-    private refreshTokenUi(data: Prefab) {
+    private async refreshTokenUi(data: Prefab) {
         for (let index = 0; index < this.tokenIds.length; index++) {
             const tokenId = this.tokenIds[index];
 
@@ -174,18 +168,16 @@ export class LoginInfoComponent extends BaseComponent {
 
             //在地图上显示发光点
             MapController.getDataAndShowLandTips(tokenId, true, null);
-            // if (index == 0 || index == 1) {
-            //     await this.sleep(200)
-            // }else{
-            //     await this.sleep(50)
-            // }
+            if (index == 0 || index == 1) {
+                await this.sleep(200)
+            }else{
+                await this.sleep(50)
+            }
            
         }
     }
 
     private requestTokenIds(address:string,pageKey:string, times:number) {
-        
-        // this.sleep(1000)
         
         if (times != 1 && !pageKey) {
             return
@@ -198,8 +190,9 @@ export class LoginInfoComponent extends BaseComponent {
 
         }
         // let testUrl = "https://act.gamamobi.com/pre/nft/getTokenIds.web?owner=0x2f2e99bcbe39D8407552E821e7F4F0F9592Dfcab&contractAddress=0x82016d4ad050ef4784e282b82a746d3e01df23bf&_=" + Date.parse(new Date().toString())
-       
+        
         CUtil.httpPequest(reqUrl,(result)=>{
+            
             if (result) {
                 
                 let resultJson = JSON.parse(result,)
@@ -224,11 +217,14 @@ export class LoginInfoComponent extends BaseComponent {
                     this.requestTokenIds(address, pageKey, 2)
                 }else{
                     console.log("全部请求完成")
+                    this.loadingLabelNode.active = false
                     this.createTokenIdView()
                 }
             
                 console.log("解析完成 key=" + pageKey)
             }else{
+                console.log("request error:"+ times)
+                this.loadingLabelNode.active = false
                 this.tipsLabelNode.active = true
             }
             
