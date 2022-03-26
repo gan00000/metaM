@@ -776,7 +776,7 @@ export class MapController {
         
         if (isLight) {
             
-            this.createLightNode(tokenId,townId,city)
+            this.createLightNode(tokenId,townId,city,callback)
             
         }else{
 
@@ -869,7 +869,7 @@ export class MapController {
         }
     }
 
-    private static createLightNode(tokenId:number, townId:number, city:any){
+    private static createLightNode(tokenId:number, townId:number, city:any, callback:Function){
 
         if (this.worldTownsWithTownId[townId]) {
             let cityLevel = city.level;
@@ -899,6 +899,7 @@ export class MapController {
                     }
 
                 }
+                callback()
                 return
             }
 
@@ -916,6 +917,7 @@ export class MapController {
                     this.lightPosWithLightNode[px + "_" + py] = lisaNode
 
                 }
+                callback()
                 return
             }
            
@@ -941,25 +943,13 @@ export class MapController {
                             lightRefab.getComponent<SLightComponent>(SLightComponent).addTokenId(tokenId,cityLevel)
                         }
                         this.lightPosWithLightNode[px + "_" + py] = lightRefab
-                        
-                        //是否是lisa的家
-                        // let lisaInfo = this.lisaData[city.id+""]
-                        // if (lisaInfo) {
-                        //     resources.load("Texture/pink_100x100v_normal/spriteFrame", SpriteFrame, (err, spriteFrame) => {
-                
-                        //         if (err) {
-                        //             console.log(err);
-                        //             return
-                        //         }
-                        //         lightRefab.getComponent(Sprite).spriteFrame = spriteFrame
-                        //     })
-                            
-                        // }
-                    }  
+                    } 
+                    callback()
                 })
             
         }else{
             console.log("找不到townInfo townId=" + townId);
+            callback()
         }
         
     }

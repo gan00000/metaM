@@ -149,13 +149,15 @@ export class LoginInfoComponent extends BaseComponent {
                 
                 this.refreshTokenUi(data);
             })
+
+            this.showLightOnMap()
             
         }else{
             this.tipsLabelNode.active = true
         }
     }
 
-    private async refreshTokenUi(data: Prefab) {
+    private refreshTokenUi(data: Prefab) {
         for (let index = 0; index < this.tokenIds.length; index++) {
             const tokenId = this.tokenIds[index];
 
@@ -165,16 +167,28 @@ export class LoginInfoComponent extends BaseComponent {
             //设置点击事件传递的内容
             itemprefab.getComponent(Button).clickEvents[0].customEventData = tokenId + "";
             this.tokenIdScrollViewContentNode.addChild(itemprefab);
-
-            //在地图上显示发光点
-            MapController.getDataAndShowLandTips(tokenId, true, null);
-            if (index == 0 || index == 1) {
-                await this.sleep(200)
-            }else{
-                await this.sleep(50)
-            }
            
         }
+    }  
+    private lightIndex = 0
+    private showLightOnMap() {
+        this.lightIndex = 0
+        this.showLightOnMapLoop()
+    }
+    private showLightOnMapLoop() {
+        if (this.tokenIds.length > 0) {
+            
+            const tokenId = this.tokenIds[this.lightIndex];
+               //在地图上显示发光点
+            MapController.getDataAndShowLandTips(tokenId, true, ()=>{
+                if (this.lightIndex < this.tokenIds.length-1) {
+                    this.lightIndex = this.lightIndex + 1
+                    this.showLightOnMapLoop()
+                }
+               
+            });
+        }
+
     }
 
     private requestTokenIds(address:string,pageKey:string, times:number) {
