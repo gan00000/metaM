@@ -64,13 +64,14 @@ export class LandTipsNode2Component extends BaseComponent{
         if (this.lightTokenIds.length>0) {
             
             let tokenId = this.lightTokenIds[0] //首个显示0
-            MapController.getDataAndShowLandTips(tokenId,false, (tokenId,landUrl, cityInfoMap)=>{
+            // MapController.getDataAndShowLandTips(tokenId,false, (tokenId,landUrl, cityInfoMap)=>{
     
-                // this.tokenIdMapLandUrl[tokenId] = landUrl
-                // this.tokenIdMapCityInfo[tokenId] = cityInfoMap
-                this.showData(tokenId)
+            //     // this.tokenIdMapLandUrl[tokenId] = landUrl
+            //     // this.tokenIdMapCityInfo[tokenId] = cityInfoMap
+            //     this.showData(tokenId)
     
-            })
+            // })
+            this.showData(tokenId)
         }
 
         this.checkBtnStatue()
