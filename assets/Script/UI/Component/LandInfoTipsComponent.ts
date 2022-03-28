@@ -26,6 +26,8 @@ export class LandInfoTipsComponent extends BaseComponent {
 
     private land_name:string = null
 
+    private LAND_NAME_LABEL:RichText = null
+
     public reset()
     {
         
@@ -79,73 +81,45 @@ export class LandInfoTipsComponent extends BaseComponent {
     
                 if (result) {
                     let resultJson = JSON.parse(result)
-                    if (!resultJson) {
-                        return
-                    }
-                    let attributes =  resultJson.attributes
-                    if (attributes) {
-                        
-                        for (let index = 0; index < attributes.length; index++) {
-                            const element = attributes[index];
-                            if (element.trait_type=="land_name") {
-                                this.land_name = element.value
-                                break
+                    if (resultJson) {
+                       
+                        let attributes =  resultJson.attributes
+                        if (attributes) {
+                            
+                            for (let index = 0; index < attributes.length; index++) {
+                                const element = attributes[index];
+                                if (element.trait_type=="land_name") {
+                                    this.land_name = element.value
+                                    break
+                                }
+                                
                             }
-                            
-                        }
-                        if (this.land_name && this.land_name != "") {
-                            
-                            this.landDatas.set("LAND NAME", this.land_name)
-                            this.updateDatas(this.tokenId, this.imageUrl, this.landDatas)
                         }
                     }
                 }
+                this.updateDatas(this.tokenId, this.imageUrl, this.landDatas)
             })
+        }else{
+
+            this.updateDatas(this.tokenId, this.imageUrl, this.landDatas)
         }
  
-       
-        this.updateDatas(this.tokenId, this.imageUrl, this.landDatas)
     }
 
-    // public init(calllback:Function) {
-    //     // [3]
-
-    //     // UIController.create("nfts_bg", false, (node) => {
-
-    //     //     this.ntfsNode = node;
-    //         // })
-    //     resources.load("Prefab/nfts_bg",Prefab,(err,data)=>{
-    //         if (err) {
-    //             console.log(err);
-    //         }
-    //         this.ntfsNode = instantiate(data);
-    //         //this.mapInput.addChild(ntfs_prefab);
-
-            
-
-    //         calllback(this.ntfsNode)
-    //     })
-
-    // }
 
     /**
      * updateDatastokenId:S
      */
     public updateDatas(tokenId: string, imageUrl: string, landDatas: Map<string, string>) {
 
-        // if (imageUrl.startsWith("https://")) {
-        //     imageUrl = imageUrl.replace("https://","http://")
-        // }
-
-        // if (imageUrl.endsWith(".jpg")) {
-        //     imageUrl = imageUrl.replace(".jpg",".png")
-        // }
-        // imageUrl = imageUrl.replace("https://static-download2.metacitym.com/","https://static-src.metacitym.com/")
-        // imageUrl = imageUrl + "?" + Date.parse(new Date().toString()) 
-        // console.log("imageUrl=",imageUrl)
         this.tokenId = tokenId
         this.imageUrl = imageUrl
         this.landDatas = landDatas
+
+        if (this.land_name) {
+            
+            this.landDatas.set("LAND NAME", this.land_name)
+        }
 
         if (!this.ntfsNode) {
             return
@@ -175,15 +149,17 @@ export class LandInfoTipsComponent extends BaseComponent {
 
         // let itemH = 0
         // 使用对象解析
-        this.proScrollView_contentNode.removeAllChildren()
-        for (let [key, value] of landDatas) {
-            // console.log(key, value);
+        this.proScrollView_contentNode.removeAllChildren()//删除原来的
+        resources.load("Prefab/proItemNodePrefab", Prefab, (err, data) => {
+            if (err) {
+                console.log(err);
+                return
+            }
+            this.proScrollView_contentNode.removeAllChildren()//删除原来的
 
-            resources.load("Prefab/proItemNodePrefab", Prefab, (err, data) => {
-                if (err) {
-                    console.log(err);
-                    return
-                }
+            for (let [key, value] of landDatas) {
+                // console.log(key, value);
+    
                 let itemInfoNode: Node = instantiate(data);
                 // if (itemH == 0) {
                 //     itemH = itemInfoNode.getComponent(UITransform).height
@@ -196,8 +172,13 @@ export class LandInfoTipsComponent extends BaseComponent {
                 xValueLabel.string = this.setValueText(value)
                 this.proScrollView_contentNode.addChild(itemInfoNode);
 
-            })
-        }
+                if (key=="LAND NAME") {
+                    this.LAND_NAME_LABEL = xValueLabel
+                }
+    
+            }
+
+        })
 
     }
 
