@@ -226,9 +226,9 @@ export class MapController {
             let touches = event.getAllTouches()
             let touchCount = touches.length
 
-            if (!this.canMove()) {
-                return
-            }
+            // if (!this.canMove()) {
+            //     return
+            // }
 
             if (touchCount == 1) {
                 this.move(event.getDeltaX(), event.getDeltaY())
@@ -258,9 +258,9 @@ export class MapController {
         })
 
         input.on(Input.EventType.MOUSE_WHEEL, (event: EventMouse) => {
-            if (!this.canScale()) {
-                return
-            }
+            // if (!this.canScale()) {
+            //     return
+            // }
             this.scale(this.mouseWheelRate * event.getScrollY(), event.getUILocationX(), event.getUILocationY())
         })
 
