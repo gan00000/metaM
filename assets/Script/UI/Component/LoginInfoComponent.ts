@@ -232,6 +232,13 @@ export class LoginInfoComponent extends BaseComponent {
                 }else{
                     console.log("全部请求完成")
                     this.loadingLabelNode.active = false
+
+                    if (this.tokenIds.length > 0) {
+                        this.tokenIds.sort((a,b)=>{
+
+                            return a-b
+                        })
+                    }
                     this.createTokenIdView()
                 }
             
