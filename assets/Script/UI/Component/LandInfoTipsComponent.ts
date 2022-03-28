@@ -24,6 +24,8 @@ export class LandInfoTipsComponent extends BaseComponent {
     private imageUrl: string = null
     private landDatas: Map<string, string>  = null
 
+    private land_name:string = null
+
     public reset()
     {
         
@@ -69,6 +71,38 @@ export class LandInfoTipsComponent extends BaseComponent {
             }
             
         }, this)
+
+        if (!this.land_name && this.landDatas) {
+           
+            // https://metacitym.gamamobi.com/mcm/api/land?token=3
+            CUtil.httpPequest("https://metacitym.gamamobi.com/mcm/api/land?token=" + this.tokenId,(result)=>{
+    
+                if (result) {
+                    let resultJson = JSON.parse(result)
+                    if (!resultJson) {
+                        return
+                    }
+                    let attributes =  resultJson.attributes
+                    if (attributes) {
+                        
+                        for (let index = 0; index < attributes.length; index++) {
+                            const element = attributes[index];
+                            if (element.trait_type=="land_name") {
+                                this.land_name = element.value
+                                break
+                            }
+                            
+                        }
+                        if (this.land_name && this.land_name != "") {
+                            
+                            this.landDatas.set("LAND NAME", this.land_name)
+                            this.updateDatas(this.tokenId, this.imageUrl, this.landDatas)
+                        }
+                    }
+                }
+            })
+        }
+ 
        
         this.updateDatas(this.tokenId, this.imageUrl, this.landDatas)
     }

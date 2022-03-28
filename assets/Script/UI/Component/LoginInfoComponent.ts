@@ -209,7 +209,7 @@ export class LoginInfoComponent extends BaseComponent {
             
             if (result) {
                 
-                let resultJson = JSON.parse(result,)
+                let resultJson = JSON.parse(result)
                 let ownedNfts = resultJson.ownedNfts
                 let pageKey = resultJson.pageKey
                 let totalCount = resultJson.totalCount
