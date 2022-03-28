@@ -109,9 +109,9 @@ export class LisaCityInfoTipsComponent extends BaseComponent {
                 let xxxText = find("xxRichText", itemNode)
                 let mValue = ""
                 if (index > 4) {
-                    mValue = this.getRichString2(key + ": ", value)
+                    mValue = this.getRichString2(key + " : ", value)
                 } else {
-                    mValue = this.getRichString(key + ": ", value)
+                    mValue = this.getRichString(key + " : ", value)
                 }
                 xxxText.getComponent(RichText).string = mValue
                 this.cityHomeScrollViewContent.addChild(itemNode)
@@ -145,28 +145,28 @@ export class LisaCityInfoTipsComponent extends BaseComponent {
             this.infoData = new Map([
 
 
-                ["PLANET", planet],
-                ["CITY", cityName],
-                ["TOTALLAND", totalLand],
-                ["CITY GRADE", cityGrade],
+                [CUtil.getLocalString("planet"), planet],
+                [CUtil.getLocalString("city"), cityName],
+                [CUtil.getLocalString("total_land"), totalLand],
+                [CUtil.getLocalString("city_level"), cityLevel + ""],
 
-                [CUtil.getLocalString("LAND NAME"), "Lisa‘s Home"],
-                ["TOKEN ID", tokenId],
-                ["LAND LEVEL", landLevel],
-                ["TOWN", townName],
-                ["LAND NO", landNo + ""],
-                ["LAND POSX", landPosx + ""],
-                ["LAND POSY", landPosy + ""]
+                [CUtil.getLocalString("land_name"), "Lisa‘s Home"],
+                [CUtil.getLocalString("tokenId"), tokenId],
+                [CUtil.getLocalString("land_level"), landLevel],
+                [CUtil.getLocalString("town"), townName],
+                [CUtil.getLocalString("land_no"), landNo + ""],
+                [CUtil.getLocalString("land_posx"), landPosx + ""],
+                [CUtil.getLocalString("land_posy"), landPosy + ""]
 
             ])
         } else {
 
             this.infoData = new Map([
 
-                ["PLANET", planet],
-                ["CITY", cityName],
-                ["TOTALLAND", totalLand],
-                ["CITY GRADE", cityGrade],
+                [CUtil.getLocalString("planet"), planet],
+                [CUtil.getLocalString("city"), cityName],
+                [CUtil.getLocalString("total_land"), totalLand],
+                [CUtil.getLocalString("city_level"), cityLevel + ""],
 
             ])
 

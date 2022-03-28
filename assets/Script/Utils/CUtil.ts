@@ -1,5 +1,6 @@
 
 import { _decorator, Node, resources, Prefab, instantiate, view, Vec3 } from 'cc';
+import { MapController } from '../Map/MapController';
 const { ccclass, property } = _decorator;
 
 
@@ -27,7 +28,10 @@ export class CUtil {
     }
 
     public static getLocalString(key:string) {
-    
+        let v = MapController.languageDic[key]
+        if (v) {
+            return v
+        }
         return key
     }
 

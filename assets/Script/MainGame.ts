@@ -14,6 +14,7 @@ export class MainGame extends Component {
 
     // address=0xd31Fd81F500e2e8F5588A91568B4bfbd2c96C508
     public static address: string = null
+    public static language: string = null
 
     public static find(name: string) {
         return find(name, MainGame.mainCanvas)
@@ -23,7 +24,7 @@ export class MainGame extends Component {
      * name
      */
     public static isLogin() {
-        if (MainGame.address) {
+        if (MainGame.address && MainGame.address != "") {
             return true
         } else {
             return false
@@ -35,7 +36,11 @@ export class MainGame extends Component {
         MainGame.mainCamera = find("Camera", MainGame.mainCanvas)
         
         MainGame.address = CUtil.getQueryVariable("address")
-        
+        MainGame.language = CUtil.getQueryVariable("language")
+        if (!MainGame.language) {
+            MainGame.language = "en"
+        }
+
         // LoginTokenController.init()
         MapController.init()
         UIController.init()

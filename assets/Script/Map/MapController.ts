@@ -73,6 +73,8 @@ export class MapController {
 
     private static lisaHomeNodes = {}
 
+    public static languageDic = {}
+
     public static clickNodeOfSLightComponent:SLightComponent = null
     public static mLandInfoTipsComponent:LandInfoTipsComponent = null
     public static mTokenIdButtonComponent:TokenIdButtonComponent = null
@@ -87,6 +89,17 @@ export class MapController {
         this.mapTiled = find("Map1/Tiled", this.mapGroup).getComponent<TiledMap>(TiledMap)
 
         var input = this.mapInput
+
+        //加载语言
+        resources.load('Json/language/' + MainGame.language, (err, data: any) => {
+            // console.log("err, data = ", err, data)
+            if (err) {
+                console.log(err);
+                return
+            }
+            this.languageDic = data.json
+
+        })
 
         //加载所有城镇及其对应的tile 坐标
         resources.load('Json/MapData/map', (err, data: any) => {

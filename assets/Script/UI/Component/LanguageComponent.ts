@@ -45,31 +45,46 @@ export class LanguageComponent extends Component{
         this.zhLabelNode.on(Button.EventType.CLICK, () => {
             
             this.languageBgNode.active = false
+            this.switchTo("zh_TW")
         })
 
         this.enLabelNode.on(Button.EventType.CLICK, () => {
             
             this.languageBgNode.active = false
+            this.switchTo("en")
         })
 
 
         this.krLabelNode.on(Button.EventType.CLICK, () => {
             
             this.languageBgNode.active = false
+            this.switchTo("kr")
         })
 
 
         this.taiLabelNode.on(Button.EventType.CLICK, () => {
             
             this.languageBgNode.active = false
+            this.switchTo("th")
         })
 
         this.jpLabelNode.on(Button.EventType.CLICK, () => {
             
             this.languageBgNode.active = false
+            this.switchTo("jp")
         })
 
         
+    }
+
+
+    switchTo(language:string){
+
+        let url =  "https://metacitym.com/map/?language=" +  language
+        if (MainGame.isLogin) {
+            url = url + "&address=" + MainGame.address
+        }
+       location.href = url
     }
 
 }
