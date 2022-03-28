@@ -1,0 +1,13 @@
+{
+    "planet":"행성",
+    "city":"도시",
+    "total_land":"토지 수량",
+    "city_level":"도시등급",
+    "land_name":"토지명",
+    "tokenId":"TOKEN ID",
+    "land_level":"토지등급",
+    "town":"마을",
+    "land_no":"토지번호",
+    "land_posx":"토지좌표X",
+    "land_posy":"토지좌표Y"
+}
