@@ -21,11 +21,11 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 46
+      "__id__": 44
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 50
+      "__id__": 48
     },
     "_id": "a34bf2ff-9fd3-40cd-b8a5-170e7312bf84"
   },
@@ -50,16 +50,16 @@
     "_active": true,
     "_components": [
       {
+        "__id__": 40
+      },
+      {
+        "__id__": 41
+      },
+      {
         "__id__": 42
       },
       {
         "__id__": 43
-      },
-      {
-        "__id__": 44
-      },
-      {
-        "__id__": 45
       }
     ],
     "_prefab": null,
@@ -458,13 +458,13 @@
     "_active": true,
     "_components": [
       {
+        "__id__": 37
+      },
+      {
+        "__id__": 38
+      },
+      {
         "__id__": 39
-      },
-      {
-        "__id__": 40
-      },
-      {
-        "__id__": 41
       }
     ],
     "_prefab": null,
@@ -545,9 +545,6 @@
       },
       {
         "__id__": 36
-      },
-      {
-        "__id__": 38
       }
     ],
     "removedComponents": []
@@ -638,26 +635,9 @@
       "__id__": 35
     },
     "propertyPath": [
-      "_active"
+      "_right"
     ],
-    "value": false
-  },
-  {
-    "__type__": "cc.TargetInfo",
-    "localID": [
-      "cf38+zO+lBvp8EYgxKgGKn",
-      "564Ddd399NdIImpTbpmJqN"
-    ]
-  },
-  {
-    "__type__": "CCPropertyOverrideInfo",
-    "targetInfo": {
-      "__id__": 37
-    },
-    "propertyPath": [
-      "_alignFlags"
-    ],
-    "value": 33
+    "value": 10
   },
   {
     "__type__": "cc.TargetInfo",
@@ -668,12 +648,12 @@
   {
     "__type__": "CCPropertyOverrideInfo",
     "targetInfo": {
-      "__id__": 37
+      "__id__": 35
     },
     "propertyPath": [
-      "_right"
+      "_top"
     ],
-    "value": 10
+    "value": 0
   },
   {
     "__type__": "cc.UITransform",
@@ -817,7 +797,7 @@
     "fileId": "a34bf2ff-9fd3-40cd-b8a5-170e7312bf84",
     "targetOverrides": [
       {
-        "__id__": 47
+        "__id__": 45
       }
     ],
     "nestedPrefabInstanceRoots": [
@@ -835,7 +815,7 @@
       "__id__": 23
     },
     "sourceInfo": {
-      "__id__": 48
+      "__id__": 46
     },
     "propertyPath": [
       "_target"
@@ -844,7 +824,7 @@
       "__id__": 23
     },
     "targetInfo": {
-      "__id__": 49
+      "__id__": 47
     }
   },
   {
@@ -862,19 +842,19 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 51
+      "__id__": 49
     },
     "shadows": {
-      "__id__": 52
+      "__id__": 50
     },
     "_skybox": {
-      "__id__": 53
+      "__id__": 51
     },
     "fog": {
-      "__id__": 54
+      "__id__": 52
     },
     "octree": {
-      "__id__": 55
+      "__id__": 53
     }
   },
   {

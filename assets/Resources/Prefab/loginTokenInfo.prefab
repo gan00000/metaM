@@ -1003,11 +1003,11 @@
       "height": 40
     },
     "_startAxis": 0,
-    "_paddingLeft": 0,
-    "_paddingRight": 0,
+    "_paddingLeft": 2,
+    "_paddingRight": 2,
     "_paddingTop": 6,
     "_paddingBottom": 6,
-    "_spacingX": 10,
+    "_spacingX": 6,
     "_spacingY": 8,
     "_verticalDirection": 1,
     "_horizontalDirection": 0,
@@ -2936,7 +2936,7 @@
     "propertyPath": [
       "_active"
     ],
-    "value": true
+    "value": false
   },
   {
     "__type__": "cc.TargetInfo",
@@ -4182,10 +4182,10 @@
     "__prefab": {
       "__id__": 265
     },
-    "_alignFlags": 0,
+    "_alignFlags": 33,
     "_target": null,
     "_left": 420,
-    "_right": 0,
+    "_right": 10,
     "_top": 0,
     "_bottom": 0,
     "_horizontalCenter": 0,

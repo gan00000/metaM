@@ -81,6 +81,7 @@ export class LanguageComponent extends Component{
     switchTo(language:string){
 
         let url =  "https://metacitym.com/map/?language=" +  language
+        // let url =  "http://localhost:7456/?language=" +  language
         if (MainGame.isLogin) {
             url = url + "&address=" + MainGame.address
         }
