@@ -9,5 +9,6 @@
     "town":"마을",
     "land_no":"토지번호",
     "land_posx":"토지좌표X",
-    "land_posy":"토지좌표Y"
+    "land_posy":"토지좌표Y",
+    "land_size":"토지 사이즈"
 }

@@ -9,5 +9,6 @@
     "town":"TOWN",
     "land_no":"LAND NO",
     "land_posx":"LAND POSX",
-    "land_posy":"LAND POSY"
+    "land_posy":"LAND POSY",
+    "land_size":"LAND SIZE"
 }

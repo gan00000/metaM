@@ -827,16 +827,16 @@ export class MapController {
         // 'PLANET', 'CITY LEVEL', 'LAND LEVEL', 'CITY', 'TOWN',
         //  'LAND NO', 'LAND POSX', 'LAND POSY', 'LAND SIZE', 'LAND NAME'
         let cityInfoMap = new Map([
-            ["PLANET",starContent],
-            ["CITY LEVEL", cityLevel],
-            ["LAND LEVEL", landLevel],
-            ["CITY", cityName],
-            ["TOWN", townId + "Town"],
-            ["LAND NO",landId + ""],
-            ["LAND POSX", landx + ""],
-            ["LAND POSY", landy + ""],
-            ["LAND SIZE", landSize + ""],
-            ["LAND NAME", landName]
+            [CUtil.getLocalString("planet"),starContent],
+            [CUtil.getLocalString("city_level"), cityLevel],
+            [CUtil.getLocalString("land_level"), landLevel],
+            [CUtil.getLocalString("city"), cityName],
+            [CUtil.getLocalString("town"), townId + "Town"],
+            [CUtil.getLocalString("land_no"),landId + ""],
+            [CUtil.getLocalString("land_posx"), landx + ""],
+            [CUtil.getLocalString("land_posy"), landy + ""],
+            [CUtil.getLocalString("land_size"), landSize + ""]
+            
         ])
         if (callback) {
             callback(tokenId,landUrl,cityInfoMap)

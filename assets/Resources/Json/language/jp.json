@@ -9,5 +9,6 @@
     "town":"町",
     "land_no":"土地ナンバー",
     "land_posx":"土地座標X",
-    "land_posy":"土地座標Y"
+    "land_posy":"土地座標Y",
+    "land_size":"土地サイズ"
 }

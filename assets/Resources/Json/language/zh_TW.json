@@ -9,5 +9,6 @@
     "town":"城鎮",
     "land_no":"土地編號",
     "land_posx":"土地座標X",
-    "land_posy":"土地座標Y"
+    "land_posy":"土地座標Y",
+    "land_size":"土地尺寸"
 }

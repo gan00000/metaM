@@ -26,8 +26,6 @@ export class LandInfoTipsComponent extends BaseComponent {
 
     private land_name:string = null
 
-    private LAND_NAME_LABEL:RichText = null
-
     public reset()
     {
         
@@ -118,7 +116,7 @@ export class LandInfoTipsComponent extends BaseComponent {
 
         if (this.land_name) {
             
-            this.landDatas.set("LAND NAME", this.land_name)
+            this.landDatas.set(CUtil.getLocalString("land_name"), this.land_name)
         }
 
         if (!this.ntfsNode) {
@@ -172,10 +170,6 @@ export class LandInfoTipsComponent extends BaseComponent {
                 xValueLabel.string = this.setValueText(value)
                 this.proScrollView_contentNode.addChild(itemInfoNode);
 
-                if (key=="LAND NAME") {
-                    this.LAND_NAME_LABEL = xValueLabel
-                }
-    
             }
 
         })
