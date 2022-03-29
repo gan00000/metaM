@@ -58,8 +58,8 @@ export class MapController {
     // private static lightTownPosTag = {}
     private static lightPosNode = {}
     //发光点对应的townId:{}坐标
-    private static lightPosWithTokenId = {}
-    private static lightPosWithLightNode = {}
+    public static lightPosWithTokenId = {}
+    public static lightPosWithLightNode = {}
 
     public static mCityInfo:Node = null
     public static mClickCityBgNode:Node = null

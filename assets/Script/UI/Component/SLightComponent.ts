@@ -55,7 +55,7 @@ export class SLightComponent extends Component {
         this.lightBgSprite = this.node.getComponent(Sprite)
 
         this.flashNode = find("pink_flash", this.node)
-       this.flashSprite = this.flashNode.getComponent(Sprite)
+        this.flashSprite = this.flashNode.getComponent(Sprite)
         this.node.on(Button.EventType.CLICK, () => {
 
             console.log("slight click = ", this.lightBgClick)
