@@ -77,7 +77,7 @@ export class LoginInfoComponent extends BaseComponent {
 
             if (!MainGame.isLogin()) {
                 // alert("请先登录")
-                location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/map/"
+                this.goToLoginUrl()
                 return
             }
 
@@ -91,18 +91,25 @@ export class LoginInfoComponent extends BaseComponent {
 
         this.loginButton.on(Button.EventType.CLICK, () => {
             console.log("login click")
-            // sys.openURL("https://metacitym.com/login/index.html?redirect=https://www.baidu.com/");
-            location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/map/"
+            this.goToLoginUrl()
         }, this)
 
         this.logoutButton.on(Button.EventType.CLICK, () => {
             console.log("logout click")
-            location.href = "https://metacitym.com/map/"
+            location.href = "https://metacitym.com/map/?language=" + MainGame.language
         }, this)
 
         this.initRequestData()
     }
 
+    goToLoginUrl(){
+        if (MainGame.language) {
+            location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/map/?language=" + MainGame.language
+        }else{
+
+            location.href = "https://metacitym.com/login/index.html?redirect=https://metacitym.com/map/"
+        }
+    }
     private  initRequestData()
     {
         

@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, find, director, view } from 'cc';
+import { _decorator, Component, Node, find, director, view, sys } from 'cc';
 import { MapController } from './Map/MapController';
 import { UIController } from './UI/UIController';
 import { CUtil } from './Utils/CUtil';
@@ -24,7 +24,7 @@ export class MainGame extends Component {
      * name
      */
     public static isLogin() {
-        if (MainGame.address && MainGame.address != "") {
+        if (MainGame.address && MainGame.address != "" && MainGame.address != "null") {
             return true
         } else {
             return false
@@ -45,6 +45,7 @@ export class MainGame extends Component {
         MapController.init()
         UIController.init()
         
+        sys.BrowserType
     }
 
     public update(deltaTime: number) {
