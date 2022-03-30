@@ -150,7 +150,7 @@ export class LoginInfoComponent extends BaseComponent {
                 let uitfansform = itemprefabtemp.getComponent(UITransform)
                 
                 let itemHeight = uitfansform.height
-                let allHeight = (itemHeight  + 40) * (this.tokenIds.length / 2 + 2)
+                let allHeight = (itemHeight  + 8) * (this.tokenIds.length / 2 + 2)
 
                 this.tokenIdScrollViewContentNode.getComponent(UITransform).height = allHeight
                 

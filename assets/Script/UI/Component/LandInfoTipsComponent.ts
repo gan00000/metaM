@@ -117,6 +117,8 @@ export class LandInfoTipsComponent extends BaseComponent {
         if (this.land_name) {
             
             this.landDatas.set(CUtil.getLocalString("land_name"), this.land_name)
+        }else{
+            this.landDatas.set(CUtil.getLocalString("land_name"), "")
         }
 
         if (!this.ntfsNode) {
