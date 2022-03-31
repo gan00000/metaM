@@ -32,6 +32,7 @@ export class MapController {
     private static mouseWheelRate: number = 0.0001
     private static touchZoomRate: number = 0.0012
     private static touchBaseHeight: number = 1080
+    private static touchMoveRate: number = 0.5
 
     private static lastTouchPos1: Vec2 = null
     private static lastTouchPos2: Vec2 = null
@@ -268,6 +269,7 @@ export class MapController {
 
                 this.lastTouchPos2.x = curX2
                 this.lastTouchPos2.y = curY2
+
             }
 
             if(Math.abs(event.getDeltaX()) >= 1 || Math.abs(event.getDeltaY()) >= 1){
@@ -1065,8 +1067,12 @@ export class MapController {
 
         console.log("deltaX,deltaY",deltaX, deltaY)
 
-        let x = moveNode.position.x + deltaX
-        let y = moveNode.position.y + deltaY
+        let scale_y = 1
+        if (view.getScaleY() > 1) {
+            scale_y = view.getScaleY()
+        }
+        let x = moveNode.position.x + deltaX / scale_y
+        let y = moveNode.position.y + deltaY / scale_y
 
         // let posYRange = this.getPosYRange()
         // y = clamp(y, posYRange.y, posYRange.x)

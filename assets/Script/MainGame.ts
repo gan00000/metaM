@@ -45,7 +45,8 @@ export class MainGame extends Component {
         MapController.init()
         UIController.init()
         
-        sys.BrowserType
+        // console.log(screen.availHeight,screen.availWidth,screen.height,screen.width,screen.orientation,screen.pixelDepth)
+        // console.log(view.getVisibleSize(),view.getScaleX(),view.getScaleY())
     }
 
     public update(deltaTime: number) {
