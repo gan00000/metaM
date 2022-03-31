@@ -12,6 +12,8 @@ export class TokenIdButtonComponent extends Component {
     private bgNode = null
     private parent:Node = null
 
+    private clicking = 0
+
     public reset(){
         this.bgNode.active = false
     }
@@ -25,6 +27,10 @@ export class TokenIdButtonComponent extends Component {
 
     btnClickCallback (event: Event, customEventData: string) {
         // 这里 event 是一个 Touch Event 对象，你可以通过 event.target 取到事件的发送节点
+
+        if (this.clicking == 1) {//防止双击过快
+            return
+        }
         const node = event.target as unknown as Node;
         const button = node.getComponent(Button);
         console.log(customEventData); // foobar
@@ -40,10 +46,13 @@ export class TokenIdButtonComponent extends Component {
         if (!lightUIPos) {
             return
         }
+        this.clicking = 1
         resources.load("Prefab/LandTipsNode2", Prefab, (err, data) => {
+            this.clicking = 0
             if (err) {
                 console.log(err);
             }
+            MapController.resetCityInfoState()
             let mLandTipsNode2: Node = instantiate(data);
             let mLandTipsNode2Component = mLandTipsNode2.getComponent(LandTipsNode2Component)
             mLandTipsNode2Component.setData(tokenIds)
