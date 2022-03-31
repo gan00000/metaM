@@ -1,4 +1,4 @@
-import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset, Prefab, instantiate, Sprite, SpriteFrame, AnimationComponent} from 'cc';
+import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset, Prefab, instantiate, Sprite, SpriteFrame, AnimationComponent, view} from 'cc';
 import { CityInfoTipsComponent } from '../UI/Component/CityInfoTipsComponent';
 import { SLightComponent } from '../UI/Component/SLightComponent';
 import { LisaCityInfoTipsComponent } from '../UI/Component/LisaCityInfoTipsComponent';
@@ -99,6 +99,11 @@ export class MapController {
             }
             this.languageDic = data.json
 
+        })
+
+        view.setResizeCallback(()=>{
+            console.log("setResizeCallback");
+            this.move(0.1,0.1)
         })
 
         //加载所有城镇及其对应的tile 坐标
