@@ -165,11 +165,12 @@ export class LandInfoTipsComponent extends BaseComponent {
                 //     itemH = itemInfoNode.getComponent(UITransform).height
                 //     this.proScrollView_contentNode.getComponent(UITransform).height = itemH * (landDatas.size / 3 + 1) + landDatas.size / 3 * 10
                 // }
-                let xTitleLabel = find("itemNameLabel", itemInfoNode).getComponent(RichText)
-                let xValueLabel = find("itemValueLabel", itemInfoNode).getComponent(RichText)
+                let xTitleLabel = find("itemNameLabel", itemInfoNode).getComponent(Label)
+                let xValueLabel = find("itemValueLabel", itemInfoNode).getComponent(Label)
                 
-                xTitleLabel.string = this.setTitleText(key)
-                xValueLabel.string = this.setValueText(value)
+                // xTitleLabel.string = this.setTitleText(key)
+                xTitleLabel.string = key
+                xValueLabel.string = value//this.setValueText(value)
                 this.proScrollView_contentNode.addChild(itemInfoNode);
 
             }
