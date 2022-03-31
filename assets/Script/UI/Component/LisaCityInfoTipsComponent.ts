@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, sys, System, UITransform, RichText, SpriteFrame, Texture2D, view, Vec3 } from 'cc';
+import { _decorator, Component, Node, find, Sprite, Label, Layout, ScrollView, resources, Prefab, instantiate, Button, sys, System, UITransform, RichText, SpriteFrame, Texture2D, view, Vec3, Color, color } from 'cc';
 import { MainGame } from '../../MainGame';
 import { MapController } from '../../Map/MapController';
 import { CUtil } from '../../Utils/CUtil';
@@ -106,14 +106,17 @@ export class LisaCityInfoTipsComponent extends BaseComponent {
                     this.cityHomeScrollViewContent.getComponent(UITransform).height = (this.infoData.size + 1) * (height + 10)
                 }
 
-                let xxxText = find("xxRichText", itemNode)
+                // let xxxText = find("xxRichText", itemNode)
+                let xxxText = find("xxLabel", itemNode)
                 let mValue = ""
                 if (index > 4) {
-                    mValue = this.getRichString2(key + " : ", value)
+                    mValue = key + " : " + value//this.getRichString2(key + " : ", value)
+                    xxxText.getComponent(Label).color = new Color("#ff48da")
                 } else {
-                    mValue = this.getRichString(key + " : ", value)
+                    mValue =  key + " : " + value //this.getRichString(key + " : ", value)
+                   
                 }
-                xxxText.getComponent(RichText).string = mValue
+                xxxText.getComponent(Label).string = mValue
                 this.cityHomeScrollViewContent.addChild(itemNode)
                 index = index + 1
             }
