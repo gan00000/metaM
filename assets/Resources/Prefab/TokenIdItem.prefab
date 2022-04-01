@@ -76,7 +76,7 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 3
@@ -132,8 +132,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
-      "height": 60
+      "width": 120,
+      "height": 30
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -168,7 +168,10 @@
       "b": 255,
       "a": 255
     },
-    "_spriteFrame": null,
+    "_spriteFrame": {
+      "__uuid__": "02682133-9181-4616-ab72-6ec66a23b849@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    },
     "_type": 0,
     "_fillType": 0,
     "_sizeMode": 0,
@@ -258,7 +261,7 @@
     },
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 0,
+      "x": 12.5,
       "y": 0,
       "z": 0
     },
@@ -271,9 +274,9 @@
     },
     "_lscale": {
       "__type__": "cc.Vec3",
-      "x": 0.5,
-      "y": 0.5,
-      "z": 0.5
+      "x": 1,
+      "y": 1,
+      "z": 1
     },
     "_layer": 33554432,
     "_euler": {
@@ -298,8 +301,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 40
+      "width": 85,
+      "height": 30
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -338,10 +341,10 @@
     "_string": "label444",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 26,
-    "_fontSize": 52,
+    "_actualFontSize": 18,
+    "_fontSize": 18,
     "_fontFamily": "Arial",
-    "_lineHeight": 60,
+    "_lineHeight": 30,
     "_overflow": 2,
     "_enableWrapText": true,
     "_font": null,
@@ -370,10 +373,10 @@
     "__prefab": {
       "__id__": 16
     },
-    "_alignFlags": 42,
+    "_alignFlags": 45,
     "_target": null,
-    "_left": 0,
-    "_right": 0,
+    "_left": 30,
+    "_right": 5,
     "_top": 0,
     "_bottom": 0,
     "_horizontalCenter": 0,
@@ -385,7 +388,7 @@
     "_isAbsHorizontalCenter": true,
     "_isAbsVerticalCenter": true,
     "_originalWidth": 42.26,
-    "_originalHeight": 0,
+    "_originalHeight": 40,
     "_alignMode": 2,
     "_lockFlags": 0,
     "_id": ""
@@ -418,8 +421,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 70,
-      "height": 40
+      "width": 120,
+      "height": 30
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",

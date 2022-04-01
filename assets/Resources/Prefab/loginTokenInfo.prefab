@@ -358,7 +358,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -92.0025,
+      "y": -92,
       "z": 0
     },
     "_lrot": {
@@ -586,7 +586,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 12,
-      "height": 266.005
+      "height": 266
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -767,7 +767,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 117.04219999999998,
+      "y": 119,
       "z": 0
     },
     "_lrot": {
@@ -862,7 +862,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 150,
-      "height": 266.005
+      "height": 238
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -925,8 +925,8 @@
     "_target": null,
     "_left": 0,
     "_right": 0,
-    "_top": 0,
-    "_bottom": 0,
+    "_top": 14,
+    "_bottom": 14,
     "_horizontalCenter": 0,
     "_verticalCenter": 0,
     "_isAbsLeft": true,
@@ -970,7 +970,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 150,
-      "height": 250.04469999999998
+      "height": 238
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -996,7 +996,7 @@
       "__id__": 42
     },
     "_resizeMode": 0,
-    "_layoutType": 3,
+    "_layoutType": 2,
     "_cellSize": {
       "__type__": "cc.Size",
       "width": 40,
@@ -1005,10 +1005,10 @@
     "_startAxis": 0,
     "_paddingLeft": 2,
     "_paddingRight": 2,
-    "_paddingTop": 6,
-    "_paddingBottom": 6,
+    "_paddingTop": 10,
+    "_paddingBottom": 10,
     "_spacingX": 6,
-    "_spacingY": 8,
+    "_spacingY": 10,
     "_verticalDirection": 1,
     "_horizontalDirection": 0,
     "_constraint": 0,
@@ -1037,7 +1037,7 @@
     "_target": null,
     "_left": 0,
     "_right": 0,
-    "_top": 0.06,
+    "_top": 0,
     "_bottom": 0,
     "_horizontalCenter": 0,
     "_verticalCenter": 0,
@@ -1476,7 +1476,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 150,
-      "height": 266.005
+      "height": 266
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1552,7 +1552,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 184,
-    "_bottom": -0.0049999999999954525,
+    "_bottom": 0,
     "_horizontalCenter": 0,
     "_verticalCenter": 0,
     "_isAbsLeft": true,

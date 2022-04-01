@@ -22,7 +22,7 @@ export class TokenIdButtonComponent extends Component {
 
         this.parent = MainGame.find("UIParent")
         this.bgNode = find("white_bg",this.node)
-        this.bgNode.active = false
+        // this.bgNode.active = false
     }
 
     btnClickCallback (event: Event, customEventData: string) {
