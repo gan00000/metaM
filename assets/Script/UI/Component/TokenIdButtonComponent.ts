@@ -61,7 +61,7 @@ export class TokenIdButtonComponent extends Component {
             }
             
             this.parent.addChild(mLandTipsNode2)
-            MapController.mCityInfo = mLandTipsNode2
+            MapController.mAlertView = mLandTipsNode2
             //设置弹框能够移动
             MapController.setTouchMove(mLandTipsNode2)
 

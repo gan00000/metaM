@@ -62,7 +62,7 @@ export class MapController {
     public static lightPosWithTokenId = {}
     public static lightPosWithLightNode = {}
 
-    public static mCityInfo:Node = null
+    public static mAlertView:Node = null
     public static mClickCityBgNode:Node = null
 
     // public static mNtfsControllerNode: Node = null
@@ -595,14 +595,14 @@ export class MapController {
                         console.log(err);
                         return;
                     }
-                    this.mCityInfo = instantiate(data);
-                    let mLisaCityInfoTipsComponent = this.mCityInfo.getComponent(LisaCityInfoTipsComponent)
+                    this.mAlertView = instantiate(data);
+                    let mLisaCityInfoTipsComponent = this.mAlertView.getComponent(LisaCityInfoTipsComponent)
                     mLisaCityInfoTipsComponent.updateData(false,"", starName, cityName, landNum + "", cityLevelName, city.level,
                         "", "", "", "", "", "");
                     mLisaCityInfoTipsComponent.callback = callback
 
-                    this.uIParent.addChild(this.mCityInfo);
-                    this.setTouchMove(this.mCityInfo) 
+                    this.uIParent.addChild(this.mAlertView);
+                    this.setTouchMove(this.mAlertView) 
                     MapController.setCityBlockBg(cityLevel, townUIPos);
                 })
             }
@@ -651,13 +651,13 @@ export class MapController {
                 console.log(err);
                 return;
             }
-            this.mCityInfo = instantiate(data);
-            let mLisaCityInfoTipsComponent = this.mCityInfo.getComponent(LisaCityInfoTipsComponent)
+            this.mAlertView = instantiate(data);
+            let mLisaCityInfoTipsComponent = this.mAlertView.getComponent(LisaCityInfoTipsComponent)
             mLisaCityInfoTipsComponent.updateData(true,"", starName, cityName, landNum + "", cityLevelName, city.level,
                 lisaInfo.tokenID, lisaInfo.landLevel, lisaInfo.townName, lisaInfo.landNo, lisaInfo.landPosx, lisaInfo.landPosy);
             mLisaCityInfoTipsComponent.callback = callback
-            this.uIParent.addChild(this.mCityInfo);
-            this.setTouchMove(this.mCityInfo) 
+            this.uIParent.addChild(this.mAlertView);
+            this.setTouchMove(this.mAlertView) 
 /**
             if (cityLevel == 1) {
 
@@ -702,10 +702,10 @@ export class MapController {
             this.mTokenIdButtonComponent.reset()
             this.mTokenIdButtonComponent = null
         }
-        if (this.mCityInfo) {
-            this.mCityInfo.removeFromParent();
-            this.mCityInfo.destroy();
-            this.mCityInfo = null;
+        if (this.mAlertView) {
+            this.mAlertView.removeFromParent();
+            this.mAlertView.destroy();
+            this.mAlertView = null;
         }
         if (this.mClickCityBgNode) {
             this.mClickCityBgNode.removeFromParent();
@@ -859,11 +859,11 @@ export class MapController {
                         console.log(err);
                         return
                     }
-                    this.mCityInfo = instantiate(data);
-                    this.mLandInfoTipsComponent = this.mCityInfo.getComponent(LandInfoTipsComponent)
+                    this.mAlertView = instantiate(data);
+                    this.mLandInfoTipsComponent = this.mAlertView.getComponent(LandInfoTipsComponent)
                     this.mLandInfoTipsComponent.updateDatas(tokenId + "",landUrl,cityInfoMap)
-                    this.uIParent.addChild(this.mCityInfo)
-                    this.setTouchMove(this.mCityInfo)
+                    this.uIParent.addChild(this.mAlertView)
+                    this.setTouchMove(this.mAlertView)
                     // this.mNtfsControllerNode.setPosition(34 * this.mapGroup.scale.x, -16 * this.mapGroup.scale.y)
                     
                 })
@@ -1029,7 +1029,7 @@ export class MapController {
     }
    
     private static canMove() {
-        if (this.mCityInfo || !this.mapCanMove) {
+        if (this.mAlertView || !this.mapCanMove) {
             return false
         } else {
             return true
@@ -1037,7 +1037,7 @@ export class MapController {
     }
 
     private static canScale() {
-        if (this.mCityInfo || !this.mapCanScale) {
+        if (this.mAlertView || !this.mapCanScale) {
             return false
         } else {
             return true
