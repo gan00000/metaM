@@ -1,4 +1,4 @@
-import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset, Prefab, instantiate, Sprite, SpriteFrame, AnimationComponent, view} from 'cc';
+import { Input, Node, Tween, EventTouch, EventMouse, Vec2, Vec3, UITransform, find, clamp, TiledMap, assetManager, resources, JsonAsset, Prefab, instantiate, Sprite, SpriteFrame, AnimationComponent, view, Line, Graphics} from 'cc';
 import { CityInfoTipsComponent } from '../UI/Component/CityInfoTipsComponent';
 import { SLightComponent } from '../UI/Component/SLightComponent';
 import { LisaCityInfoTipsComponent } from '../UI/Component/LisaCityInfoTipsComponent';
@@ -469,6 +469,7 @@ export class MapController {
         }
 
         this.mapGroup.setPosition(x, y, 0)
+        this.resetDrawGraphicsLine()
     }
 
     private static scaleInV3: Vec3 = null
@@ -689,6 +690,11 @@ export class MapController {
     }
 
     public static resetCityInfoState() {
+
+        if (this.mGraphics) {
+            this.mGraphics.clear()
+            this.mGraphics = null
+        }
 
         if (this.clickNodeOfSLightComponent) {
             this.clickNodeOfSLightComponent.reset()
@@ -1047,10 +1053,13 @@ export class MapController {
     /**
      * 弹框移动
      */
+    // private static nLineNode:Node = null
+    private static mGraphics:Graphics = null
     public static setTouchMove(moveNode:Node) {
 
         if (moveNode) {
             
+
             moveNode.on(Input.EventType.TOUCH_MOVE, (event: EventTouch) => {
                 let touches = event.getAllTouches()
                 let touchCount = touches.length
@@ -1059,10 +1068,13 @@ export class MapController {
                     this.alertViewMove(moveNode,event.getDeltaX(), event.getDeltaY())
                 } 
             })
+            this.resetDrawGraphicsLine()
         }
 
     }
 
+    private static lightNodeWorldPos:Vec3 = null
+    private static lightNodeInAlertPos:Vec3 = null
     private static alertViewMove(moveNode:Node, deltaX: number, deltaY: number) {
 
         console.log("deltaX,deltaY",deltaX, deltaY)
@@ -1085,5 +1097,40 @@ export class MapController {
         // }
 
         moveNode.setPosition(x, y, 0)
+
+        this.resetDrawGraphicsLine();
+
+    }
+
+    public static resetDrawGraphicsLine() {
+
+        if (!this.mGraphics) {
+        
+            this.mGraphics = this.mAlertView.getChildByName("lineNode").getComponent(Graphics);
+        }
+        
+        if (this.mGraphics && this.clickNodeOfSLightComponent) {
+            if (!this.lightNodeWorldPos) {
+                this.lightNodeWorldPos = new Vec3(0, 0, 0);
+            }
+            if (!this.lightNodeInAlertPos) {
+                this.lightNodeInAlertPos = new Vec3(0, 0, 0);
+            }
+
+            this.clickNodeOfSLightComponent.node.getWorldPosition(this.lightNodeWorldPos);
+
+            if (this.mAlertView) {
+                this.mAlertView.getComponent(UITransform).convertToNodeSpaceAR(this.lightNodeWorldPos, this.lightNodeInAlertPos);
+                // let pos:Vec3[] = nline.positions
+                // pos[1] = this.lightNodeInAlertPos
+                this.mGraphics.clear();
+                this.mGraphics.moveTo(0, 0);
+                this.mGraphics.lineTo(this.lightNodeInAlertPos.x, this.lightNodeInAlertPos.y);
+
+                this.mGraphics.close();
+                this.mGraphics.stroke();
+                this.mGraphics.fill();
+            }
+        }
     }
 }
