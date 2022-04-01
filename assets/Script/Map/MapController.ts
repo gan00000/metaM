@@ -1104,7 +1104,7 @@ export class MapController {
 
     public static resetDrawGraphicsLine() {
 
-        if (!this.mGraphics) {
+        if (!this.mGraphics && this.mAlertView.getChildByName("lineNode")) {
         
             this.mGraphics = this.mAlertView.getChildByName("lineNode").getComponent(Graphics);
         }
