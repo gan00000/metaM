@@ -63,6 +63,7 @@ export class MapController {
     public static lightPosWithLightNode = {}
 
     public static mAlertView:Node = null
+    //被点击的城市覆盖的框
     public static mClickCityBgNode:Node = null
 
     // public static mNtfsControllerNode: Node = null
@@ -629,6 +630,8 @@ export class MapController {
                 this.mClickCityBgNode = instantiate(data);
                 this.mapGroup.addChild(this.mClickCityBgNode);
                 this.mClickCityBgNode.setPosition(townUIPos.x + 38, townUIPos.y - 38);
+
+                this.resetDrawGraphicsLine()
             });
 
         } else {
@@ -641,6 +644,7 @@ export class MapController {
                 this.mClickCityBgNode = instantiate(data);
                 this.mapGroup.addChild(this.mClickCityBgNode);
                 this.mClickCityBgNode.setPosition(townUIPos.x + 19, townUIPos.y - 19);
+                this.resetDrawGraphicsLine()
             });
         }
     }
@@ -1074,7 +1078,7 @@ export class MapController {
     }
 
     private static lightNodeWorldPos:Vec3 = null
-    private static lightNodeInAlertPos:Vec3 = null
+    private static lightNodeToAlertPos:Vec3 = null
     private static alertViewMove(moveNode:Node, deltaX: number, deltaY: number) {
 
         console.log("deltaX,deltaY",deltaX, deltaY)
@@ -1098,7 +1102,7 @@ export class MapController {
 
         moveNode.setPosition(x, y, 0)
 
-        this.resetDrawGraphicsLine();
+        this.resetDrawGraphicsLine()
 
     }
 
@@ -1107,34 +1111,46 @@ export class MapController {
         if (!this.mAlertView) {
             return
         }
+        if (!this.mClickCityBgNode && !this.clickNodeOfSLightComponent) {
+            return
+        }
         if (!this.mGraphics && this.mAlertView.getChildByName("lineNode")) {
         
             this.mGraphics = this.mAlertView.getChildByName("lineNode").getComponent(Graphics);
         }
-        
-        if (this.mGraphics && this.clickNodeOfSLightComponent) {
+        if (this.mGraphics) {
+
+            let mNode = this.mClickCityBgNode
+            if (!mNode && this.clickNodeOfSLightComponent) {
+                mNode = this.clickNodeOfSLightComponent.node
+            }
+            if (!mNode) {
+                return
+            }
+
             if (!this.lightNodeWorldPos) {
                 this.lightNodeWorldPos = new Vec3(0, 0, 0);
             }
-            if (!this.lightNodeInAlertPos) {
-                this.lightNodeInAlertPos = new Vec3(0, 0, 0);
+            if (!this.lightNodeToAlertPos) {
+                this.lightNodeToAlertPos = new Vec3(0, 0, 0);
             }
 
-            this.clickNodeOfSLightComponent.node.getWorldPosition(this.lightNodeWorldPos);
+            mNode.getWorldPosition(this.lightNodeWorldPos);
 
             if (this.mAlertView) {
-                this.mAlertView.getComponent(UITransform).convertToNodeSpaceAR(this.lightNodeWorldPos, this.lightNodeInAlertPos);
+                this.mAlertView.getComponent(UITransform).convertToNodeSpaceAR(this.lightNodeWorldPos, this.lightNodeToAlertPos);
                 // let pos:Vec3[] = nline.positions
                 // pos[1] = this.lightNodeInAlertPos
                 
                 this.mGraphics.clear();
                 this.mGraphics.moveTo(0, 0);
-                this.mGraphics.lineTo(this.lightNodeInAlertPos.x, this.lightNodeInAlertPos.y);
+                this.mGraphics.lineTo(this.lightNodeToAlertPos.x, this.lightNodeToAlertPos.y);
 
                 this.mGraphics.close();
                 this.mGraphics.stroke();
                 this.mGraphics.fill();
             }
         }
+        
     }
 }
