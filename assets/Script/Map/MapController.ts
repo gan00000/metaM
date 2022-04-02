@@ -1104,6 +1104,9 @@ export class MapController {
 
     public static resetDrawGraphicsLine() {
 
+        if (!this.mAlertView) {
+            return
+        }
         if (!this.mGraphics && this.mAlertView.getChildByName("lineNode")) {
         
             this.mGraphics = this.mAlertView.getChildByName("lineNode").getComponent(Graphics);
@@ -1123,6 +1126,7 @@ export class MapController {
                 this.mAlertView.getComponent(UITransform).convertToNodeSpaceAR(this.lightNodeWorldPos, this.lightNodeInAlertPos);
                 // let pos:Vec3[] = nline.positions
                 // pos[1] = this.lightNodeInAlertPos
+                
                 this.mGraphics.clear();
                 this.mGraphics.moveTo(0, 0);
                 this.mGraphics.lineTo(this.lightNodeInAlertPos.x, this.lightNodeInAlertPos.y);

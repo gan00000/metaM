@@ -1,5 +1,5 @@
 
-import { _decorator, Component, Node, find, director, view, sys } from 'cc';
+import { _decorator, Component, Node, find, director, view, sys, macro } from 'cc';
 import { MapController } from './Map/MapController';
 import { UIController } from './UI/UIController';
 import { CUtil } from './Utils/CUtil';
@@ -34,6 +34,9 @@ export class MainGame extends Component {
     public start() {
         MainGame.mainCanvas = find("Canvas")
         MainGame.mainCamera = find("Camera", MainGame.mainCanvas)
+
+        // macro.ENABLE_WEBGL_ANTIALIAS = true
+        // window.devicePixelRatio = 3
         
         MainGame.address = CUtil.getQueryVariable("address")
         MainGame.language = CUtil.getQueryVariable("language")
