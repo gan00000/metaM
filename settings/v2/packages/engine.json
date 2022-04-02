@@ -24,7 +24,7 @@
         "_value": true
       },
       "particle": {
-        "_value": false
+        "_value": true
       },
       "physics": {
         "_value": false,
@@ -98,6 +98,7 @@
       "gfx-webgl2",
       "2d",
       "ui",
+      "particle",
       "intersection-2d",
       "profiler",
       "particle-2d",
@@ -113,5 +114,8 @@
       "version": ""
     },
     "flags": {}
+  },
+  "macroConfig": {
+    "ENABLE_ANTIALIAS_FXAA": false
   }
 }
