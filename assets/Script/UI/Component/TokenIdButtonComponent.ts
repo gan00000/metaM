@@ -62,14 +62,14 @@ export class TokenIdButtonComponent extends Component {
             
             this.parent.addChild(mLandTipsNode2)
             MapController.mAlertView = mLandTipsNode2
-            //设置弹框能够移动
-            MapController.setTouchMove(mLandTipsNode2)
-
+          
             let key = lightUIPos.x + "_" + lightUIPos.y
             let lightNode:Node = MapController.lightPosWithLightNode[key]
             if (lightNode) {
                 lightNode.getComponent(SLightComponent).doClick()
             }
+            //设置弹框能够移动
+            MapController.setTouchMove(mLandTipsNode2)
 
                 
         })
