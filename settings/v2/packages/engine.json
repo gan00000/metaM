@@ -65,7 +65,7 @@
         "_value": true
       },
       "audio": {
-        "_value": true
+        "_value": false
       },
       "video": {
         "_value": false
@@ -102,7 +102,6 @@
       "intersection-2d",
       "profiler",
       "particle-2d",
-      "audio",
       "tween",
       "tiled-map",
       "spine",
