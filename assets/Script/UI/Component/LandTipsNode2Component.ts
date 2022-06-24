@@ -90,6 +90,8 @@ export class LandTipsNode2Component extends BaseComponent{
 
             this.landShowInfoNode.getComponent(LandInfoTipsComponent).updateDatas(tokenId+"", landUrl,cityInfoMap)
         })
+        // let landData = MapController.languageDic[tokenId+""]
+        // this.landShowInfoNode.getComponent(LandInfoTipsComponent).updateDatas(tokenId+"", landUrl,cityInfoMap)
     }
     
 

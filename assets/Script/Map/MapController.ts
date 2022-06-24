@@ -77,6 +77,8 @@ export class MapController {
 
     public static languageDic = {}
 
+    public static landDataDic = {}
+
     public static clickNodeOfSLightComponent:SLightComponent = null
     public static mLandInfoTipsComponent:LandInfoTipsComponent = null
     public static mTokenIdButtonComponent:TokenIdButtonComponent = null
@@ -727,13 +729,15 @@ export class MapController {
     //根据tokenId获取土地数据，然后显示土地tips
     public static getDataAndShowLandTips(tokenId: number,isLight:boolean,callback: Function) {
         
-        let saledLand = this.saledLandData[tokenId + ""]//已售信息
-        if (!saledLand) {
-            console.log("not found the saledLandData by tokenId: ", tokenId)
-            return
-        }
-
-        let townId = saledLand.townid
+        // let saledLand = this.saledLandData[tokenId + ""]//已售信息
+        // if (!saledLand) {
+        //     console.log("not found the saledLandData by tokenId: ", tokenId)
+        //     return
+        // }
+        let landData = MapController.landDataDic[tokenId]
+        let landx = landData["land_posx"]
+        let landy = landData["land_posy"]
+        let townId = landData["townId"];//saledLand.townid
         // console.log("land data townId,tokenId", townId,tokenId);
         //加载该城镇土地数据
         let townLandMap = this.townLands[townId];
@@ -756,22 +760,57 @@ export class MapController {
                 }
                 this.townLands[townId] = landInfo
                 // console.log("landData = ", landInfo);
-                let xkey = 'x_' + saledLand.landx + '_y_' + saledLand.landy;
+                let xkey = 'x_' + landx + '_y_' + landy;
                 let landdata = this.townLands[townId][xkey]
-                this.showLandTips(tokenId,landdata, isLight,callback);
+                this.showLandTips(tokenId,landdata, isLight,landData,callback);
             });
         } else {
-            let xkey = 'x_' + saledLand.landx + '_y_' + saledLand.landy;
+            let xkey = 'x_' + landx + '_y_' + landy;
            
             let landdata = townLandMap[xkey]
-            this.showLandTips(tokenId,landdata,isLight,callback);
+            this.showLandTips(tokenId,landdata,isLight,landData,callback);
+        }
+    }
+
+    public static showLightOnMap(tokenId: number, townId:number, landx:string,landy:string,isLight:boolean,callback: Function) {
+        
+        let landData = MapController.landDataDic[tokenId]
+        //加载该城镇土地数据
+        let townLandMap = this.townLands[townId];
+        if (!townLandMap) {
+            //如果不存在加载
+            resources.load('Json/Land/' + townId, (err, data: any) => {
+                if (err) {
+                    console.log("err = ", err)
+                    return
+                }
+                //拿到该镇所有的土地信息
+                let landInfo = {};
+                let lands = data.json;
+                for (let i = 0; i < lands.length; i++) {
+                    let land = lands[i];
+                    let key = 'x_' + land.posx + '_y_' + land.posy;
+                    // let key = CUtil.hex2Number(land.tokenid)
+                    landInfo[key] = land;
+                    
+                }
+                this.townLands[townId] = landInfo
+                // console.log("landData = ", landInfo);
+                let xkey = 'x_' + landx + '_y_' + landy;
+                let landdata = this.townLands[townId][xkey]
+                this.showLandTips(tokenId,landdata, isLight,landData,callback);
+            });
+        } else {
+            let xkey = 'x_' + landx + '_y_' + landy;
+            let landdata = townLandMap[xkey]
+            this.showLandTips(tokenId,landdata,isLight,landData,callback);
         }
     }
 
     // public static sLightPrefabData:Prefab = null
 
     //根据某个城镇的土地坐标显示土地tips   landdata.townid, landdata.posx, landdata.posy
-    private static showLandTips(tokenId: number, land:any, isLight:boolean,callback: Function) {
+    private static showLandTips(tokenId: number, land:any, isLight:boolean,landData:any,callback: Function) {
         // console.log("townId, x, y =", townId, landx, landy);
         // let townLandMap = this.townLands[townId];
         // if(!townLandMap) {
@@ -834,7 +873,7 @@ export class MapController {
             landId = 150
         }
         let landPos = 'X:' + land.posx + '/Y:' + land.posy;
-        let landUrl = 'https://static-download2.metacitym.com' + land.imageurl
+        let landUrl = landData["image"]//'https://static-download2.metacitym.com' + land.imageurl
 
         let landName = ""
         let landSize = "40*30"

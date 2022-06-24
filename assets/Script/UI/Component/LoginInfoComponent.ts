@@ -21,6 +21,8 @@ export class LoginInfoComponent extends BaseComponent {
     private  loginButton: Node = null
     private  logoutButton: Node = null
     private  tokenIds:number[] = []
+    private  landDataDic = {}
+
 
     private sleep = async (ms) => {
         return new Promise((resolve, reject)=>{
@@ -156,8 +158,6 @@ export class LoginInfoComponent extends BaseComponent {
                 
                 this.refreshTokenUi(data);
             })
-
-            this.showLightOnMap()
             
         }else{
             this.tipsLabelNode.active = true
@@ -179,6 +179,8 @@ export class LoginInfoComponent extends BaseComponent {
     }  
     private lightIndex = 0
     private showLightOnMap() {
+
+        MapController.landDataDic = this.landDataDic
         this.lightIndex = 0
         this.showLightOnMapLoop()
     }
@@ -186,14 +188,17 @@ export class LoginInfoComponent extends BaseComponent {
         if (this.tokenIds.length > 0) {
             
             const tokenId = this.tokenIds[this.lightIndex];
+            let landd_data = this.landDataDic[tokenId]
                //在地图上显示发光点
-            MapController.getDataAndShowLandTips(tokenId, true, ()=>{
+               MapController.showLightOnMap(tokenId,landd_data["townId"],landd_data["land_posx"],landd_data["land_posy"]
+               ,true,()=>{
+                
                 if (this.lightIndex < this.tokenIds.length-1) {
                     this.lightIndex = this.lightIndex + 1
                     this.showLightOnMapLoop()
                 }
                
-            });
+            })
         }
 
     }
@@ -247,6 +252,7 @@ export class LoginInfoComponent extends BaseComponent {
                         })
                     }
                     this.createTokenIdView()
+                    this.requesLandList()
                 }
             
                 console.log("解析完成 key=" + pageKey)
@@ -263,6 +269,65 @@ export class LoginInfoComponent extends BaseComponent {
 
 
         // })
+
+    }
+
+    // https://metacitym.gamamobi.com/mcm/api/landlist?token=5000,6000
+
+    private requesLandList() {
+        
+        if (this.tokenIds.length > 0) {
+            
+            let tokenIdStr = ""
+        for (let index = 0; index < this.tokenIds.length; index++) {
+            if (index==0) {
+                tokenIdStr = this.tokenIds[index] + ""
+            } else {
+                tokenIdStr = tokenIdStr + "," + this.tokenIds[index]
+            }
+           
+        }
+        var reqUrl = "https://metacitym.gamamobi.com/mcm/api/landlist?token=" + tokenIdStr
+
+        // let testUrl = "https://act.gamamobi.com/pre/nft/getTokenIds.web?owner=0x2f2e99bcbe39D8407552E821e7F4F0F9592Dfcab&contractAddress=0x82016d4ad050ef4784e282b82a746d3e01df23bf&_=" + Date.parse(new Date().toString())
+        console.log("reqUrl:" + reqUrl)
+        CUtil.httpPequest(reqUrl,(result)=>{
+            
+            
+            if (result) {
+                console.log("requesLandList" + result)
+                let resultJson = JSON.parse(result)
+                
+                if (resultJson) {
+                    for (let index = 0; index < resultJson.length; index++) {
+                        const landData = resultJson[index];
+                        
+                        let attributes = landData.attributes
+                        let token_id = landData.token
+                        let image = landData.image
+                        let name = landData.name
+                        let landTemp = {}
+                        landTemp["image"] = image
+                        for (let index2 = 0; index2 < attributes.length; index2++) {
+                            const attribute = attributes[index2];
+                            landTemp[attribute.trait_type]= attribute.value
+                            if (attribute.trait_type == "town") {
+                                let value = attribute.value.replace("Town","")
+                                landTemp["townId"] =  value
+                            }
+                        }
+                        this.landDataDic[token_id] = landTemp
+
+                    }
+
+                    this.showLightOnMap()
+                }
+            }
+            
+        })
+
+        }
+        
 
     }
 
